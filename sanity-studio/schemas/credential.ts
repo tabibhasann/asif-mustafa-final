@@ -1,0 +1,16 @@
+import { defineField, defineType } from "sanity";
+
+export const credential = defineType({
+  name: "credential",
+  title: "Credential",
+  type: "document",
+  fields: [
+    defineField({ name: "title", type: "string", validation: (rule) => rule.required() }),
+    defineField({ name: "issuer", type: "string" }),
+    defineField({ name: "area", type: "string" }),
+    defineField({ name: "href", title: "Verification URL", type: "url" }),
+    defineField({ name: "order", title: "Display order", type: "number", initialValue: 10 }),
+  ],
+  orderings: [{ title: "Display order", name: "orderAsc", by: [{ field: "order", direction: "asc" }] }],
+  preview: { select: { title: "title", subtitle: "issuer" } },
+});

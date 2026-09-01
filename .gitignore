@@ -1,0 +1,13 @@
+node_modules
+.next
+.open-next
+dist
+sanity-studio/sanity-dist
+sanity-studio/.sanity
+.env.local
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+.env*
+!.env.example
