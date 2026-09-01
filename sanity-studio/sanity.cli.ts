@@ -5,4 +5,7 @@ export default defineCliConfig({
     projectId: "gvgzuc20",
     dataset: "asif",
   },
+  deployment: {
+    appId: "z66reibz70r7m2o7edrxwtmu",
+  },
 });
