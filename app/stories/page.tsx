@@ -8,6 +8,7 @@ import { getStories } from "@/lib/cms";
 export const metadata: Metadata = {
   title: "Stories",
   description: "Field stories connecting research, technical systems and industrial practice.",
+  alternates: { canonical: "/stories" },
 };
 
 export const revalidate = 60;

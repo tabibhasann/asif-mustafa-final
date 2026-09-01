@@ -2,13 +2,31 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { headerLinks, headerProfile, knowledgeLinks } from "@/lib/site";
+import { useEffect, useState } from "react";
+import type { Profile } from "@/lib/content";
+import { headerLinks, knowledgeLinks } from "@/lib/site";
 
-export function SiteHeader() {
+export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role" | "email" | "location"> }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const primaryLinks = headerLinks;
+  const [knowledgeOpen, setKnowledgeOpen] = useState(false);
+  const knowledgeActive = knowledgeLinks.some((item) => pathname.startsWith(item.href));
+
+  useEffect(() => {
+    setOpen(false);
+    setKnowledgeOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        setKnowledgeOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
 
   return (
     <header className="site-header">
@@ -17,8 +35,8 @@ export function SiteHeader() {
       </a>
       <div className="utility-bar">
         <div className="shell utility-inner">
-          <a href={`mailto:${headerProfile.email}`}>{headerProfile.email}</a>
-          <span>{headerProfile.location}</span>
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          <span>{profile.location}</span>
           <span>Research · Data Science · Industrial Systems</span>
         </div>
       </div>
@@ -27,8 +45,8 @@ export function SiteHeader() {
           <Link className="brand" href="/" aria-label="Md Asif Mustafa homepage">
             <span className="brand-mark" aria-hidden="true">AM</span>
             <span>
-              <strong>Md Asif Mustafa</strong>
-              <small>Researcher · Data Scientist · Advisor</small>
+              <strong>{profile.name}</strong>
+              <small>{profile.role}</small>
             </span>
           </Link>
 
@@ -42,7 +60,7 @@ export function SiteHeader() {
             <span />
             <span />
             <span />
-            <span className="sr-only">Toggle navigation</span>
+            <span className="sr-only">{open ? "Close navigation" : "Open navigation"}</span>
           </button>
 
           <nav
@@ -50,33 +68,47 @@ export function SiteHeader() {
             className={`primary-nav ${open ? "is-open" : ""}`}
             aria-label="Primary navigation"
           >
-            {primaryLinks.map((item) => (
+            {headerLinks.map((item) => (
               <Link
                 className={pathname.startsWith(item.href) ? "active" : ""}
                 href={item.href}
                 key={item.href}
                 onClick={() => setOpen(false)}
+                aria-current={pathname.startsWith(item.href) ? "page" : undefined}
               >
                 {item.label}
               </Link>
             ))}
-            <div className="more-menu">
+            <div
+              className={`more-menu ${knowledgeOpen ? "is-open" : ""}`}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) setKnowledgeOpen(false);
+              }}
+            >
               <button
                 type="button"
-                className={knowledgeLinks.some((item) => pathname.startsWith(item.href)) ? "active" : ""}
+                className={knowledgeActive ? "active" : ""}
                 aria-haspopup="true"
+                aria-expanded={knowledgeOpen}
+                aria-controls="knowledge-navigation"
+                onClick={() => setKnowledgeOpen((value) => !value)}
               >
                 Knowledge
               </button>
-              <div className="more-panel">
+              <div className="more-panel" id="knowledge-navigation">
                 {knowledgeLinks.map((item) => (
-                  <Link href={item.href} key={item.href} onClick={() => setOpen(false)}>
+                  <Link
+                    href={item.href}
+                    key={item.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={pathname.startsWith(item.href) ? "page" : undefined}
+                  >
                     {item.label}
                   </Link>
                 ))}
               </div>
             </div>
-            <a className="nav-contact" href={`mailto:${headerProfile.email}?subject=Professional enquiry`}>
+            <a className="nav-contact" href={`mailto:${profile.email}?subject=Professional enquiry`}>
               Contact
             </a>
           </nav>

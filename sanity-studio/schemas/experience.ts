@@ -10,6 +10,7 @@ export const experience = defineType({
     defineField({ name: "slug", type: "slug", options: { source: "organization" }, validation: (rule) => rule.required() }),
     defineField({ name: "period", type: "string" }),
     defineField({ name: "engagement", title: "Engagement type", type: "string" }),
+    defineField({ name: "projectValue", title: "Programme or project value", type: "string", description: "Optional; use only when the value is approved for publication." }),
     defineField({ name: "description", type: "text", rows: 3 }),
     defineField({ name: "impacts", title: "Selected contributions (maximum 3)", type: "array", of: [{ type: "text", rows: 2 }], validation: (rule) => rule.max(3) }),
     defineField({ name: "order", title: "Display order", type: "number", initialValue: 10 }),

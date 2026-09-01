@@ -1,15 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import type { Publication } from "@/lib/content";
 
-const filters = ["All", "Published", "Conference", "Dataset"];
+const preferredFilters = ["Published", "In press", "Under review", "Conference", "Dataset"];
 
 export function PublicationArchive({ publications }: { publications: Publication[] }) {
   const [filter, setFilter] = useState("All");
   const [query, setQuery] = useState("");
+  const deferredQuery = useDeferredValue(query);
+  const availableStatuses = new Set(publications.map((publication) => publication.status));
+  const filters = [
+    "All",
+    ...preferredFilters.filter((item) => availableStatuses.has(item as Publication["status"])),
+    ...[...availableStatuses].filter((item) => !preferredFilters.includes(item)),
+  ];
   const visible = useMemo(() => {
-    const needle = query.toLowerCase().trim();
+    const needle = deferredQuery.toLowerCase().trim();
     return publications.filter((publication) => {
       const matchesFilter = filter === "All" || publication.status === filter;
       const matchesQuery = !needle || [publication.title, publication.venue, ...publication.keywords]
@@ -18,7 +25,8 @@ export function PublicationArchive({ publications }: { publications: Publication
         .includes(needle);
       return matchesFilter && matchesQuery;
     });
-  }, [filter, publications, query]);
+  }, [deferredQuery, filter, publications]);
+  const isUpdating = query !== deferredQuery;
 
   return (
     <>
@@ -41,12 +49,16 @@ export function PublicationArchive({ publications }: { publications: Publication
           <input
             type="search"
             placeholder="Search title, venue or keyword"
+            aria-describedby="publication-results-summary"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
       </div>
-      <div className="publication-list" aria-live="polite">
+      <p className="filter-summary" id="publication-results-summary" aria-live="polite">
+        Showing {visible.length} of {publications.length} records
+      </p>
+      <div className={`publication-list ${isUpdating ? "is-updating" : ""}`} aria-live="polite" aria-busy={isUpdating}>
         {visible.map((publication) => (
           <article className="publication-row" key={`${publication.title}-${publication.year}`}>
             <div className="publication-icon" aria-hidden="true">§</div>

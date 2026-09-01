@@ -8,6 +8,8 @@ export const credential = defineType({
     defineField({ name: "title", type: "string", validation: (rule) => rule.required() }),
     defineField({ name: "issuer", type: "string" }),
     defineField({ name: "area", type: "string" }),
+    defineField({ name: "year", title: "Year awarded", type: "string" }),
+    defineField({ name: "credentialId", title: "Credential ID", type: "string" }),
     defineField({ name: "href", title: "Verification URL", type: "url" }),
     defineField({ name: "order", title: "Display order", type: "number", initialValue: 10 }),
   ],

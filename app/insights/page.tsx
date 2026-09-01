@@ -8,6 +8,7 @@ import { getInsights } from "@/lib/cms";
 export const metadata: Metadata = {
   title: "Insights",
   description: "Notes on applied research, data systems and responsible industrial decisions.",
+  alternates: { canonical: "/insights" },
 };
 
 export const revalidate = 60;

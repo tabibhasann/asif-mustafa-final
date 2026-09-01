@@ -6,8 +6,17 @@ import { useState } from "react";
 import type { Project } from "@/lib/content";
 import { projectFilterCategories } from "@/lib/site";
 
-export function ProjectExplorer({ projects }: { projects: Project[] }) {
+export type ProjectPreview = Pick<Project, "slug" | "title" | "category" | "categories" | "summary" | "image" | "stack">;
+
+export function ProjectExplorer({ projects }: { projects: ProjectPreview[] }) {
   const [category, setCategory] = useState("All");
+  const availableCategories = new Set(projects.flatMap((project) => project.categories));
+  const extraCategories = [...availableCategories].filter((item) => !projectFilterCategories.includes(item));
+  const categories = [
+    "All",
+    ...projectFilterCategories.filter((item) => item !== "All" && availableCategories.has(item)),
+    ...extraCategories,
+  ];
   const filtered = category === "All"
     ? projects
     : projects.filter((project) => project.categories.includes(category));
@@ -15,7 +24,7 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
   return (
     <>
       <div className="filter-bar" aria-label="Filter projects by category">
-        {projectFilterCategories.map((item) => (
+        {categories.map((item) => (
           <button
             type="button"
             key={item}
@@ -27,6 +36,9 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
           </button>
         ))}
       </div>
+      <p className="filter-summary" aria-live="polite">
+        Showing {filtered.length} {filtered.length === 1 ? "project" : "projects"}{category === "All" ? "" : ` in ${category}`}
+      </p>
       <div className="project-grid" aria-live="polite">
         {filtered.map((project) => (
           <article className="project-card" key={project.slug}>

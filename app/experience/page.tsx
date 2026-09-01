@@ -6,6 +6,7 @@ import { getExperiences } from "@/lib/cms";
 export const metadata: Metadata = {
   title: "Experience",
   description: "Selected research, advisory, engineering and operational experience.",
+  alternates: { canonical: "/experience" },
 };
 
 export const revalidate = 60;
@@ -29,6 +30,7 @@ export default async function ExperiencePage() {
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <strong>{experience.period}</strong>
                   <small>{experience.engagement}</small>
+                  {experience.projectValue && <em>{experience.projectValue}</em>}
                 </div>
                 <div className="experience-copy">
                   <p className="experience-role">{experience.role}</p>

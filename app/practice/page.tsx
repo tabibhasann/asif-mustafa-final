@@ -6,6 +6,7 @@ import { getPracticeAreas } from "@/lib/cms";
 export const metadata: Metadata = {
   title: "Research & Professional Practice",
   description: "Five connected areas of research, analytics and technical advisory practice.",
+  alternates: { canonical: "/practice" },
 };
 
 export const revalidate = 60;
@@ -22,11 +23,11 @@ export default async function PracticePage() {
       />
       <section className="section section-white">
         <div className="shell">
-          {practiceAreas.map((area, index) => (
+          {practiceAreas.map((area) => (
             <Reveal key={area.slug}>
               <article className="practice-chapter" id={area.slug}>
-                <span className="chapter-number">{area.number}</span>
                 <div className="practice-chapter-inner">
+                  <span className="chapter-number">{area.number}</span>
                   <div>
                     <p className="eyebrow">Practice area</p>
                     <h2>{area.title}</h2>
@@ -34,7 +35,7 @@ export default async function PracticePage() {
                   </div>
                   <ul className="capability-list">
                     {area.capabilities.map((capability) => (
-                      <li key={capability}><span>{String(index + 1).padStart(2, "0")}</span>{capability}</li>
+                      <li key={capability}>{capability}</li>
                     ))}
                   </ul>
                 </div>

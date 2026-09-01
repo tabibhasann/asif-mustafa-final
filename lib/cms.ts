@@ -1,4 +1,5 @@
-import { createClient } from "next-sanity";
+import { createClient } from "@sanity/client";
+import { cache } from "react";
 import {
   credentials as fallbackCredentials,
   experiences as fallbackExperiences,
@@ -12,6 +13,7 @@ import {
   type Experience,
   type Insight,
   type PracticeArea,
+  type Profile,
   type Project,
   type Publication,
   type Story,
@@ -49,13 +51,13 @@ async function collectionOrFallback<T, K extends keyof T = keyof T>(
   }
 }
 
-export async function getProfile(): Promise<typeof fallbackProfile> {
+export const getProfile = cache(async (): Promise<Profile> => {
   if (!client) return fallbackProfile;
   try {
-    const result = await client.fetch<Partial<typeof fallbackProfile>>(
+    const result = await client.fetch<Partial<Profile>>(
       `*[_type == "profile"][0]{
         name, shortName, role, location, email, phone, linkedin, scholar, github,
-        headline, introduction, biography, metrics, education
+        headline, introduction, "portrait": portrait.asset->url, biography, metrics, education
       }`,
       {},
       { next: { revalidate: 60 } },
@@ -64,27 +66,27 @@ export async function getProfile(): Promise<typeof fallbackProfile> {
   } catch {
     return fallbackProfile;
   }
-}
+});
 
-export const getPracticeAreas = () =>
+export const getPracticeAreas = cache(() =>
   collectionOrFallback<PracticeArea>(
     `*[_type == "practiceArea"]|order(number asc){
       number, "slug": slug.current, title, summary, capabilities
     }`,
     fallbackPracticeAreas,
     "slug",
-  );
+  ));
 
-export const getExperiences = () =>
+export const getExperiences = cache(() =>
   collectionOrFallback<Experience>(
     `*[_type == "experience"]|order(order asc){
-      "slug": slug.current, organization, role, period, engagement, description, impacts
+      "slug": slug.current, organization, role, period, engagement, projectValue, description, impacts
     }`,
     fallbackExperiences,
     "slug",
-  );
+  ));
 
-export const getProjects = () =>
+export const getProjects = cache(() =>
   collectionOrFallback<Project>(
     `*[_type == "project"]|order(featured desc, order asc){
       "slug": slug.current, title, category, categories, summary,
@@ -93,23 +95,23 @@ export const getProjects = () =>
     }`,
     fallbackProjects,
     "slug",
-  );
+  ));
 
-export async function getProject(slug: string) {
+export const getProject = cache(async (slug: string) => {
   const projects = await getProjects();
   return projects.find((project) => project.slug === slug);
-}
+});
 
-export const getPublications = () =>
+export const getPublications = cache(() =>
   collectionOrFallback<Publication>(
     `*[_type == "publication"]|order(year desc, title asc){
       title, venue, year, type, status, keywords, href
     }`,
     fallbackPublications,
     "title",
-  );
+  ));
 
-export const getStories = () =>
+export const getStories = cache(() =>
   collectionOrFallback<Story>(
     `*[_type == "story"]|order(order asc){
       "slug": slug.current, title, category, excerpt,
@@ -117,14 +119,14 @@ export const getStories = () =>
     }`,
     fallbackStories,
     "slug",
-  );
+  ));
 
-export async function getStory(slug: string) {
+export const getStory = cache(async (slug: string) => {
   const stories = await getStories();
   return stories.find((story) => story.slug === slug);
-}
+});
 
-export const getInsights = () =>
+export const getInsights = cache(() =>
   collectionOrFallback<Insight>(
     `*[_type == "insight"]|order(featured desc, publishedAt desc){
       "slug": slug.current, title, category,
@@ -134,16 +136,16 @@ export const getInsights = () =>
     }`,
     fallbackInsights,
     "slug",
-  );
+  ));
 
-export async function getInsight(slug: string) {
+export const getInsight = cache(async (slug: string) => {
   const insights = await getInsights();
   return insights.find((insight) => insight.slug === slug);
-}
+});
 
-export const getCredentials = () =>
+export const getCredentials = cache(() =>
   collectionOrFallback<Credential>(
-    `*[_type == "credential"]|order(order asc){title, issuer, area, href}`,
+    `*[_type == "credential"]|order(order asc){title, issuer, area, year, credentialId, href}`,
     fallbackCredentials,
     "title",
-  );
+  ));

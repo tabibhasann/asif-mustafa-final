@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { navigation, practiceAreas, profile } from "@/lib/content";
+import { navigation, type PracticeArea, type Profile } from "@/lib/content";
 
-export function SiteFooter() {
+export function SiteFooter({ profile, practiceAreas }: { profile: Profile; practiceAreas: PracticeArea[] }) {
   return (
     <footer className="site-footer" id="contact">
       <div className="contact-band">
@@ -63,7 +63,7 @@ export function SiteFooter() {
       </div>
       <div className="shell footer-bottom">
         <span>© {new Date().getFullYear()} Md Asif Mustafa</span>
-        <span>Content managed with Sanity · Built for accessibility and reduced motion</span>
+        <span>Independent professional portfolio · Dhaka, Bangladesh</span>
       </div>
     </footer>
   );

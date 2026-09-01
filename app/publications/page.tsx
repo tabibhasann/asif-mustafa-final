@@ -6,6 +6,7 @@ import { getProfile, getPublications } from "@/lib/cms";
 export const metadata: Metadata = {
   title: "Publications",
   description: "Research publications, conference papers and datasets by Md Asif Mustafa.",
+  alternates: { canonical: "/publications" },
 };
 
 export const revalidate = 60;

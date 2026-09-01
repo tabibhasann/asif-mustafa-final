@@ -1,7 +1,8 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeading } from "@/components/Primitives";
+import { MonogramPortrait, SectionHeading } from "@/components/Primitives";
 import {
   getInsights,
   getPracticeAreas,
@@ -13,6 +14,10 @@ import {
 import { processSteps, scholarlyVenues, sectors } from "@/lib/content";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const [profile, practiceAreas, projects, publications, stories, insights] = await Promise.all([
@@ -223,10 +228,7 @@ export default async function Home() {
 
       <section className="profile-band">
         <div className="shell profile-band-grid">
-          <div className="profile-monogram" aria-label="Professional portrait placeholder managed in Sanity">
-            <span>AM</span>
-            <small>Portrait managed in Sanity</small>
-          </div>
+          <MonogramPortrait src={profile.portrait} name={profile.name} className="profile-monogram" />
           <div>
             <p className="eyebrow light">Professional profile</p>
             <h2>Engineering context. Statistical discipline. Applied intelligence.</h2>
@@ -245,7 +247,7 @@ export default async function Home() {
             <SectionHeading
               eyebrow="Insights"
               title="Ideas, research and field perspectives."
-              text="Short editorial notes on evidence, systems and responsible industrial decisions. All articles are managed through Sanity."
+              text="Short editorial notes on evidence, systems and responsible industrial decisions."
               action={{ href: "/insights", label: "View all insights" }}
             />
           </Reveal>

@@ -6,12 +6,31 @@ export type PracticeArea = {
   capabilities: string[];
 };
 
+export type Profile = {
+  name: string;
+  shortName: string;
+  role: string;
+  location: string;
+  email: string;
+  phone: string;
+  linkedin: string;
+  scholar: string;
+  github: string;
+  headline: string;
+  introduction: string;
+  portrait?: string;
+  biography: string[];
+  metrics: { value: string; label: string }[];
+  education: { degree: string; institution: string; note: string }[];
+};
+
 export type Experience = {
   slug: string;
   organization: string;
   role: string;
   period: string;
   engagement: string;
+  projectValue?: string;
   description: string;
   impacts: string[];
 };
@@ -35,8 +54,8 @@ export type Publication = {
   title: string;
   venue: string;
   year: string;
-  type: "Journal article" | "Conference paper" | "Dataset";
-  status: "Published" | "Conference" | "Dataset";
+  type: "Journal article" | "Conference paper" | "Dataset" | "Book chapter" | "Working paper";
+  status: "Published" | "In press" | "Under review" | "Conference" | "Dataset";
   keywords: string[];
   href: string;
 };
@@ -68,10 +87,12 @@ export type Credential = {
   title: string;
   issuer: string;
   area: string;
+  year?: string;
+  credentialId?: string;
   href?: string;
 };
 
-export const profile = {
+export const profile: Profile = {
   name: "Md Asif Mustafa",
   shortName: "Asif Mustafa",
   role: "Researcher · Data Scientist · Technical Advisor",
@@ -96,7 +117,7 @@ export const profile = {
   ],
   education: [
     {
-      degree: "M.Sc. studies in Applied Statistics & Data Science",
+      degree: "M.Sc. in Applied Statistics & Data Science",
       institution: "Jahangirnagar University",
       note: "Statistical modelling, machine learning and decision analysis",
     },
@@ -193,12 +214,13 @@ export const experiences: Experience[] = [
     role: "Research Assistant · Full-time",
     period: "February 2024 — Present",
     engagement: "International research collaboration",
+    projectValue: "US$660,000 research programme",
     description:
       "Applied research across occupational safety, lean operations, sustainability and data systems for Bangladesh’s leather sector.",
     impacts: [
       "Collected and analysed mixed-method evidence from 200+ stakeholders through interviews, surveys, focus groups and field observation.",
-      "Supported field studies, audits, training and workshops across tannery operations with AUST, the University of Southern Denmark and industry partners.",
-      "Developed data-management, analytics and reporting workflows using statistical modelling, machine learning and decision-support tools.",
+      "Led and supported 30 field studies, 20 audits, 10 training sessions and five workshops with university and industry partners.",
+      "Built traceable data-management, analytics and reporting workflows for statistical modelling, machine learning and decision support.",
     ],
   },
   {
@@ -207,6 +229,7 @@ export const experiences: Experience[] = [
     role: "Project Lead · Part-time",
     period: "May 2026 — Present",
     engagement: "National digital operations programme",
+    projectValue: "US$1.3 million national programme",
     description:
       "A distributed management and training platform supporting large-scale tax-entry operations across Bangladesh.",
     impacts: [
@@ -305,7 +328,7 @@ export const projects: Project[] = [
       "Connected a FastAPI service, analytics interface and RAG workflow for reporting and conversational exploration.",
     ],
     outcome:
-      "The project established a reusable architecture for faster reporting and evidence retrieval. All performance figures remain editable in Sanity as the implementation evolves.",
+      "The project established a reusable architecture for faster reporting, traceable evidence retrieval and continued operational validation.",
   },
   {
     slug: "amazon-nlp-vector-search",

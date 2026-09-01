@@ -7,6 +7,7 @@ import { getProfile } from "@/lib/cms";
 export const metadata: Metadata = {
   title: "About",
   description: "Professional profile, education and working principles of Md Asif Mustafa.",
+  alternates: { canonical: "/about" },
 };
 
 export const revalidate = 60;
@@ -26,12 +27,22 @@ export default async function AboutPage() {
       <section className="section section-white">
         <div className="shell editorial-grid">
           <Reveal className="editorial-image">
-            <MonogramPortrait />
+            <MonogramPortrait src={profile.portrait} name={profile.name} />
           </Reveal>
           <Reveal className="editorial-copy" delay={80}>
             <p className="eyebrow">Professional profile</p>
             <h2>Engineering context. Statistical discipline. Applied intelligence.</h2>
             {profile.biography.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <div className="profile-contact-grid" aria-label="Professional contact and profile links">
+              <div><span>Email</span><a href={`mailto:${profile.email}`}>{profile.email}</a></div>
+              <div><span>Phone</span><a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a></div>
+              <div><span>LinkedIn</span><a href={profile.linkedin} target="_blank" rel="noreferrer">Professional profile ↗</a></div>
+              <div><span>Google Scholar</span><a href={profile.scholar} target="_blank" rel="noreferrer">Research archive ↗</a></div>
+              <div><span>GitHub</span><a href={profile.github} target="_blank" rel="noreferrer">Technical work ↗</a></div>
+            </div>
+            <ul className="profile-metrics-inline" aria-label="Professional profile highlights">
+              {profile.metrics.map((metric) => <li key={metric.label}><strong>{metric.value}</strong><span>{metric.label}</span></li>)}
+            </ul>
             <div className="button-row">
               <Link className="button button-navy" href="/experience">Review experience</Link>
               <a className="button button-ghost" href={`mailto:${profile.email}?subject=Professional enquiry`}>Contact Asif</a>

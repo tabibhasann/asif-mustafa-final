@@ -16,7 +16,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const story = await getStory(slug);
   if (!story) return { title: "Story not found" };
-  return { title: story.title, description: story.excerpt };
+  return {
+    title: story.title,
+    description: story.excerpt,
+    alternates: { canonical: `/stories/${story.slug}` },
+    openGraph: { title: story.title, description: story.excerpt, images: [story.image] },
+  };
 }
 
 export default async function StoryDetailPage({ params }: Props) {

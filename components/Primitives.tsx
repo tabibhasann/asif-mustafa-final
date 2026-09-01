@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 export function SectionHeading({
@@ -60,13 +61,38 @@ export function PageHero({
   );
 }
 
-export function MonogramPortrait() {
+export function MonogramPortrait({
+  src,
+  name = "Md Asif Mustafa",
+  className = "",
+}: {
+  src?: string;
+  name?: string;
+  className?: string;
+}) {
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(-2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+
+  if (src) {
+    return (
+      <div className={`monogram-portrait has-image ${className}`.trim()}>
+        <Image src={src} alt={`Professional portrait of ${name}`} fill sizes="(max-width: 900px) 100vw, 42vw" />
+        <div><strong>{name}</strong><small>Professional profile</small></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="monogram-portrait" role="img" aria-label="Professional portrait placeholder managed in Sanity">
-      <span>AM</span>
+    <div className={`monogram-portrait ${className}`.trim()} role="img" aria-label={`Professional portrait space for ${name}`}>
+      <span>{initials || "AM"}</span>
       <div>
-        <strong>Professional portrait</strong>
-        <small>Replace from Sanity</small>
+        <strong>{name}</strong>
+        <small>Professional portrait</small>
       </div>
     </div>
   );

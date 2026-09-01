@@ -16,7 +16,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const insight = await getInsight(slug);
   if (!insight) return { title: "Insight not found" };
-  return { title: insight.title, description: insight.excerpt };
+  return {
+    title: insight.title,
+    description: insight.excerpt,
+    alternates: { canonical: `/insights/${insight.slug}` },
+    openGraph: { title: insight.title, description: insight.excerpt, images: [insight.image] },
+  };
 }
 
 export default async function InsightDetailPage({ params }: Props) {
@@ -41,7 +46,7 @@ export default async function InsightDetailPage({ params }: Props) {
         <div className="shell article-layout">
           <aside className="article-aside">
             <p className="eyebrow">Editorial note</p>
-            <p>Published through the Insights archive. Content, date and imagery are editable in Sanity.</p>
+            <p>A concise perspective from applied research and professional practice.</p>
           </aside>
           <article className="article-body">
             {insight.body.map((section) => (

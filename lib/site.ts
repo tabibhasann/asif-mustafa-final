@@ -12,11 +12,6 @@ export const knowledgeLinks = [
   { href: "/credentials", label: "Credentials" },
 ];
 
-export const headerProfile = {
-  email: "pavelasif66@gmail.com",
-  location: "Dhaka, Bangladesh",
-};
-
 export const projectFilterCategories = [
   "All",
   "Data Systems",
