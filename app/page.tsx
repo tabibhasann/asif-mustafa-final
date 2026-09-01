@@ -255,7 +255,7 @@ export default async function Home() {
             {insights.slice(0, 3).map((insight, index) => (
               <Reveal key={insight.slug} delay={index * 70}>
                 <article className="insight-card">
-                  <Link className="insight-image" href={`/insights/${insight.slug}`}>
+                  <Link className="insight-image" href={`/insights/${insight.slug}`} aria-label={`Read insight: ${insight.title}`}>
                     <Image src={insight.image} alt="" fill sizes="(max-width: 760px) 100vw, 33vw" />
                   </Link>
                   <div>
