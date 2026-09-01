@@ -41,6 +41,15 @@ npm run deploy
 
 The editor has dedicated content types for Profile, Practice Areas, Experience, Projects, Publications, Stories, Insights and Credentials. Images, links, copy, order and featured states can all be changed without editing the website code.
 
+For a new dataset, populate the editor once with the reviewed starter content while signed in as a Sanity Administrator:
+
+```bash
+cd sanity-studio
+npm run seed
+```
+
+The seed is idempotent: it creates only missing starter documents and does not overwrite later edits made in the Studio.
+
 Copy `.env.example` to `.env.local` if the public deployment needs different Sanity settings. Vercel should expose `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` and `NEXT_PUBLIC_SANITY_API_VERSION` in Production, Preview and Development.
 
 ## Verification
