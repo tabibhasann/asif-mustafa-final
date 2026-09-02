@@ -32,17 +32,19 @@ export default async function StoryDetailPage({ params }: Props) {
   return (
     <>
       <section className="detail-hero">
-        <div className="shell detail-hero-copy">
-          <Link className="text-link" href="/stories">← All stories</Link>
-          <p className="eyebrow light">Field story · {story.category}</p>
-          <h1>{story.title}</h1>
-          <p>{story.excerpt}</p>
-        </div>
-        <div className="detail-hero-media">
-          <Image src={story.image} alt="" fill priority sizes="100vw" />
+        <div className="shell detail-hero-grid">
+          <div className="detail-hero-copy">
+            <Link className="text-link" href="/stories">← All stories</Link>
+            <p className="eyebrow light">Field story · {story.category}</p>
+            <h1>{story.title}</h1>
+            <p>{story.excerpt}</p>
+          </div>
+          <div className="detail-hero-media">
+            <Image src={story.image} alt={story.imageAlt ?? story.title} fill priority sizes="(max-width: 800px) 100vw, 46vw" />
+          </div>
         </div>
       </section>
-      <section className="section section-white">
+      <section className="article-section section-white">
         <div className="shell article-layout">
           <aside className="article-aside">
             <p className="eyebrow">Methods & context</p>

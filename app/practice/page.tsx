@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/Primitives";
 import { Reveal } from "@/components/Reveal";
-import { getPracticeAreas } from "@/lib/cms";
+import { getPracticeAreas, getSiteSettings } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Research & Professional Practice",
@@ -12,17 +12,18 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function PracticePage() {
-  const practiceAreas = await getPracticeAreas();
+  const [practiceAreas, settings] = await Promise.all([getPracticeAreas(), getSiteSettings()]);
+  const copy = settings.pages.practice;
 
   return (
     <>
       <PageHero
-        eyebrow="Research & professional practice"
-        title="Connected capabilities for complex industrial questions."
-        intro="Five fields brought together through one evidence-led method—from framing the question and examining the system to building a response that can be reviewed and used."
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        intro={copy.intro}
       />
-      <section className="section section-white">
-        <div className="shell">
+      <section className="section section-white composed-section">
+        <div className="shell practice-chapter-grid">
           {practiceAreas.map((area) => (
             <Reveal key={area.slug}>
               <article className="practice-chapter" id={area.slug}>

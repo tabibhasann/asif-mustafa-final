@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/Primitives";
 import { Reveal } from "@/components/Reveal";
-import { getExperiences } from "@/lib/cms";
+import { getExperiences, getSiteSettings } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Experience",
@@ -12,17 +12,18 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function ExperiencePage() {
-  const experiences = await getExperiences();
+  const [experiences, settings] = await Promise.all([getExperiences(), getSiteSettings()]);
+  const copy = settings.pages.experience;
 
   return (
     <>
       <PageHero
-        eyebrow="Experience"
-        title="Research, advisory and operations across connected sectors."
-        intro="A concise record of roles, responsibilities and selected contributions—from international research collaboration to national digital operations and manufacturing."
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        intro={copy.intro}
       />
-      <section className="section section-white">
-        <div className="shell experience-list">
+      <section className="section section-white composed-section">
+        <div className="shell experience-list experience-system">
           {experiences.map((experience, index) => (
             <Reveal key={experience.slug}>
               <article className="experience-entry">

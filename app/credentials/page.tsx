@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/Primitives";
 import { Reveal } from "@/components/Reveal";
-import { getCredentials } from "@/lib/cms";
+import { getCredentials, getSiteSettings } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Credentials",
@@ -12,15 +12,16 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function CredentialsPage() {
-  const credentials = await getCredentials();
+  const [credentials, settings] = await Promise.all([getCredentials(), getSiteSettings()]);
+  const copy = settings.pages.credentials;
   return (
     <>
       <PageHero
-        eyebrow="Credentials"
-        title="Continuing study across data, AI and industrial systems."
-        intro="A selected record of professional learning across analytics, artificial intelligence and supply-chain systems."
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        intro={copy.intro}
       />
-      <section className="section section-ash">
+      <section className="section section-ash composed-section">
         <div className="shell credential-grid">
           {credentials.map((credential, index) => (
             <Reveal key={`${credential.title}-${credential.issuer}`} delay={(index % 3) * 60}>

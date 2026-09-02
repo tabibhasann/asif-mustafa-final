@@ -31,7 +31,7 @@ export function PublicationArchive({ publications }: { publications: Publication
   return (
     <>
       <div className="publication-tools">
-        <div className="filter-bar compact" aria-label="Filter publications">
+        <div className="filter-bar compact" role="group" aria-label="Filter publications">
           {filters.map((item) => (
             <button
               type="button"
@@ -58,7 +58,7 @@ export function PublicationArchive({ publications }: { publications: Publication
       <p className="filter-summary" id="publication-results-summary" aria-live="polite">
         Showing {visible.length} of {publications.length} records
       </p>
-      <div className={`publication-list ${isUpdating ? "is-updating" : ""}`} aria-live="polite" aria-busy={isUpdating}>
+      <div className={`publication-list ${isUpdating ? "is-updating" : ""}`} aria-busy={isUpdating}>
         {visible.map((publication) => (
           <article className="publication-row" key={`${publication.title}-${publication.year}`}>
             <div className="publication-icon" aria-hidden="true">§</div>
@@ -75,7 +75,9 @@ export function PublicationArchive({ publications }: { publications: Publication
             </div>
             <div className="publication-year">
               <strong>{publication.year}</strong>
-              <a href={publication.href} target="_blank" rel="noreferrer" aria-label={`Open publication: ${publication.title}`}>↗</a>
+              {publication.href
+                ? <a href={publication.href} target="_blank" rel="noreferrer" aria-label={`Open publication: ${publication.title} in a new tab`}>↗</a>
+                : <span className="publication-no-link">Record</span>}
             </div>
           </article>
         ))}

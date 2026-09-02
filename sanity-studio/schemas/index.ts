@@ -6,5 +6,6 @@ import { profile } from "./profile";
 import { project } from "./project";
 import { publication } from "./publication";
 import { story } from "./story";
+import { siteSettings } from "./siteSettings";
 
-export const schemaTypes = [profile, practiceArea, experience, project, publication, story, insight, credential];
+export const schemaTypes = [siteSettings, profile, practiceArea, experience, project, publication, story, insight, credential];

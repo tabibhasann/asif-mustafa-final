@@ -31,18 +31,20 @@ export default async function ProjectDetailPage({ params }: Props) {
   return (
     <>
       <section className="detail-hero">
-        <div className="shell detail-hero-copy">
-          <Link className="text-link" href="/projects">← All projects</Link>
-          <p className="eyebrow light">Selected project · {project.category}</p>
-          <h1>{project.title}</h1>
-          <p>{project.summary}</p>
-          <ul className="tag-list dark-tags">{project.stack.map((item) => <li key={item}>{item}</li>)}</ul>
-        </div>
-        <div className="detail-hero-media">
-          <Image src={project.image} alt="" fill priority sizes="100vw" />
+        <div className="shell detail-hero-grid">
+          <div className="detail-hero-copy">
+            <Link className="text-link" href="/projects">← All projects</Link>
+            <p className="eyebrow light">Selected project · {project.category}</p>
+            <h1>{project.title}</h1>
+            <p>{project.summary}</p>
+            <ul className="tag-list dark-tags">{project.stack.map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
+          <div className="detail-hero-media">
+            <Image src={project.image} alt={project.imageAlt ?? project.title} fill priority sizes="(max-width: 800px) 100vw, 46vw" />
+          </div>
         </div>
       </section>
-      <section className="section section-white">
+      <section className="article-section section-white">
         <div className="shell article-layout">
           <aside className="article-aside">
             <p className="eyebrow">Project record</p>

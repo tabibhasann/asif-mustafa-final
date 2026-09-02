@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MonogramPortrait, PageHero, SectionHeading } from "@/components/Primitives";
 import { Reveal } from "@/components/Reveal";
-import { getProfile } from "@/lib/cms";
+import { getProfile, getSiteSettings } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "About",
@@ -13,32 +13,33 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function AboutPage() {
-  const profile = await getProfile();
+  const [profile, settings] = await Promise.all([getProfile(), getSiteSettings()]);
+  const copy = settings.pages.about;
 
   return (
     <>
       <PageHero
-        eyebrow="About"
-        title="A multidisciplinary practice grounded in engineering and evidence."
-        intro="Researcher, data scientist and technical advisor working where industrial questions meet statistical discipline, digital systems and responsible improvement."
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        intro={copy.intro}
         meta={profile.location}
       />
 
-      <section className="section section-white">
-        <div className="shell editorial-grid">
+      <section className="section section-white composed-section">
+        <div className="shell editorial-grid about-profile-grid">
           <Reveal className="editorial-image">
-            <MonogramPortrait src={profile.portrait} name={profile.name} />
+            <MonogramPortrait src={profile.portrait} name={profile.name} priority />
           </Reveal>
           <Reveal className="editorial-copy" delay={80}>
-            <p className="eyebrow">Professional profile</p>
-            <h2>Engineering context. Statistical discipline. Applied intelligence.</h2>
+            <p className="eyebrow">{settings.about.profileEyebrow}</p>
+            <h2>{settings.about.profileTitle}</h2>
             {profile.biography.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-            <div className="profile-contact-grid" aria-label="Professional contact and profile links">
-              <div><span>Email</span><a href={`mailto:${profile.email}`}>{profile.email}</a></div>
-              <div><span>Phone</span><a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a></div>
-              <div><span>LinkedIn</span><a href={profile.linkedin} target="_blank" rel="noreferrer">Professional profile ↗</a></div>
-              <div><span>Google Scholar</span><a href={profile.scholar} target="_blank" rel="noreferrer">Research archive ↗</a></div>
-              <div><span>GitHub</span><a href={profile.github} target="_blank" rel="noreferrer">Technical work ↗</a></div>
+            <div className="profile-contact-grid" role="list" aria-label="Professional contact and profile links">
+              <div role="listitem"><span>Email</span><a href={`mailto:${profile.email}`}>{profile.email}</a></div>
+              <div role="listitem"><span>Phone</span><a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a></div>
+              <div role="listitem"><span>LinkedIn</span><a href={profile.linkedin} target="_blank" rel="noreferrer">Professional profile ↗</a></div>
+              <div role="listitem"><span>Google Scholar</span><a href={profile.scholar} target="_blank" rel="noreferrer">Research archive ↗</a></div>
+              <div role="listitem"><span>GitHub</span><a href={profile.github} target="_blank" rel="noreferrer">Technical work ↗</a></div>
             </div>
             <ul className="profile-metrics-inline" aria-label="Professional profile highlights">
               {profile.metrics.map((metric) => <li key={metric.label}><strong>{metric.value}</strong><span>{metric.label}</span></li>)}
@@ -51,13 +52,13 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section className="section section-ash">
+      <section className="section section-ash composed-section">
         <div className="shell">
           <Reveal>
             <SectionHeading
-              eyebrow="Education"
-              title="A foundation built across engineering and data science."
-              text="Formal study provides the technical grounding; applied work connects it to organisations, people and operating systems."
+              eyebrow={settings.about.educationEyebrow}
+              title={settings.about.educationTitle}
+              text={settings.about.educationIntro}
             />
           </Reveal>
           <div className="education-grid">
@@ -75,23 +76,19 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section className="section section-navy">
+      <section className="section section-white composed-section principles-section">
         <div className="shell">
           <SectionHeading
-            eyebrow="Working principles"
-            title="Useful work balances possibility, need and responsibility."
-            text="The aim is not complexity for its own sake. It is a clear, traceable response to the conditions around a real decision."
-            light
+            eyebrow={settings.about.principlesEyebrow}
+            title={settings.about.principlesTitle}
+            text={settings.about.principlesIntro}
           />
-          <div className="process-grid">
-            {[
-              ["01", "Context before method", "Understand the organisation, people and constraints before choosing the technical response."],
-              ["02", "Evidence with traceability", "Keep recommendations connected to source records, assumptions and analytical choices."],
-              ["03", "Systems people can use", "Design workflows around actual responsibilities rather than idealised diagrams."],
-              ["04", "Progress with responsibility", "Consider productivity, safety and environmental impact as connected priorities."],
-            ].map(([number, title, text]) => (
-              <article className="process-step" key={number}>
-                <span>{number}</span><h3>{title}</h3><p>{text}</p>
+          <div className="principles-grid">
+            {settings.about.principles.map((principle, index) => (
+              <article className="principle-card" key={principle.title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <h3>{principle.title}</h3>
+                <p>{principle.text}</p>
               </article>
             ))}
           </div>

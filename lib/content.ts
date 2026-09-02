@@ -24,6 +24,72 @@ export type Profile = {
   education: { degree: string; institution: string; note: string }[];
 };
 
+export type IntroCopy = {
+  eyebrow: string;
+  title: string;
+  intro: string;
+};
+
+export type SiteSettings = {
+  home: {
+    heroEyebrow: string;
+    heroImage: string;
+    heroImageAlt: string;
+    heroImageLabel: string;
+    heroPrimaryCta: string;
+    heroSecondaryCta: string;
+    profileEyebrow: string;
+    profileTitle: string;
+    practiceEyebrow: string;
+    practiceTitle: string;
+    practiceIntro: string;
+    projectsEyebrow: string;
+    projectsTitle: string;
+    projectsIntro: string;
+    storiesEyebrow: string;
+    storiesTitle: string;
+    storiesIntro: string;
+    publicationsEyebrow: string;
+    publicationsTitle: string;
+    publicationsIntro: string;
+    insightsEyebrow: string;
+    insightsTitle: string;
+    insightsIntro: string;
+    contextEyebrow: string;
+    contextTitle: string;
+    contexts: string[];
+    scholarlyVenues: string[];
+  };
+  pages: {
+    about: IntroCopy;
+    practice: IntroCopy;
+    experience: IntroCopy;
+    projects: IntroCopy;
+    publications: IntroCopy;
+    stories: IntroCopy;
+    insights: IntroCopy;
+    credentials: IntroCopy;
+  };
+  about: {
+    profileEyebrow: string;
+    profileTitle: string;
+    educationEyebrow: string;
+    educationTitle: string;
+    educationIntro: string;
+    principlesEyebrow: string;
+    principlesTitle: string;
+    principlesIntro: string;
+    principles: { title: string; text: string }[];
+  };
+  footer: {
+    eyebrow: string;
+    title: string;
+    summary: string;
+    primaryCta: string;
+    secondaryCta: string;
+  };
+};
+
 export type Experience = {
   slug: string;
   organization: string;
@@ -42,6 +108,7 @@ export type Project = {
   categories: string[];
   summary: string;
   image: string;
+  imageAlt?: string;
   stack: string[];
   featured?: boolean;
   context: string;
@@ -57,7 +124,7 @@ export type Publication = {
   type: "Journal article" | "Conference paper" | "Dataset" | "Book chapter" | "Working paper";
   status: "Published" | "In press" | "Under review" | "Conference" | "Dataset";
   keywords: string[];
-  href: string;
+  href?: string;
 };
 
 export type Story = {
@@ -66,6 +133,8 @@ export type Story = {
   category: string;
   excerpt: string;
   image: string;
+  imageAlt?: string;
+  featured?: boolean;
   stack: string[];
   intro: string;
   sections: { title: string; body: string }[];
@@ -79,6 +148,7 @@ export type Insight = {
   readingTime: string;
   excerpt: string;
   image: string;
+  imageAlt?: string;
   featured?: boolean;
   body: { title: string; paragraphs: string[] }[];
 };
@@ -102,9 +172,9 @@ export const profile: Profile = {
   linkedin: "https://www.linkedin.com/in/md-asif-mustafa-426669156/",
   scholar: "https://scholar.google.com/citations?user=FjkMyr8AAAAJ&hl=en",
   github: "https://github.com/Asif-Mustafa-svg",
-  headline: "Research, analytics and intelligent systems for industry.",
+  headline: "Evidence for better industrial decisions.",
   introduction:
-    "I work across applied statistics, artificial intelligence, industrial engineering and sustainability—turning complex evidence into practical systems, clearer decisions and responsible improvement.",
+    "I combine engineering context, statistics and AI to turn complex operational questions into practical, responsible systems.",
   biography: [
     "With a B.Sc. in Leather Engineering and advanced study in Applied Statistics and Data Science, my work has grown from a focused engineering foundation into a multidisciplinary practice spanning manufacturing, data systems, research and sustainability.",
     "I have contributed across leather, textiles, footwear, food and beverage, transportation, software and cyber-physical systems through national and international work. That range has taught me to examine not only a technical problem, but also the people, institutions, processes and environmental conditions around it.",
@@ -114,6 +184,7 @@ export const profile: Profile = {
     { value: "5+", label: "Years in research" },
     { value: "01", label: "International project" },
     { value: "03", label: "National projects" },
+    { value: "B.Sc.", label: "Leather Engineering · KUET" },
   ],
   education: [
     {
@@ -129,15 +200,116 @@ export const profile: Profile = {
   ],
 };
 
-export const navigation = [
-  { href: "/about", label: "About" },
-  { href: "/practice", label: "Practice" },
-  { href: "/experience", label: "Experience" },
-  { href: "/projects", label: "Projects" },
-  { href: "/publications", label: "Publications" },
-  { href: "/stories", label: "Stories" },
-  { href: "/insights", label: "Insights" },
-];
+export const siteSettings: SiteSettings = {
+  home: {
+    heroEyebrow: "Researcher · Data Scientist · Technical Advisor",
+    heroImage: "/images/hero.jpg",
+    heroImageAlt: "An engineering researcher reviewing operational data in a modern industrial facility",
+    heroImageLabel: "Engineering context · statistical discipline · applied intelligence",
+    heroPrimaryCta: "Selected work",
+    heroSecondaryCta: "Professional practice",
+    profileEyebrow: "Professional profile",
+    profileTitle: "Engineering insight, strengthened by data.",
+    practiceEyebrow: "Research & professional practice",
+    practiceTitle: "Connected expertise for complex industrial questions.",
+    practiceIntro: "Five complementary fields, brought together around evidence, practical use and responsible improvement.",
+    projectsEyebrow: "Selected projects",
+    projectsTitle: "Applied systems, clearly framed.",
+    projectsIntro: "A compact selection of work across data engineering, intelligent search, analytics and resilient operations.",
+    storiesEyebrow: "Field stories",
+    storiesTitle: "What the technical record cannot show alone.",
+    storiesIntro: "Short cases from research settings, industrial systems and evidence-led decisions.",
+    publicationsEyebrow: "Publications",
+    publicationsTitle: "Research published and shared.",
+    publicationsIntro: "Selected scholarly work across safety, sustainability, machine learning and decision analysis.",
+    insightsEyebrow: "Insights",
+    insightsTitle: "Notes from research and practice.",
+    insightsIntro: "Concise perspectives on evidence, intelligent systems and responsible industrial decisions.",
+    contextEyebrow: "Context of work",
+    contextTitle: "Across industry, institutions and applied research.",
+    contexts: [
+      "Leather & footwear",
+      "Manufacturing",
+      "Supply chain & logistics",
+      "Energy & environment",
+      "Public-sector operations",
+      "Research institutions",
+    ],
+    scholarlyVenues: [
+      "Elsevier",
+      "Emerald",
+      "Springer Nature",
+      "IEEE",
+      "IEOM Society",
+      "UNSW Australia · CIE",
+    ],
+  },
+  pages: {
+    about: {
+      eyebrow: "About",
+      title: "Engineering, evidence and responsible systems.",
+      intro: "A multidisciplinary profile spanning industrial engineering, applied statistics, data science and technical advisory work.",
+    },
+    practice: {
+      eyebrow: "Research & professional practice",
+      title: "Five connected areas of practice.",
+      intro: "Research, analytics and engineering capabilities organised around the questions institutions and industries need to answer.",
+    },
+    experience: {
+      eyebrow: "Experience",
+      title: "Research, advisory and operational work.",
+      intro: "Selected international and national contributions across research, digital operations and manufacturing.",
+    },
+    projects: {
+      eyebrow: "Selected projects",
+      title: "Applied systems and research.",
+      intro: "A filterable record of data, AI, analytics, supply-chain and industrial systems work.",
+    },
+    publications: {
+      eyebrow: "Publications",
+      title: "Research and scholarly record.",
+      intro: "Journal articles, conference papers and datasets across industry, sustainability and intelligent systems.",
+    },
+    stories: {
+      eyebrow: "Field stories",
+      title: "Cases from research and practice.",
+      intro: "Concise accounts of the setting, decisions and lessons behind selected technical work.",
+    },
+    insights: {
+      eyebrow: "Insights",
+      title: "Ideas, methods and field perspectives.",
+      intro: "Editorial notes on evidence, intelligent systems and responsible industrial decisions.",
+    },
+    credentials: {
+      eyebrow: "Credentials",
+      title: "Professional learning and certification.",
+      intro: "Selected continuing study across data, artificial intelligence and industrial systems.",
+    },
+  },
+  about: {
+    profileEyebrow: "Professional profile",
+    profileTitle: "Engineering context. Statistical discipline. Applied intelligence.",
+    educationEyebrow: "Education",
+    educationTitle: "Engineering foundations, advanced through data science.",
+    educationIntro: "Formal study provides the technical grounding; applied work connects it to people, organisations and operating systems.",
+    principlesEyebrow: "Working principles",
+    principlesTitle: "Clear evidence. Usable systems. Responsible outcomes.",
+    principlesIntro: "A restrained set of principles for moving from a difficult question to work that can be reviewed, used and improved.",
+    principles: [
+      { title: "Start with the decision", text: "Define the question, constraints and evidence needed before selecting a technical method." },
+      { title: "Keep evidence traceable", text: "Connect recommendations to source records, assumptions and analytical choices." },
+      { title: "Design for practical use", text: "Build systems around real responsibilities, workflows and operating conditions." },
+      { title: "Measure responsible progress", text: "Treat productivity, safety and environmental impact as connected priorities." },
+    ],
+  },
+  footer: {
+    eyebrow: "Research & professional enquiries",
+    title: "Have a question worth examining?",
+    summary: "Research, data science and industrial systems practice based in Dhaka, Bangladesh.",
+    primaryCta: "Start a conversation",
+    secondaryCta: "Request CV",
+  },
+};
 
 export const practiceAreas: PracticeArea[] = [
   {

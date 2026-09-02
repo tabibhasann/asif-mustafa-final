@@ -20,8 +20,10 @@ export const profile = defineType({
     defineField({ name: "biography", title: "Biography paragraphs", type: "array", of: [{ type: "text", rows: 5 }] }),
     defineField({
       name: "metrics",
-      title: "Profile highlights",
+      title: "Homepage profile highlights",
+      description: "Up to four compact facts shown beside the Professional Profile.",
       type: "array",
+      validation: (rule) => rule.max(4),
       of: [{ type: "object", fields: [defineField({ name: "value", type: "string" }), defineField({ name: "label", type: "string" })] }],
     }),
     defineField({

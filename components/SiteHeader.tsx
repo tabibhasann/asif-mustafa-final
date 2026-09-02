@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Profile } from "@/lib/content";
 import { headerLinks, knowledgeLinks } from "@/lib/site";
 
@@ -10,6 +10,8 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [knowledgeOpen, setKnowledgeOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const knowledgeButtonRef = useRef<HTMLButtonElement>(null);
   const knowledgeActive = knowledgeLinks.some((item) => pathname.startsWith(item.href));
 
   useEffect(() => {
@@ -20,13 +22,18 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        if (open) {
+          menuButtonRef.current?.focus();
+        } else if (knowledgeOpen) {
+          knowledgeButtonRef.current?.focus();
+        }
         setOpen(false);
         setKnowledgeOpen(false);
       }
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
+  }, [knowledgeOpen, open]);
 
   return (
     <header className="site-header">
@@ -51,6 +58,7 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
           </Link>
 
           <button
+            ref={menuButtonRef}
             className="menu-toggle"
             type="button"
             aria-expanded={open}
@@ -86,6 +94,7 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
               }}
             >
               <button
+                ref={knowledgeButtonRef}
                 type="button"
                 className={knowledgeActive ? "active" : ""}
                 aria-haspopup="true"
@@ -100,7 +109,10 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
                   <Link
                     href={item.href}
                     key={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false);
+                      setKnowledgeOpen(false);
+                    }}
                     aria-current={pathname.startsWith(item.href) ? "page" : undefined}
                   >
                     {item.label}

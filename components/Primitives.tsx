@@ -65,10 +65,12 @@ export function MonogramPortrait({
   src,
   name = "Md Asif Mustafa",
   className = "",
+  priority = false,
 }: {
   src?: string;
   name?: string;
   className?: string;
+  priority?: boolean;
 }) {
   const initials = name
     .split(/\s+/)
@@ -81,7 +83,13 @@ export function MonogramPortrait({
   if (src) {
     return (
       <div className={`monogram-portrait has-image ${className}`.trim()}>
-        <Image src={src} alt={`Professional portrait of ${name}`} fill sizes="(max-width: 900px) 100vw, 42vw" />
+        <Image
+          src={src}
+          alt={`Professional portrait of ${name}`}
+          fill
+          priority={priority}
+          sizes="(max-width: 900px) 100vw, 42vw"
+        />
         <div><strong>{name}</strong><small>Professional profile</small></div>
       </div>
     );

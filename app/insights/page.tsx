@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { EditorialCard } from "@/components/EditorialCard";
 import { PageHero } from "@/components/Primitives";
-import { Reveal } from "@/components/Reveal";
-import { getInsights } from "@/lib/cms";
+import { getInsights, getSiteSettings } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Insights",
@@ -14,21 +14,22 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function InsightsPage() {
-  const insights = await getInsights();
+  const [insights, settings] = await Promise.all([getInsights(), getSiteSettings()]);
+  const copy = settings.pages.insights;
   const featured = insights.find((insight) => insight.featured) ?? insights[0];
   const remaining = insights.filter((insight) => insight.slug !== featured?.slug);
   return (
     <>
       <PageHero
-        eyebrow="Insights"
-        title="Ideas, methods and field perspectives."
-        intro="A publication-ready editorial space for concise thinking on evidence, intelligent systems, industrial practice and responsible improvement."
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        intro={copy.intro}
       />
       {featured && (
-        <section className="section section-white">
+        <section className="section section-white composed-section insight-lead-section">
           <div className="shell featured-insight">
             <div className="featured-insight-media">
-              <Image src={featured.image} alt="" fill priority sizes="(max-width: 800px) 100vw, 54vw" />
+              <Image src={featured.image} alt={featured.imageAlt ?? featured.title} fill priority sizes="(max-width: 800px) 100vw, 45vw" />
             </div>
             <div className="featured-insight-copy">
               <p className="eyebrow">Featured insight · {featured.category}</p>
@@ -40,22 +41,20 @@ export default async function InsightsPage() {
           </div>
         </section>
       )}
-      <section className="section section-ash">
-        <div className="shell insight-grid">
-          {remaining.map((insight, index) => (
-            <Reveal key={insight.slug} delay={index * 70}>
-              <article className="insight-card">
-                <Link className="insight-image" href={`/insights/${insight.slug}`} aria-label={`Read insight: ${insight.title}`}>
-                  <Image src={insight.image} alt="" fill sizes="(max-width: 760px) 100vw, 33vw" />
-                </Link>
-                <div>
-                  <p className="card-kicker">{insight.category}</p>
-                  <h2><Link href={`/insights/${insight.slug}`}>{insight.title}</Link></h2>
-                  <p>{insight.excerpt}</p>
-                  <span>{insight.date} · {insight.readingTime}</span>
-                </div>
-              </article>
-            </Reveal>
+      <section className="section section-ash composed-section">
+        <div className="shell editorial-card-grid insight-archive-grid">
+          {remaining.map((insight) => (
+            <EditorialCard
+              key={insight.slug}
+              href={`/insights/${insight.slug}`}
+              image={insight.image}
+              imageAlt={insight.imageAlt ?? insight.title}
+              eyebrow={insight.category}
+              title={insight.title}
+              summary={insight.excerpt}
+              meta={`${insight.date} · ${insight.readingTime}`}
+              headingLevel={2}
+            />
           ))}
         </div>
       </section>

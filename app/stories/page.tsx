@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import { EditorialCard } from "@/components/EditorialCard";
 import { PageHero } from "@/components/Primitives";
-import { Reveal } from "@/components/Reveal";
-import { getStories } from "@/lib/cms";
+import { getSiteSettings, getStories } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Stories",
@@ -14,34 +12,30 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function StoriesPage() {
-  const stories = await getStories();
+  const [stories, settings] = await Promise.all([getStories(), getSiteSettings()]);
+  const copy = settings.pages.stories;
   return (
     <>
       <PageHero
-        eyebrow="Stories"
-        title="The work behind the technical record."
-        intro="Editorial accounts of field research, systems work and industrial decision-making—focused on setting, method and what the process teaches."
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        intro={copy.intro}
       />
-      <section className="section section-white">
-        <div className="shell story-list">
+      <section className="section section-white composed-section">
+        <div className="shell editorial-card-grid story-archive-grid">
           {stories.map((story, index) => (
-            <Reveal key={story.slug}>
-              <article className="story-row">
-                <Link className="story-row-image" href={`/stories/${story.slug}`} aria-label={`Read story: ${story.title}`}>
-                  <Image src={story.image} alt="" fill sizes="(max-width: 760px) 100vw, 40vw" />
-                </Link>
-                <div>
-                  <p className="card-kicker">{story.category}</p>
-                  <h2><Link href={`/stories/${story.slug}`}>{story.title}</Link></h2>
-                  <p>{story.excerpt}</p>
-                  <ul className="tag-list">
-                    {story.stack.map((item) => <li key={item}>{item}</li>)}
-                  </ul>
-                  <Link className="text-link" href={`/stories/${story.slug}`}>Read the story <span aria-hidden="true">→</span></Link>
-                </div>
-                <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-              </article>
-            </Reveal>
+            <EditorialCard
+              key={story.slug}
+              href={`/stories/${story.slug}`}
+              image={story.image}
+              imageAlt={story.imageAlt ?? story.title}
+              eyebrow={story.category}
+              title={story.title}
+              summary={story.excerpt}
+              tags={story.stack}
+              headingLevel={2}
+              priority={index === 0}
+            />
           ))}
         </div>
       </section>

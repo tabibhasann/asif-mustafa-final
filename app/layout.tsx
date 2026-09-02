@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { getPracticeAreas, getProfile } from "@/lib/cms";
+import { getPracticeAreas, getProfile, getSiteSettings } from "@/lib/cms";
 import "./globals.css";
+import "./composed.css";
 
 const sans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | Md Asif Mustafa",
   },
   description:
-    "Professional profile of Md Asif Mustafa, working across applied statistics, artificial intelligence, industrial engineering and sustainability.",
+    "Evidence for better industrial decisions through engineering, statistics and responsible AI.",
   authors: [{ name: "Md Asif Mustafa" }],
   creator: "Md Asif Mustafa",
   publisher: "Md Asif Mustafa",
@@ -34,14 +35,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Md Asif Mustafa | Research, Data Science & Industrial Systems",
     description:
-      "Evidence-led research, analytics and intelligent systems for industry.",
+      "Evidence for better industrial decisions through engineering, statistics and responsible AI.",
     type: "website",
     images: [{ url: "/images/hero.jpg", width: 1920, height: 1080, alt: "Research and industrial analytics" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Md Asif Mustafa | Research, Data Science & Industrial Systems",
-    description: "Evidence-led research, analytics and intelligent systems for industry.",
+    description: "Evidence for better industrial decisions through engineering, statistics and responsible AI.",
     images: ["/images/hero.jpg"],
   },
 };
@@ -51,7 +52,7 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [profile, practiceAreas] = await Promise.all([getProfile(), getPracticeAreas()]);
+  const [profile, practiceAreas, settings] = await Promise.all([getProfile(), getPracticeAreas(), getSiteSettings()]);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -78,7 +79,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body>
         <SiteHeader profile={profile} />
         <main id="main-content">{children}</main>
-        <SiteFooter profile={profile} practiceAreas={practiceAreas} />
+        <SiteFooter profile={profile} settings={settings.footer} />
         <script
           id="person-structured-data"
           type="application/ld+json"

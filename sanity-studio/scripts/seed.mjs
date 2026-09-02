@@ -7,6 +7,7 @@ import {
   profile,
   projects,
   publications,
+  siteSettings,
   stories,
 } from "../../lib/content.ts";
 
@@ -14,8 +15,27 @@ const client = getCliClient({ apiVersion: "2026-09-01" });
 
 const slug = (current) => ({ _type: "slug", current });
 const keyedObject = (value, key) => ({ ...value, _key: key, _type: "object" });
+const object = (value) => ({ ...value, _type: "object" });
+
+const { heroImage: _fallbackHeroImage, ...editableHome } = siteSettings.home;
+const editablePages = Object.fromEntries(
+  Object.entries(siteSettings.pages).map(([key, value]) => [key, object(value)]),
+);
 
 const documents = [
+  {
+    _id: "siteSettings",
+    _type: "siteSettings",
+    home: object(editableHome),
+    pages: object(editablePages),
+    about: object({
+      ...siteSettings.about,
+      principles: siteSettings.about.principles.map((item, index) =>
+        keyedObject(item, `principle-${index + 1}`),
+      ),
+    }),
+    footer: object(siteSettings.footer),
+  },
   {
     ...profile,
     _id: "profile",
@@ -42,6 +62,7 @@ const documents = [
     _type: "project",
     slug: slug(current),
     fallbackImage: image,
+    imageAlt: item.imageAlt ?? item.title,
     order: index + 1,
   })),
   ...publications.map((item, index) => ({
@@ -55,6 +76,8 @@ const documents = [
     _type: "story",
     slug: slug(current),
     fallbackImage: image,
+    imageAlt: item.imageAlt ?? item.title,
+    featured: item.featured ?? index < 4,
     order: index + 1,
     sections: sections.map((section, sectionIndex) =>
       keyedObject(section, `section-${sectionIndex + 1}`),
@@ -67,6 +90,7 @@ const documents = [
     slug: slug(current),
     dateLabel: date,
     fallbackImage: image,
+    imageAlt: item.imageAlt ?? item.title,
     body: body.map((section, sectionIndex) =>
       keyedObject(section, `section-${sectionIndex + 1}`),
     ),

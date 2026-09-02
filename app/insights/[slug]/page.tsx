@@ -31,18 +31,20 @@ export default async function InsightDetailPage({ params }: Props) {
   return (
     <>
       <section className="detail-hero">
-        <div className="shell detail-hero-copy">
-          <Link className="text-link" href="/insights">← All insights</Link>
-          <p className="eyebrow light">{insight.category}</p>
-          <h1>{insight.title}</h1>
-          <p>{insight.excerpt}</p>
-          <span>{insight.date} · {insight.readingTime}</span>
-        </div>
-        <div className="detail-hero-media">
-          <Image src={insight.image} alt="" fill priority sizes="100vw" />
+        <div className="shell detail-hero-grid">
+          <div className="detail-hero-copy">
+            <Link className="text-link" href="/insights">← All insights</Link>
+            <p className="eyebrow light">{insight.category}</p>
+            <h1>{insight.title}</h1>
+            <p>{insight.excerpt}</p>
+            <span>{insight.date} · {insight.readingTime}</span>
+          </div>
+          <div className="detail-hero-media">
+            <Image src={insight.image} alt={insight.imageAlt ?? insight.title} fill priority sizes="(max-width: 800px) 100vw, 46vw" />
+          </div>
         </div>
       </section>
-      <section className="section section-white">
+      <section className="article-section section-white">
         <div className="shell article-layout">
           <aside className="article-aside">
             <p className="eyebrow">Editorial note</p>

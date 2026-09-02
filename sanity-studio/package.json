@@ -6,7 +6,8 @@
     "dev": "sanity dev",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "seed": "sanity exec scripts/seed.mjs --with-user-token"
+    "seed": "sanity exec scripts/seed.mjs --with-user-token",
+    "upgrade:composed": "sanity exec scripts/upgrade-composed.mjs --with-user-token"
   },
   "dependencies": {
     "react": "^19.0.0",

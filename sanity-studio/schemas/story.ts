@@ -8,10 +8,12 @@ export const story = defineType({
     defineField({ name: "title", type: "string", validation: (rule) => rule.required() }),
     defineField({ name: "slug", type: "slug", options: { source: "title", maxLength: 96 }, validation: (rule) => rule.required() }),
     defineField({ name: "category", type: "string" }),
-    defineField({ name: "excerpt", type: "text", rows: 3 }),
+    defineField({ name: "excerpt", type: "text", rows: 3, validation: (rule) => rule.required() }),
     defineField({ name: "image", type: "image", options: { hotspot: true } }),
+    defineField({ name: "imageAlt", title: "Image description", type: "string", description: "Describe the image for visitors using screen readers." }),
     defineField({ name: "fallbackImage", title: "Fallback image path", type: "string", description: "Example: /images/fieldwork.jpg" }),
     defineField({ name: "stack", title: "Methods and context", type: "array", of: [{ type: "string" }] }),
+    defineField({ name: "featured", title: "Feature on homepage", type: "boolean", initialValue: false }),
     defineField({ name: "intro", title: "Opening paragraph", type: "text", rows: 4 }),
     defineField({
       name: "sections",

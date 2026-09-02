@@ -8,6 +8,7 @@ import {
   profile as fallbackProfile,
   projects as fallbackProjects,
   publications as fallbackPublications,
+  siteSettings as fallbackSiteSettings,
   stories as fallbackStories,
   type Credential,
   type Experience,
@@ -16,6 +17,7 @@ import {
   type Profile,
   type Project,
   type Publication,
+  type SiteSettings,
   type Story,
 } from "./content";
 
@@ -28,24 +30,14 @@ const client =
     ? createClient({ projectId, dataset, apiVersion, useCdn: true })
     : null;
 
-async function collectionOrFallback<T, K extends keyof T = keyof T>(
+async function collectionOrFallback<T>(
   query: string,
   fallback: T[],
-  key: K,
 ): Promise<T[]> {
   if (!client) return fallback;
   try {
     const result = await client.fetch<T[]>(query, {}, { next: { revalidate: 60 } });
-    if (!result?.length) return fallback;
-
-    const publishedByKey = new Map(result.map((item) => [String(item[key]), item]));
-    const fallbackKeys = new Set(fallback.map((item) => String(item[key])));
-    const reconciled = fallback.map((item) => {
-      const published = publishedByKey.get(String(item[key]));
-      return published ? { ...item, ...published } : item;
-    });
-
-    return [...reconciled, ...result.filter((item) => !fallbackKeys.has(String(item[key])))];
+    return Array.isArray(result) ? result : fallback;
   } catch {
     return fallback;
   }
@@ -62,39 +54,96 @@ export const getProfile = cache(async (): Promise<Profile> => {
       {},
       { next: { revalidate: 60 } },
     );
-    return result?.name ? { ...fallbackProfile, ...result } : fallbackProfile;
+    if (!result?.name) return fallbackProfile;
+    const definedResult = Object.fromEntries(
+      Object.entries(result).filter(([, value]) => value !== null && value !== undefined),
+    ) as Partial<Profile>;
+    return {
+      ...fallbackProfile,
+      ...definedResult,
+      biography: Array.isArray(result.biography) ? result.biography : fallbackProfile.biography,
+      metrics: Array.isArray(result.metrics) ? result.metrics : fallbackProfile.metrics,
+      education: Array.isArray(result.education) ? result.education : fallbackProfile.education,
+    };
   } catch {
     return fallbackProfile;
+  }
+});
+
+export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
+  if (!client) return fallbackSiteSettings;
+  try {
+    const result = await client.fetch<Partial<SiteSettings>>(
+      `*[_type == "siteSettings" && _id == "siteSettings"][0]{
+        home{..., "heroImage": heroImage.asset->url},
+        pages{about, practice, experience, projects, publications, stories, insights, credentials},
+        about,
+        footer
+      }`,
+      {},
+      { next: { revalidate: 60 } },
+    );
+    if (!result) return fallbackSiteSettings;
+    return {
+      home: {
+        ...fallbackSiteSettings.home,
+        ...result.home,
+        heroImage: result.home?.heroImage || fallbackSiteSettings.home.heroImage,
+        contexts: Array.isArray(result.home?.contexts) ? result.home.contexts : fallbackSiteSettings.home.contexts,
+        scholarlyVenues: Array.isArray(result.home?.scholarlyVenues)
+          ? result.home.scholarlyVenues
+          : fallbackSiteSettings.home.scholarlyVenues,
+      },
+      pages: {
+        about: { ...fallbackSiteSettings.pages.about, ...result.pages?.about },
+        practice: { ...fallbackSiteSettings.pages.practice, ...result.pages?.practice },
+        experience: { ...fallbackSiteSettings.pages.experience, ...result.pages?.experience },
+        projects: { ...fallbackSiteSettings.pages.projects, ...result.pages?.projects },
+        publications: { ...fallbackSiteSettings.pages.publications, ...result.pages?.publications },
+        stories: { ...fallbackSiteSettings.pages.stories, ...result.pages?.stories },
+        insights: { ...fallbackSiteSettings.pages.insights, ...result.pages?.insights },
+        credentials: { ...fallbackSiteSettings.pages.credentials, ...result.pages?.credentials },
+      },
+      about: {
+        ...fallbackSiteSettings.about,
+        ...result.about,
+        principles: Array.isArray(result.about?.principles)
+          ? result.about.principles
+          : fallbackSiteSettings.about.principles,
+      },
+      footer: { ...fallbackSiteSettings.footer, ...result.footer },
+    };
+  } catch {
+    return fallbackSiteSettings;
   }
 });
 
 export const getPracticeAreas = cache(() =>
   collectionOrFallback<PracticeArea>(
     `*[_type == "practiceArea"]|order(number asc){
-      number, "slug": slug.current, title, summary, capabilities
+      number, "slug": slug.current, title, summary, "capabilities": coalesce(capabilities, [])
     }`,
     fallbackPracticeAreas,
-    "slug",
   ));
 
 export const getExperiences = cache(() =>
   collectionOrFallback<Experience>(
     `*[_type == "experience"]|order(order asc){
-      "slug": slug.current, organization, role, period, engagement, projectValue, description, impacts
+      "slug": slug.current, organization, role, period, engagement, projectValue, description,
+      "impacts": coalesce(impacts, [])
     }`,
     fallbackExperiences,
-    "slug",
   ));
 
 export const getProjects = cache(() =>
   collectionOrFallback<Project>(
     `*[_type == "project"]|order(featured desc, order asc){
-      "slug": slug.current, title, category, categories, summary,
-      "image": coalesce(image.asset->url, fallbackImage), stack, featured,
-      context, challenge, approach, outcome
+      "slug": slug.current, title, category, "categories": coalesce(categories, []), summary,
+      "image": coalesce(image.asset->url, fallbackImage, "/images/data-systems.jpg"), imageAlt,
+      "stack": coalesce(stack, []), featured,
+      context, challenge, "approach": coalesce(approach, []), outcome
     }`,
     fallbackProjects,
-    "slug",
   ));
 
 export const getProject = cache(async (slug: string) => {
@@ -105,20 +154,19 @@ export const getProject = cache(async (slug: string) => {
 export const getPublications = cache(() =>
   collectionOrFallback<Publication>(
     `*[_type == "publication"]|order(year desc, title asc){
-      title, venue, year, type, status, keywords, href
+      title, venue, year, type, status, "keywords": coalesce(keywords, []), href
     }`,
     fallbackPublications,
-    "title",
   ));
 
 export const getStories = cache(() =>
   collectionOrFallback<Story>(
     `*[_type == "story"]|order(order asc){
       "slug": slug.current, title, category, excerpt,
-      "image": coalesce(image.asset->url, fallbackImage), stack, intro, sections
+      "image": coalesce(image.asset->url, fallbackImage, "/images/fieldwork.jpg"), imageAlt, featured,
+      "stack": coalesce(stack, []), intro, "sections": coalesce(sections, [])
     }`,
     fallbackStories,
-    "slug",
   ));
 
 export const getStory = cache(async (slug: string) => {
@@ -131,11 +179,11 @@ export const getInsights = cache(() =>
     `*[_type == "insight"]|order(featured desc, publishedAt desc){
       "slug": slug.current, title, category,
       "date": coalesce(dateLabel, string::split(publishedAt, "T")[0]),
-      readingTime, excerpt, "image": coalesce(image.asset->url, fallbackImage),
-      featured, body
+      readingTime, excerpt,
+      "image": coalesce(image.asset->url, fallbackImage, "/images/data-systems.jpg"), imageAlt,
+      featured, "body": coalesce(body, [])
     }`,
     fallbackInsights,
-    "slug",
   ));
 
 export const getInsight = cache(async (slug: string) => {
@@ -147,5 +195,4 @@ export const getCredentials = cache(() =>
   collectionOrFallback<Credential>(
     `*[_type == "credential"]|order(order asc){title, issuer, area, year, credentialId, href}`,
     fallbackCredentials,
-    "title",
   ));
