@@ -41,6 +41,15 @@ npm run deploy
 
 The editor has dedicated content types for Profile, Practice Areas, Experience, Projects, Publications, Stories, Insights and Credentials. Images, links, copy, order and featured states can all be changed without editing the website code.
 
+### Give the owner editing access
+
+1. Open [Sanity project members](https://www.sanity.io/manage/project/gvgzuc20/members) while signed in as the project Administrator.
+2. Invite the owner's email address.
+3. On a Sanity Free plan, assign **Administrator** because Free provides only Administrator and Viewer roles. Viewer cannot edit. On Growth or Enterprise, assign **Editor** instead so the owner can edit and publish without infrastructure access.
+4. Send the owner [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio). They must sign in using the same method used to accept the invitation.
+
+The owner can edit and publish text, profile details, social links, the optional YouTube link, metrics, education, experience, projects, publications, field stories, rich articles, credentials, all section labels, images with crop controls, the social preview and a PDF CV. Published changes appear on the public site after its cache refresh, normally within about 60 seconds. Never send the owner a Sanity API token.
+
 For a new dataset, populate the editor once with the reviewed starter content while signed in as a Sanity Administrator:
 
 ```bash
@@ -50,13 +59,18 @@ npm run seed
 
 The seed is idempotent: it creates only missing starter documents and does not overwrite later edits made in the Studio.
 
-Copy `.env.example` to `.env.local` if the public deployment needs different Sanity settings. Vercel should expose `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` and `NEXT_PUBLIC_SANITY_API_VERSION` in Production, Preview and Development.
+Copy `.env.example` to `.env.local` if the public deployment needs different Sanity settings. Vercel should expose `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` and `NEXT_PUBLIC_SANITY_API_VERSION` in Production, Preview and Development. When a custom domain becomes the canonical address, set `SITE_URL` to that full `https://` origin so canonical links, the sitemap and structured data use it.
 
 ## Verification
 
 ```bash
 npm run typecheck
 npm run build
+npm audit --omit=dev
+
+cd sanity-studio
+npm run build
+npm audit --omit=dev
 ```
 
-The final project includes static metadata, a sitemap, robots rules, responsive layouts and reduced-motion support.
+The final project includes route-specific metadata, social previews, JSON-LD, a sitemap, robots rules, `llms.txt`, responsive layouts and reduced-motion support.

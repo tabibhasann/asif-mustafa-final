@@ -4,39 +4,39 @@ import Link from "next/link";
 export function EditorialCard({
   href,
   image,
-  imageAlt,
   eyebrow,
   title,
   summary,
   meta,
   tags = [],
+  priority = false,
   headingLevel = 3,
   className = "",
-  priority = false,
 }: {
   href: string;
   image: string;
-  imageAlt: string;
   eyebrow: string;
   title: string;
   summary: string;
   meta?: string;
   tags?: string[];
+  priority?: boolean;
   headingLevel?: 2 | 3;
   className?: string;
-  priority?: boolean;
 }) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
 
   return (
     <article className={`editorial-card ${className}`.trim()}>
-      <Link className="editorial-card-link" href={href}>
+      <Link className="editorial-card-link" href={href} prefetch={false}>
         <div className="editorial-card-media">
           <Image
             src={image}
-            alt={imageAlt}
+            alt=""
             fill
-            priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
+            quality={60}
             sizes="(max-width: 640px) 34vw, (max-width: 1024px) 50vw, 25vw"
           />
         </div>

@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import { EditorialCard } from "@/components/EditorialCard";
 import { PageHero } from "@/components/Primitives";
 import { getSiteSettings, getStories } from "@/lib/cms";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Stories",
   description: "Field stories connecting research, technical systems and industrial practice.",
-  alternates: { canonical: "/stories" },
-};
+  path: "/stories",
+});
 
 export const revalidate = 60;
 
@@ -28,13 +28,12 @@ export default async function StoriesPage() {
               key={story.slug}
               href={`/stories/${story.slug}`}
               image={story.image}
-              imageAlt={story.imageAlt ?? story.title}
               eyebrow={story.category}
               title={story.title}
               summary={story.excerpt}
               tags={story.stack}
-              headingLevel={2}
               priority={index === 0}
+              headingLevel={2}
             />
           ))}
         </div>

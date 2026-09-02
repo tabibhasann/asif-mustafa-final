@@ -41,7 +41,7 @@ export default async function Home() {
   const featuredStories = [...new Map(prioritisedStories.map((story) => [story.slug, story])).values()].slice(0, 4);
 
   return (
-    <>
+    <div className="home-page">
       <section className="home-hero">
         <div className="shell home-hero-grid">
           <div className="hero-copy">
@@ -49,10 +49,10 @@ export default async function Home() {
             <h1>{profile.headline}</h1>
             <p className="hero-intro">{profile.introduction}</p>
             <div className="button-row">
-              <Link className="button button-gold" href="/projects">
+              <Link className="button button-gold" href="/projects" prefetch={false}>
                 {settings.home.heroPrimaryCta} <span aria-hidden="true">→</span>
               </Link>
-              <Link className="button button-ghost-light" href="/practice">
+              <Link className="button button-ghost-light" href="/practice" prefetch={false}>
                 {settings.home.heroSecondaryCta}
               </Link>
             </div>
@@ -62,7 +62,9 @@ export default async function Home() {
               src={settings.home.heroImage}
               alt={settings.home.heroImageAlt}
               fill
-              priority
+              loading="eager"
+              fetchPriority="high"
+              quality={70}
               sizes="(max-width: 900px) 100vw, 55vw"
             />
             <div className="hero-media-label">
@@ -75,14 +77,14 @@ export default async function Home() {
 
       <section className="section section-white home-profile">
         <div className="shell home-profile-grid">
-          <MonogramPortrait src={profile.portrait} name={profile.name} className="home-profile-portrait" />
+          <MonogramPortrait src={profile.portrait} name={profile.name} alt={profile.portraitAlt} className="home-profile-portrait" />
           <div className="home-profile-copy">
             <p className="eyebrow">{settings.home.profileEyebrow}</p>
             <h2>{settings.home.profileTitle}</h2>
             <p>{profile.biography[0]}</p>
             <div className="button-row">
-              <Link className="text-link" href="/about">Full profile <span aria-hidden="true">→</span></Link>
-              <Link className="text-link" href="/experience">Experience <span aria-hidden="true">→</span></Link>
+              <Link className="text-link" href="/about" prefetch={false}>Full profile <span aria-hidden="true">→</span></Link>
+              <Link className="text-link" href="/experience" prefetch={false}>Experience <span aria-hidden="true">→</span></Link>
             </div>
           </div>
           <div className="profile-facts" role="list" aria-label="Professional profile highlights">
@@ -107,7 +109,7 @@ export default async function Home() {
           <div className="practice-card-grid">
             {practiceAreas.map((area) => (
               <article className="practice-card" key={area.slug}>
-                <Link href={`/practice#${area.slug}`}>
+                <Link href={`/practice#${area.slug}`} prefetch={false}>
                   <span className="practice-number">{area.number}</span>
                   <h3>{area.title}</h3>
                   <p>{area.summary}</p>
@@ -136,7 +138,6 @@ export default async function Home() {
                 key={project.slug}
                 href={`/projects/${project.slug}`}
                 image={project.image}
-                imageAlt={project.imageAlt ?? project.title}
                 eyebrow={project.category}
                 title={project.title}
                 summary={project.summary}
@@ -161,7 +162,6 @@ export default async function Home() {
                 key={story.slug}
                 href={`/stories/${story.slug}`}
                 image={story.image}
-                imageAlt={story.imageAlt ?? story.title}
                 eyebrow={story.category}
                 title={story.title}
                 summary={story.excerpt}
@@ -191,12 +191,12 @@ export default async function Home() {
                 </div>
                 {publication.href
                   ? <a href={publication.href} target="_blank" rel="noreferrer" aria-label={`Open ${publication.title} in a new tab`}>↗</a>
-                  : <span aria-hidden="true">—</span>}
+                  : null}
               </article>
             ))}
           </div>
           <div className="venue-inline" role="group" aria-label="Selected research and scholarly venues">
-            <span>Selected venues</span>
+            <span>{settings.home.venuesLabel}</span>
             {settings.home.scholarlyVenues.map((venue) => <strong key={venue}>{venue}</strong>)}
           </div>
         </div>
@@ -216,7 +216,6 @@ export default async function Home() {
                 key={insight.slug}
                 href={`/insights/${insight.slug}`}
                 image={insight.image}
-                imageAlt={insight.imageAlt ?? insight.title}
                 eyebrow={insight.category}
                 title={insight.title}
                 summary={insight.excerpt}
@@ -238,6 +237,6 @@ export default async function Home() {
           </ul>
         </div>
       </section>
-    </>
+    </div>
   );
 }

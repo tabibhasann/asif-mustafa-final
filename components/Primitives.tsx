@@ -24,7 +24,7 @@ export function SectionHeading({
       {(text || action) && (
         <div className="section-heading-aside">
           {text && <p>{text}</p>}
-          {action && <Link className="text-link" href={action.href}>{action.label} <span aria-hidden="true">→</span></Link>}
+          {action && <Link className="text-link" href={action.href} prefetch={false}>{action.label} <span aria-hidden="true">→</span></Link>}
         </div>
       )}
     </div>
@@ -64,11 +64,13 @@ export function PageHero({
 export function MonogramPortrait({
   src,
   name = "Md Asif Mustafa",
+  alt,
   className = "",
   priority = false,
 }: {
   src?: string;
   name?: string;
+  alt?: string;
   className?: string;
   priority?: boolean;
 }) {
@@ -85,9 +87,10 @@ export function MonogramPortrait({
       <div className={`monogram-portrait has-image ${className}`.trim()}>
         <Image
           src={src}
-          alt={`Professional portrait of ${name}`}
+          alt={alt || `Professional portrait of ${name}`}
           fill
-          priority={priority}
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
           sizes="(max-width: 900px) 100vw, 42vw"
         />
         <div><strong>{name}</strong><small>Professional profile</small></div>

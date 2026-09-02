@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import { PageHero } from "@/components/Primitives";
 import { PublicationArchive } from "@/components/PublicationArchive";
 import { getProfile, getPublications, getSiteSettings } from "@/lib/cms";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Publications",
   description: "Research publications, conference papers and datasets by Md Asif Mustafa.",
-  alternates: { canonical: "/publications" },
-};
+  path: "/publications",
+});
 
 export const revalidate = 60;
 

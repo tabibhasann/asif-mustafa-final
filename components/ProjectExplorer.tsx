@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { EditorialCard } from "@/components/EditorialCard";
-import type { Project } from "@/lib/content";
+import type { ProjectPreview } from "@/lib/content";
 import { projectFilterCategories } from "@/lib/site";
-
-export type ProjectPreview = Pick<Project, "slug" | "title" | "category" | "categories" | "summary" | "image" | "imageAlt" | "stack">;
 
 export function ProjectExplorer({ projects }: { projects: ProjectPreview[] }) {
   const [category, setCategory] = useState("All");
@@ -44,13 +42,12 @@ export function ProjectExplorer({ projects }: { projects: ProjectPreview[] }) {
             key={project.slug}
             href={`/projects/${project.slug}`}
             image={project.image}
-            imageAlt={project.imageAlt ?? project.title}
             eyebrow={project.category}
             title={project.title}
             summary={project.summary}
             tags={project.stack}
-            headingLevel={2}
             priority={index === 0}
+            headingLevel={2}
           />
         ))}
       </div>

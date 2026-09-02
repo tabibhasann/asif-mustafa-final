@@ -24,11 +24,24 @@ export const siteSettings = defineType({
   type: "document",
   groups: [
     { name: "home", title: "Homepage", default: true },
+    { name: "seo", title: "Search & sharing" },
     { name: "pages", title: "Page introductions" },
     { name: "about", title: "About page" },
     { name: "footer", title: "Footer" },
   ],
   fields: [
+    defineField({
+      name: "seo",
+      title: "Search and social sharing",
+      type: "object",
+      group: "seo",
+      fields: [
+        defineField({ name: "title", title: "Default search title", type: "string", validation: (rule) => rule.required().max(65) }),
+        textField("description", "Default search description", 3),
+        defineField({ name: "socialImage", title: "Social sharing image", type: "image" }),
+        defineField({ name: "socialImageAlt", title: "Social image description", type: "string" }),
+      ],
+    }),
     defineField({
       name: "home",
       title: "Homepage sections",
@@ -61,6 +74,7 @@ export const siteSettings = defineType({
         defineField({ name: "contextEyebrow", title: "Context label", type: "string" }),
         defineField({ name: "contextTitle", title: "Context heading", type: "string" }),
         defineField({ name: "contexts", title: "Contexts of work", type: "array", of: [{ type: "string" }], validation: (rule) => rule.max(8) }),
+        defineField({ name: "venuesLabel", title: "Scholarly venues label", type: "string" }),
         defineField({ name: "scholarlyVenues", title: "Selected scholarly venues", type: "array", of: [{ type: "string" }], validation: (rule) => rule.max(8) }),
       ],
     }),

@@ -16,21 +16,30 @@ export type Profile = {
   linkedin: string;
   scholar: string;
   github: string;
+  youtube?: string;
   headline: string;
   introduction: string;
   portrait?: string;
+  portraitAlt?: string;
+  cvUrl?: string;
   biography: string[];
   metrics: { value: string; label: string }[];
   education: { degree: string; institution: string; note: string }[];
 };
 
-export type IntroCopy = {
+type IntroCopy = {
   eyebrow: string;
   title: string;
   intro: string;
 };
 
 export type SiteSettings = {
+  seo: {
+    title: string;
+    description: string;
+    socialImage: string;
+    socialImageAlt: string;
+  };
   home: {
     heroEyebrow: string;
     heroImage: string;
@@ -58,6 +67,7 @@ export type SiteSettings = {
     contextEyebrow: string;
     contextTitle: string;
     contexts: string[];
+    venuesLabel: string;
     scholarlyVenues: string[];
   };
   pages: {
@@ -115,7 +125,13 @@ export type Project = {
   challenge: string;
   approach: string[];
   outcome: string;
+  updatedAt?: string;
 };
+
+export type ProjectPreview = Pick<
+  Project,
+  "slug" | "title" | "category" | "categories" | "summary" | "image" | "stack" | "featured" | "updatedAt"
+>;
 
 export type Publication = {
   title: string;
@@ -138,20 +154,34 @@ export type Story = {
   stack: string[];
   intro: string;
   sections: { title: string; body: string }[];
+  updatedAt?: string;
 };
+
+export type StoryPreview = Pick<
+  Story,
+  "slug" | "title" | "category" | "excerpt" | "image" | "featured" | "stack" | "updatedAt"
+>;
 
 export type Insight = {
   slug: string;
   title: string;
   category: string;
   date: string;
+  publishedAt?: string;
   readingTime: string;
   excerpt: string;
   image: string;
   imageAlt?: string;
   featured?: boolean;
   body: { title: string; paragraphs: string[] }[];
+  content?: import("@portabletext/types").PortableTextBlock[];
+  updatedAt?: string;
 };
+
+export type InsightPreview = Pick<
+  Insight,
+  "slug" | "title" | "category" | "date" | "publishedAt" | "readingTime" | "excerpt" | "image" | "imageAlt" | "featured" | "updatedAt"
+>;
 
 export type Credential = {
   title: string;
@@ -174,7 +204,7 @@ export const profile: Profile = {
   github: "https://github.com/Asif-Mustafa-svg",
   headline: "Evidence for better industrial decisions.",
   introduction:
-    "I combine engineering context, statistics and AI to turn complex operational questions into practical, responsible systems.",
+    "I use engineering knowledge, statistics and AI to investigate industrial problems and build tools that support practical decisions.",
   biography: [
     "With a B.Sc. in Leather Engineering and advanced study in Applied Statistics and Data Science, my work has grown from a focused engineering foundation into a multidisciplinary practice spanning manufacturing, data systems, research and sustainability.",
     "I have contributed across leather, textiles, footwear, food and beverage, transportation, software and cyber-physical systems through national and international work. That range has taught me to examine not only a technical problem, but also the people, institutions, processes and environmental conditions around it.",
@@ -201,32 +231,38 @@ export const profile: Profile = {
 };
 
 export const siteSettings: SiteSettings = {
+  seo: {
+    title: "Md Asif Mustafa | Research, Data Science and Industrial Systems",
+    description: "Md Asif Mustafa applies engineering knowledge, statistics and AI to practical questions in research and industry.",
+    socialImage: "/images/og-asif-mustafa.png",
+    socialImageAlt: "Md Asif Mustafa · Research · Data Science · Industrial Systems",
+  },
   home: {
     heroEyebrow: "Researcher · Data Scientist · Technical Advisor",
     heroImage: "/images/hero.jpg",
     heroImageAlt: "An engineering researcher reviewing operational data in a modern industrial facility",
-    heroImageLabel: "Engineering context · statistical discipline · applied intelligence",
+    heroImageLabel: "Engineering research and data science for industry",
     heroPrimaryCta: "Selected work",
     heroSecondaryCta: "Professional practice",
     profileEyebrow: "Professional profile",
     profileTitle: "Engineering insight, strengthened by data.",
     practiceEyebrow: "Research & professional practice",
-    practiceTitle: "Connected expertise for complex industrial questions.",
-    practiceIntro: "Five complementary fields, brought together around evidence, practical use and responsible improvement.",
+    practiceTitle: "Five areas of research and technical practice.",
+    practiceIntro: "Research, analysis and engineering across five connected areas.",
     projectsEyebrow: "Selected projects",
-    projectsTitle: "Applied systems, clearly framed.",
-    projectsIntro: "A compact selection of work across data engineering, intelligent search, analytics and resilient operations.",
+    projectsTitle: "Selected data and engineering projects.",
+    projectsIntro: "Five examples of work in data engineering, search, machine learning, analytics and supply chains.",
     storiesEyebrow: "Field stories",
-    storiesTitle: "What the technical record cannot show alone.",
-    storiesIntro: "Short cases from research settings, industrial systems and evidence-led decisions.",
+    storiesTitle: "Lessons from fieldwork and implementation.",
+    storiesIntro: "Four short cases from industrial research, digital operations, energy audits and environmental studies.",
     publicationsEyebrow: "Publications",
-    publicationsTitle: "Research published and shared.",
-    publicationsIntro: "Selected scholarly work across safety, sustainability, machine learning and decision analysis.",
+    publicationsTitle: "Selected publications and datasets.",
+    publicationsIntro: "Research on workplace safety, sustainable manufacturing, machine learning, energy and environmental decisions.",
     insightsEyebrow: "Insights",
-    insightsTitle: "Notes from research and practice.",
-    insightsIntro: "Concise perspectives on evidence, intelligent systems and responsible industrial decisions.",
+    insightsTitle: "Notes on research and practice.",
+    insightsIntro: "Short articles on research methods, data systems and industrial decision-making.",
     contextEyebrow: "Context of work",
-    contextTitle: "Across industry, institutions and applied research.",
+    contextTitle: "Work across manufacturing, public institutions and research.",
     contexts: [
       "Leather & footwear",
       "Manufacturing",
@@ -235,6 +271,7 @@ export const siteSettings: SiteSettings = {
       "Public-sector operations",
       "Research institutions",
     ],
+    venuesLabel: "Selected research & scholarly venues",
     scholarlyVenues: [
       "Elsevier",
       "Emerald",
@@ -253,7 +290,7 @@ export const siteSettings: SiteSettings = {
     practice: {
       eyebrow: "Research & professional practice",
       title: "Five connected areas of practice.",
-      intro: "Research, analytics and engineering capabilities organised around the questions institutions and industries need to answer.",
+      intro: "Research, analytics and engineering applied to practical industrial questions.",
     },
     experience: {
       eyebrow: "Experience",
@@ -263,7 +300,7 @@ export const siteSettings: SiteSettings = {
     projects: {
       eyebrow: "Selected projects",
       title: "Applied systems and research.",
-      intro: "A filterable record of data, AI, analytics, supply-chain and industrial systems work.",
+      intro: "A filterable record of data, AI, analytics, supply chain and industrial systems work.",
     },
     publications: {
       eyebrow: "Publications",
@@ -288,13 +325,13 @@ export const siteSettings: SiteSettings = {
   },
   about: {
     profileEyebrow: "Professional profile",
-    profileTitle: "Engineering context. Statistical discipline. Applied intelligence.",
+    profileTitle: "A path from leather engineering to applied statistics and data science.",
     educationEyebrow: "Education",
     educationTitle: "Engineering foundations, advanced through data science.",
     educationIntro: "Formal study provides the technical grounding; applied work connects it to people, organisations and operating systems.",
     principlesEyebrow: "Working principles",
-    principlesTitle: "Clear evidence. Usable systems. Responsible outcomes.",
-    principlesIntro: "A restrained set of principles for moving from a difficult question to work that can be reviewed, used and improved.",
+    principlesTitle: "Principles that guide the work.",
+    principlesIntro: "Four principles guide how I frame questions, analyse evidence and develop practical recommendations.",
     principles: [
       { title: "Start with the decision", text: "Define the question, constraints and evidence needed before selecting a technical method." },
       { title: "Keep evidence traceable", text: "Connect recommendations to source records, assumptions and analytical choices." },
@@ -304,7 +341,7 @@ export const siteSettings: SiteSettings = {
   },
   footer: {
     eyebrow: "Research & professional enquiries",
-    title: "Have a question worth examining?",
+    title: "Discuss a research or data challenge.",
     summary: "Research, data science and industrial systems practice based in Dhaka, Bangladesh.",
     primaryCta: "Start a conversation",
     secondaryCta: "Request CV",
@@ -374,7 +411,7 @@ export const practiceAreas: PracticeArea[] = [
       "GIS, EIA and life-cycle assessment",
       "Environmental and energy modelling",
       "Resource-efficiency analysis",
-      "SEM, FTIR, UV–Vis and analytical testing",
+      "SEM, FTIR, UV-Vis and analytical testing",
     ],
   },
 ];
@@ -382,9 +419,9 @@ export const practiceAreas: PracticeArea[] = [
 export const experiences: Experience[] = [
   {
     slug: "susleather",
-    organization: "DANIDA-funded SusLeather Project · AUST–SDU",
+    organization: "DANIDA-funded SusLeather Project · AUST and SDU",
     role: "Research Assistant · Full-time",
-    period: "February 2024 — Present",
+    period: "February 2024 to present",
     engagement: "International research collaboration",
     projectValue: "US$660,000 research programme",
     description:
@@ -399,7 +436,7 @@ export const experiences: Experience[] = [
     slug: "nbr-double-entry",
     organization: "NBR Double-Entry Data Project",
     role: "Project Lead · Part-time",
-    period: "May 2026 — Present",
+    period: "May 2026 to present",
     engagement: "National digital operations programme",
     projectValue: "US$1.3 million national programme",
     description:
@@ -414,7 +451,7 @@ export const experiences: Experience[] = [
     slug: "hexa-engineering",
     organization: "Hexa Engineering Limited",
     role: "Research Advisor · Part-time",
-    period: "January 2026 — Present",
+    period: "January 2026 to present",
     engagement: "Industrial research advisory",
     description:
       "Research and analytical support for energy, process and operational improvement questions.",
@@ -428,7 +465,7 @@ export const experiences: Experience[] = [
     slug: "aria-sourcing",
     organization: "ARIA · Sourcing Company",
     role: "Engineering Trainee",
-    period: "October 2022 — October 2023",
+    period: "October 2022 to October 2023",
     engagement: "Footwear and leather-goods sourcing",
     description:
       "Quality, production and supply-chain coordination across multi-factory international orders.",
@@ -442,10 +479,10 @@ export const experiences: Experience[] = [
     slug: "fb-footwear",
     organization: "FB Footwear Limited",
     role: "Assistant Merchandiser",
-    period: "August 2022 — October 2022",
+    period: "August 2022 to October 2022",
     engagement: "Manufacturing and merchandising",
     description:
-      "Production planning, costing and buyer–factory coordination for international footwear orders.",
+      "Production planning, costing and coordination between buyers and factories for international footwear orders.",
     impacts: [
       "Prepared 30+ bills of materials covering components, specifications and production requirements.",
       "Coordinated planning and scheduling for three international clients across materials, capacity and delivery.",
@@ -456,7 +493,7 @@ export const experiences: Experience[] = [
     slug: "kuet-ugc",
     organization: "KUET · UGC-funded Research Project",
     role: "Research Assistant",
-    period: "December 2021 — July 2022",
+    period: "December 2021 to July 2022",
     engagement: "Environmental and public-health research",
     description:
       "Environmental impact research on industrial-waste bioaccumulation in the Bhairab River system.",
@@ -466,17 +503,6 @@ export const experiences: Experience[] = [
       "Applied statistical analysis to connect contaminant evidence with ecosystem and public-health risks.",
     ],
   },
-];
-
-export const projectCategories = [
-  "All",
-  "Data Systems",
-  "NLP & Search",
-  "Machine Learning",
-  "Streaming Analytics",
-  "Supply Chain",
-  "Business Intelligence",
-  "Cloud Data",
 ];
 
 export const projects: Project[] = [
@@ -531,7 +557,7 @@ export const projects: Project[] = [
     categories: ["Machine Learning", "Data Systems"],
     summary:
       "A recommendation engine combining content similarity, sparse collaborative filtering and score fusion.",
-    image: "/images/recommendation.jpg",
+    image: "/images/recommendation-system.jpg",
     stack: ["TF-IDF", "NearestNeighbors", "Sparse CF", "Cosine similarity"],
     context:
       "Product-review data contains both descriptive content and behavioural patterns that single-method recommenders can miss.",
@@ -539,7 +565,7 @@ export const projects: Project[] = [
       "Balance content-based relevance with collaborative signals across a large, sparse catalogue.",
     approach: [
       "Built content representations from review and product text.",
-      "Modelled sparse user–item relationships for collaborative ranking.",
+      "Modelled sparse relationships between users and items for collaborative ranking.",
       "Fused multiple similarity signals into a consistent recommendation score.",
     ],
     outcome:
@@ -581,11 +607,11 @@ export const projects: Project[] = [
       "Create conversational exploration that remains anchored to retrieved review content.",
     approach: [
       "Prepared review chunks and embeddings for hybrid vector retrieval.",
-      "Orchestrated a local language model with grounded context and source-aware prompts.",
+      "Orchestrated a local language model with prompts that cite the retrieved source material.",
       "Designed the workflow for comparison across MongoDB Vector Search and FAISS.",
     ],
     outcome:
-      "A production-oriented prototype for evidence-grounded product-review exploration.",
+      "A working prototype for exploring product reviews while keeping answers tied to the source material.",
   },
   {
     slug: "multi-agent-resilient-supply-chains",
@@ -649,7 +675,7 @@ export const projects: Project[] = [
       "Connected modelling outputs to a reporting-ready analytical schema.",
     ],
     outcome:
-      "A scalable reference architecture for churn analysis and iterative model development.",
+      "A cloud data flow that supports churn analysis and repeated model testing.",
   },
 ];
 
@@ -670,7 +696,6 @@ export const publications: Publication[] = [
     type: "Journal article",
     status: "Published",
     keywords: ["OHS", "Sustainable manufacturing", "Systematic review"],
-    href: profile.scholar,
   },
   {
     title: "Involving employees in reducing musculoskeletal discomfort while implementing lean: Insights from the ready-made garments industry",
@@ -679,7 +704,6 @@ export const publications: Publication[] = [
     type: "Journal article",
     status: "Published",
     keywords: ["Lean", "Ergonomics", "Employee participation"],
-    href: profile.scholar,
   },
   {
     title: "Implementation of machine learning in product development in the leather manufacturing industry to improve productivity and efficiency",
@@ -688,7 +712,6 @@ export const publications: Publication[] = [
     type: "Conference paper",
     status: "Conference",
     keywords: ["Machine learning", "Product development", "Manufacturing"],
-    href: profile.scholar,
   },
   {
     title: "Sustainable leather tanning with Pontederia crassipes tannin: A promising eco-friendly alternative",
@@ -697,7 +720,6 @@ export const publications: Publication[] = [
     type: "Journal article",
     status: "Published",
     keywords: ["Cleaner production", "Tanning", "Circular materials"],
-    href: profile.scholar,
   },
   {
     title: "Analyzing carbon dioxide emissions and energy sources in Bangladesh using statistical and machine-learning forecasting models",
@@ -715,7 +737,6 @@ export const publications: Publication[] = [
     type: "Conference paper",
     status: "Conference",
     keywords: ["MCDA", "Environmental management", "Decision analysis"],
-    href: profile.scholar,
   },
   {
     title: "Towards sustainable tanning: Identifying and prioritizing barriers to achieving LWG certification in Savar Tannery Estate",
@@ -724,7 +745,6 @@ export const publications: Publication[] = [
     type: "Conference paper",
     status: "Conference",
     keywords: ["Certification", "Sustainable tanning", "Barrier analysis"],
-    href: profile.scholar,
   },
   {
     title: "Recipe and properties of leathers",
@@ -735,15 +755,6 @@ export const publications: Publication[] = [
     keywords: ["Leather processing", "Product development", "Experimental data"],
     href: "https://data.mendeley.com/datasets/gwj6y2zt9d/1",
   },
-];
-
-export const scholarlyVenues = [
-  "Elsevier",
-  "Emerald",
-  "Springer Nature",
-  "IEEE",
-  "IEOM Society",
-  "UNSW Australia · CIE",
 ];
 
 export const stories: Story[] = [
@@ -768,7 +779,7 @@ export const stories: Story[] = [
       },
       {
         title: "What the process teaches",
-        body: "Useful recommendations emerge when quantitative results are read alongside worker experience, management practice and operational constraints—not when any one source is treated as complete evidence.",
+        body: "Useful recommendations emerge when quantitative results are read alongside worker experience, management practice and operational constraints, not when one source is treated as complete evidence.",
       },
     ],
   },
@@ -777,7 +788,7 @@ export const stories: Story[] = [
     title: "Designing data operations for a distributed national programme",
     category: "Digital systems",
     excerpt:
-      "A management and training architecture for operators, supervisors and regional teams working from one source of truth.",
+      "A management and training platform that gives operators, supervisors and regional teams a shared set of records.",
     image: "/images/data-systems.jpg",
     stack: ["MIS", "Workflow design", "Analytics", "Training systems"],
     intro:
@@ -793,7 +804,7 @@ export const stories: Story[] = [
       },
       {
         title: "A principle for scale",
-        body: "Technology scales when the operating model is clear. A useful platform makes work easier to complete, review and improve—not simply easier to count.",
+        body: "Technology scales when the operating model is clear. A useful platform makes work easier to complete, review and improve, not simply easier to count.",
       },
     ],
   },
@@ -802,7 +813,7 @@ export const stories: Story[] = [
     title: "Turning field evidence into practical energy decisions",
     category: "Energy advisory",
     excerpt:
-      "Connecting site observations, consumption data and engineering judgement in an actionable audit narrative.",
+      "Connecting site observations, consumption data and engineering judgement in a clear set of findings and priorities.",
     image: "/images/sustainability.jpg",
     stack: ["Energy audit", "Field study", "Optimisation", "Technical reporting"],
     intro:
@@ -828,7 +839,7 @@ export const stories: Story[] = [
     category: "Environmental research",
     excerpt:
       "A multidisciplinary assessment of industrial waste, bioaccumulation and affected communities around the Bhairab River.",
-    image: "/images/sustainability.jpg",
+    image: "/images/bhairab-river-fieldwork.jpg",
     stack: ["EIA", "Chemical analysis", "Public health", "Statistics"],
     intro:
       "Environmental risk is a connected system: industrial discharge, ecological exposure and community health cannot be interpreted in isolation.",
@@ -884,7 +895,7 @@ export const insights: Insight[] = [
     date: "Editorial note",
     readingTime: "5 min read",
     excerpt:
-      "Operational data shows what happened. Interviews and observation often explain why—and whether a proposed change can work.",
+      "Operational data shows what happened. Interviews and observation often explain why and whether a proposed change can work.",
     image: "/images/fieldwork.jpg",
     body: [
       {
@@ -909,7 +920,7 @@ export const insights: Insight[] = [
     date: "Editorial note",
     readingTime: "4 min read",
     excerpt:
-      "Productivity, safety, cost and environmental responsibility should be modelled as connected priorities—not sequential afterthoughts.",
+      "Productivity, safety, cost and environmental responsibility should be modelled as connected priorities, not sequential afterthoughts.",
     image: "/images/sustainability.jpg",
     body: [
       {
@@ -936,20 +947,4 @@ export const credentials: Credential[] = [
   { title: "Generative AI Overview for Learning & Development", issuer: "GSDC · Google Gemini", area: "Generative AI" },
   { title: "Applied Data Science Specialisation", issuer: "IBM", area: "Applied data science" },
   { title: "Supply Chain Analytics Specialisation", issuer: "Rutgers University", area: "Supply chain" },
-];
-
-export const processSteps = [
-  { number: "01", title: "Frame", text: "Clarify the decision, operating context and evidence that matters." },
-  { number: "02", title: "Investigate", text: "Combine field, organisational and analytical evidence without losing context." },
-  { number: "03", title: "Build", text: "Develop the model, workflow or system around real users and constraints." },
-  { number: "04", title: "Transfer", text: "Make results traceable, explainable and usable beyond the initial engagement." },
-];
-
-export const sectors = [
-  "Leather & footwear",
-  "Manufacturing",
-  "Supply chain & logistics",
-  "Energy & environment",
-  "Public-sector operations",
-  "Research institutions",
 ];

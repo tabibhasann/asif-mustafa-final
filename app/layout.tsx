@@ -1,51 +1,45 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { StructuredData } from "@/components/StructuredData";
 import { getPracticeAreas, getProfile, getSiteSettings } from "@/lib/cms";
+import { absoluteUrl, metadataBase, siteOrigin } from "@/lib/seo";
 import "./globals.css";
 import "./composed.css";
 
-const sans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const socialImage = absoluteUrl(settings.seo.socialImage);
 
-const serif = Source_Serif_4({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-export const metadata: Metadata = {
-  metadataBase: new URL("https://asif-mustafa-final.vercel.app"),
-  title: {
-    default: "Md Asif Mustafa | Research, Data Science & Industrial Systems",
-    template: "%s | Md Asif Mustafa",
-  },
-  description:
-    "Evidence for better industrial decisions through engineering, statistics and responsible AI.",
-  authors: [{ name: "Md Asif Mustafa" }],
-  creator: "Md Asif Mustafa",
-  publisher: "Md Asif Mustafa",
-  category: "Research and professional services",
-  openGraph: {
-    title: "Md Asif Mustafa | Research, Data Science & Industrial Systems",
-    description:
-      "Evidence for better industrial decisions through engineering, statistics and responsible AI.",
-    type: "website",
-    images: [{ url: "/images/hero.jpg", width: 1920, height: 1080, alt: "Research and industrial analytics" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Md Asif Mustafa | Research, Data Science & Industrial Systems",
-    description: "Evidence for better industrial decisions through engineering, statistics and responsible AI.",
-    images: ["/images/hero.jpg"],
-  },
-};
+  return {
+    metadataBase,
+    applicationName: "Md Asif Mustafa",
+    title: {
+      default: settings.seo.title,
+      template: "%s | Md Asif Mustafa",
+    },
+    description: settings.seo.description,
+    authors: [{ name: "Md Asif Mustafa", url: "/about" }],
+    creator: "Md Asif Mustafa",
+    publisher: "Md Asif Mustafa",
+    category: "Research and professional services",
+    robots: { index: true, follow: true },
+    openGraph: {
+      title: settings.seo.title,
+      description: settings.seo.description,
+      type: "website",
+      url: siteOrigin,
+      siteName: "Md Asif Mustafa",
+      images: [{ url: socialImage, alt: settings.seo.socialImageAlt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: settings.seo.title,
+      description: settings.seo.description,
+      images: [{ url: socialImage, alt: settings.seo.socialImageAlt }],
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#061A2E",
@@ -55,36 +49,46 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const [profile, practiceAreas, settings] = await Promise.all([getProfile(), getPracticeAreas(), getSiteSettings()]);
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: profile.name,
-    url: "https://asif-mustafa-final.vercel.app",
-    email: `mailto:${profile.email}`,
-    telephone: profile.phone,
-    jobTitle: "Researcher, Data Scientist and Technical Advisor",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Dhaka",
-      addressCountry: "BD",
-    },
-    alumniOf: profile.education.map((item) => ({
-      "@type": "CollegeOrUniversity",
-      name: item.institution,
-    })),
-    sameAs: [profile.linkedin, profile.scholar, profile.github],
-    knowsAbout: practiceAreas.map((item) => item.title),
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${siteOrigin}/#person`,
+        name: profile.name,
+        url: siteOrigin,
+        email: `mailto:${profile.email}`,
+        telephone: profile.phone,
+        jobTitle: "Researcher, Data Scientist and Technical Advisor",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Dhaka",
+          addressCountry: "BD",
+        },
+        alumniOf: profile.education.map((item) => ({
+          "@type": "CollegeOrUniversity",
+          name: item.institution,
+        })),
+        sameAs: [profile.linkedin, profile.scholar, profile.github, profile.youtube].filter(Boolean),
+        knowsAbout: practiceAreas.map((item) => item.title),
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteOrigin}/#website`,
+        url: siteOrigin,
+        name: profile.name,
+        description: settings.seo.description,
+        inLanguage: "en",
+        publisher: { "@id": `${siteOrigin}/#person` },
+      },
+    ],
   };
 
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable}`}>
+    <html lang="en">
       <body>
-        <SiteHeader profile={profile} />
+        <SiteHeader profile={{ name: profile.name, role: profile.role, email: profile.email, location: profile.location }} />
         <main id="main-content">{children}</main>
         <SiteFooter profile={profile} settings={settings.footer} />
-        <script
-          id="person-structured-data"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
-        />
+        <StructuredData id="site-structured-data" data={structuredData} />
       </body>
     </html>
   );

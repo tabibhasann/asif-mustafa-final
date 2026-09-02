@@ -4,7 +4,13 @@ import { headerLinks, knowledgeLinks } from "@/lib/site";
 
 const footerLinks = [...headerLinks, ...knowledgeLinks];
 
-export function SiteFooter({ profile, settings }: { profile: Profile; settings: SiteSettings["footer"] }) {
+export function SiteFooter({
+  profile,
+  settings,
+}: {
+  profile: Pick<Profile, "name" | "role" | "email" | "phone" | "linkedin" | "scholar" | "github" | "youtube" | "location" | "cvUrl">;
+  settings: SiteSettings["footer"];
+}) {
   return (
     <footer className="site-footer" id="contact">
       <div className="contact-band">
@@ -17,7 +23,12 @@ export function SiteFooter({ profile, settings }: { profile: Profile; settings: 
             <a className="button button-gold" href={`mailto:${profile.email}?subject=Research or professional enquiry`}>
               {settings.primaryCta} <span aria-hidden="true">→</span>
             </a>
-            <a className="button button-ghost-light" href={`mailto:${profile.email}?subject=Request for CV`}>
+            <a
+              className="button button-ghost-light"
+              href={profile.cvUrl || `mailto:${profile.email}?subject=Request for CV`}
+              target={profile.cvUrl ? "_blank" : undefined}
+              rel={profile.cvUrl ? "noreferrer" : undefined}
+            >
               {settings.secondaryCta}
             </a>
           </div>
@@ -25,7 +36,7 @@ export function SiteFooter({ profile, settings }: { profile: Profile; settings: 
       </div>
       <div className="shell footer-grid">
         <div className="footer-intro">
-          <Link className="brand footer-brand" href="/">
+          <Link className="brand footer-brand" href="/" prefetch={false}>
             <span className="brand-mark" aria-hidden="true">AM</span>
             <span>
               <strong>{profile.name}</strong>
@@ -38,7 +49,7 @@ export function SiteFooter({ profile, settings }: { profile: Profile; settings: 
           <h3>Explore</h3>
           <ul>
             {footerLinks.map((item) => (
-              <li key={item.href}><Link href={item.href}>{item.label}</Link></li>
+              <li key={item.href}><Link href={item.href} prefetch={false}>{item.label}</Link></li>
             ))}
           </ul>
         </div>
@@ -50,6 +61,7 @@ export function SiteFooter({ profile, settings }: { profile: Profile; settings: 
             <li><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a></li>
             <li><a href={profile.scholar} target="_blank" rel="noreferrer">Google Scholar ↗</a></li>
             <li><a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a></li>
+            {profile.youtube && <li><a href={profile.youtube} target="_blank" rel="noreferrer">YouTube ↗</a></li>}
           </ul>
         </div>
       </div>

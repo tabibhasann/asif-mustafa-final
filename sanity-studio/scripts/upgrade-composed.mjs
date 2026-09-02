@@ -1,11 +1,11 @@
 import { getCliClient } from "sanity/cli";
-import { profile as fallbackProfile } from "../../lib/content.ts";
+import { profile as fallbackProfile, siteSettings as fallbackSiteSettings } from "../../lib/content.ts";
 
 const client = getCliClient({ apiVersion: "2026-09-01" });
 
 const previousHeadline = "Research, analytics and intelligent systems for industry.";
 const previousIntroduction =
-  "I work across applied statistics, artificial intelligence, industrial engineering and sustainability—turning complex evidence into practical systems, clearer decisions and responsible improvement.";
+  "I work across applied statistics, artificial intelligence, industrial engineering and sustainability\u2014turning complex evidence into practical systems, clearer decisions and responsible improvement.";
 
 const profile = await client.fetch(`*[_id == "profile"][0]{headline, introduction, metrics}`);
 if (profile) {
@@ -31,6 +31,11 @@ if (profile) {
   }
   await patch.commit();
 }
+
+await client
+  .patch("siteSettings")
+  .setIfMissing({ "home.venuesLabel": fallbackSiteSettings.home.venuesLabel })
+  .commit();
 
 const mediaDocuments = await client.fetch(
   `*[_type in ["project", "story", "insight"]]{_id, _type, title, imageAlt, featured, order}`,

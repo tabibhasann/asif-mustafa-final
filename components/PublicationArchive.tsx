@@ -77,7 +77,7 @@ export function PublicationArchive({ publications }: { publications: Publication
               <strong>{publication.year}</strong>
               {publication.href
                 ? <a href={publication.href} target="_blank" rel="noreferrer" aria-label={`Open publication: ${publication.title} in a new tab`}>↗</a>
-                : <span className="publication-no-link">Record</span>}
+                : null}
             </div>
           </article>
         ))}

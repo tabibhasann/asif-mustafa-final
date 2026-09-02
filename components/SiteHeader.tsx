@@ -49,7 +49,7 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
       </div>
       <div className="nav-bar">
         <div className="shell nav-inner">
-          <Link className="brand" href="/" aria-label="Md Asif Mustafa homepage">
+          <Link className="brand" href="/" prefetch={false}>
             <span className="brand-mark" aria-hidden="true">AM</span>
             <span>
               <strong>{profile.name}</strong>
@@ -81,6 +81,7 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
                 className={pathname.startsWith(item.href) ? "active" : ""}
                 href={item.href}
                 key={item.href}
+                prefetch={false}
                 onClick={() => setOpen(false)}
                 aria-current={pathname.startsWith(item.href) ? "page" : undefined}
               >
@@ -97,9 +98,8 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
                 ref={knowledgeButtonRef}
                 type="button"
                 className={knowledgeActive ? "active" : ""}
-                aria-haspopup="true"
+                aria-haspopup="menu"
                 aria-expanded={knowledgeOpen}
-                aria-controls="knowledge-navigation"
                 onClick={() => setKnowledgeOpen((value) => !value)}
               >
                 Knowledge
@@ -109,6 +109,7 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
                   <Link
                     href={item.href}
                     key={item.href}
+                    prefetch={false}
                     onClick={() => {
                       setOpen(false);
                       setKnowledgeOpen(false);

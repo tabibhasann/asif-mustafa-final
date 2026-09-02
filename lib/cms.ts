@@ -13,13 +13,17 @@ import {
   type Credential,
   type Experience,
   type Insight,
+  type InsightPreview,
   type PracticeArea,
   type Profile,
   type Project,
+  type ProjectPreview,
   type Publication,
   type SiteSettings,
   type Story,
+  type StoryPreview,
 } from "./content";
+import { getSanityImageUrl, type SanityImageSource } from "./sanity-image";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -29,6 +33,20 @@ const client =
   projectId && dataset
     ? createClient({ projectId, dataset, apiVersion, useCdn: true })
     : null;
+
+type WithCmsImage<T extends { image: string }> = T & { cmsImage?: SanityImageSource };
+
+function resolveCmsImage<T extends { image: string }>(
+  item: WithCmsImage<T>,
+  width = 1600,
+  height = 1000,
+): T {
+  const { cmsImage, ...rest } = item;
+  return {
+    ...rest,
+    image: getSanityImageUrl(cmsImage, width, height) ?? item.image,
+  } as T;
+}
 
 async function collectionOrFallback<T>(
   query: string,
@@ -43,24 +61,41 @@ async function collectionOrFallback<T>(
   }
 }
 
+async function itemOrFallback<T>(
+  query: string,
+  params: Record<string, string>,
+  fallback: T | undefined,
+): Promise<T | undefined> {
+  if (!client) return fallback;
+  try {
+    const result = await client.fetch<T | null>(query, params, { next: { revalidate: 60 } });
+    return result ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export const getProfile = cache(async (): Promise<Profile> => {
   if (!client) return fallbackProfile;
   try {
-    const result = await client.fetch<Partial<Profile>>(
-      `*[_type == "profile"][0]{
-        name, shortName, role, location, email, phone, linkedin, scholar, github,
-        headline, introduction, "portrait": portrait.asset->url, biography, metrics, education
+    const result = await client.fetch<Partial<Profile> & { cmsPortrait?: SanityImageSource }>(
+      `*[_type == "profile" && _id == "profile"][0]{
+        name, shortName, role, location, email, phone, linkedin, scholar, github, youtube,
+        headline, introduction, "cmsPortrait": portrait, "portrait": portrait.asset->url, portraitAlt,
+        "cvUrl": cvFile.asset->url, biography, metrics, education
       }`,
       {},
       { next: { revalidate: 60 } },
     );
     if (!result?.name) return fallbackProfile;
+    const { cmsPortrait, ...profileResult } = result;
     const definedResult = Object.fromEntries(
-      Object.entries(result).filter(([, value]) => value !== null && value !== undefined),
+      Object.entries(profileResult).filter(([, value]) => value !== null && value !== undefined),
     ) as Partial<Profile>;
     return {
       ...fallbackProfile,
       ...definedResult,
+      portrait: getSanityImageUrl(cmsPortrait, 1000, 1400) ?? profileResult.portrait ?? fallbackProfile.portrait,
       biography: Array.isArray(result.biography) ? result.biography : fallbackProfile.biography,
       metrics: Array.isArray(result.metrics) ? result.metrics : fallbackProfile.metrics,
       education: Array.isArray(result.education) ? result.education : fallbackProfile.education,
@@ -73,9 +108,13 @@ export const getProfile = cache(async (): Promise<Profile> => {
 export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
   if (!client) return fallbackSiteSettings;
   try {
-    const result = await client.fetch<Partial<SiteSettings>>(
+    const result = await client.fetch<Partial<SiteSettings> & {
+      seo?: Partial<SiteSettings["seo"]> & { cmsSocialImage?: SanityImageSource };
+      home?: Partial<SiteSettings["home"]> & { cmsHeroImage?: SanityImageSource };
+    }>(
       `*[_type == "siteSettings" && _id == "siteSettings"][0]{
-        home{..., "heroImage": heroImage.asset->url},
+        seo{..., "cmsSocialImage": socialImage, "socialImage": socialImage.asset->url},
+        home{..., "cmsHeroImage": heroImage, "heroImage": heroImage.asset->url},
         pages{about, practice, experience, projects, publications, stories, insights, credentials},
         about,
         footer
@@ -84,14 +123,29 @@ export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
       { next: { revalidate: 60 } },
     );
     if (!result) return fallbackSiteSettings;
+    const { cmsSocialImage, ...seoResult } = result.seo ?? ({} as Partial<SiteSettings["seo"]> & {
+      cmsSocialImage?: SanityImageSource;
+    });
+    const { cmsHeroImage, ...homeResult } = result.home ?? ({} as Partial<SiteSettings["home"]> & {
+      cmsHeroImage?: SanityImageSource;
+    });
     return {
+      seo: {
+        ...fallbackSiteSettings.seo,
+        ...Object.fromEntries(Object.entries(seoResult).filter(([, value]) => value !== null && value !== undefined && value !== "")),
+        socialImage: getSanityImageUrl(cmsSocialImage, 1200, 630)
+          ?? seoResult.socialImage
+          ?? fallbackSiteSettings.seo.socialImage,
+      },
       home: {
         ...fallbackSiteSettings.home,
-        ...result.home,
-        heroImage: result.home?.heroImage || fallbackSiteSettings.home.heroImage,
-        contexts: Array.isArray(result.home?.contexts) ? result.home.contexts : fallbackSiteSettings.home.contexts,
-        scholarlyVenues: Array.isArray(result.home?.scholarlyVenues)
-          ? result.home.scholarlyVenues
+        ...homeResult,
+        heroImage: getSanityImageUrl(cmsHeroImage, 1600, 1000)
+          ?? homeResult.heroImage
+          ?? fallbackSiteSettings.home.heroImage,
+        contexts: Array.isArray(homeResult.contexts) ? homeResult.contexts : fallbackSiteSettings.home.contexts,
+        scholarlyVenues: Array.isArray(homeResult.scholarlyVenues)
+          ? homeResult.scholarlyVenues
           : fallbackSiteSettings.home.scholarlyVenues,
       },
       pages: {
@@ -135,20 +189,32 @@ export const getExperiences = cache(() =>
     fallbackExperiences,
   ));
 
-export const getProjects = cache(() =>
-  collectionOrFallback<Project>(
+export const getProjects = cache(async () => {
+  const items = await collectionOrFallback<WithCmsImage<ProjectPreview>>(
     `*[_type == "project"]|order(featured desc, order asc){
-      "slug": slug.current, title, category, "categories": coalesce(categories, []), summary,
-      "image": coalesce(image.asset->url, fallbackImage, "/images/data-systems.jpg"), imageAlt,
-      "stack": coalesce(stack, []), featured,
-      context, challenge, "approach": coalesce(approach, []), outcome
+      "slug": slug.current, title, category,
+      "categories": select(count(coalesce(categories, [])) > 0 => categories, defined(category) => [category], []),
+      summary, "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"),
+      "stack": coalesce(stack, []), featured, "updatedAt": _updatedAt
     }`,
     fallbackProjects,
-  ));
+  );
+  return items.map((item) => resolveCmsImage<ProjectPreview>(item));
+});
 
 export const getProject = cache(async (slug: string) => {
-  const projects = await getProjects();
-  return projects.find((project) => project.slug === slug);
+  const item = await itemOrFallback<WithCmsImage<Project>>(
+    `*[_type == "project" && slug.current == $slug][0]{
+      "slug": slug.current, title, category,
+      "categories": select(count(coalesce(categories, [])) > 0 => categories, defined(category) => [category], []),
+      summary, "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
+      "stack": coalesce(stack, []), featured, context, challenge,
+      "approach": coalesce(approach, []), outcome, "updatedAt": _updatedAt
+    }`,
+    { slug },
+    fallbackProjects.find((project) => project.slug === slug),
+  );
+  return item ? resolveCmsImage<Project>(item) : undefined;
 });
 
 export const getPublications = cache(() =>
@@ -159,36 +225,58 @@ export const getPublications = cache(() =>
     fallbackPublications,
   ));
 
-export const getStories = cache(() =>
-  collectionOrFallback<Story>(
+export const getStories = cache(async () => {
+  const items = await collectionOrFallback<WithCmsImage<StoryPreview>>(
     `*[_type == "story"]|order(order asc){
       "slug": slug.current, title, category, excerpt,
-      "image": coalesce(image.asset->url, fallbackImage, "/images/fieldwork.jpg"), imageAlt, featured,
-      "stack": coalesce(stack, []), intro, "sections": coalesce(sections, [])
+      "cmsImage": image, "image": coalesce(fallbackImage, "/images/fieldwork.jpg"), featured,
+      "stack": coalesce(stack, []), "updatedAt": _updatedAt
     }`,
     fallbackStories,
-  ));
-
-export const getStory = cache(async (slug: string) => {
-  const stories = await getStories();
-  return stories.find((story) => story.slug === slug);
+  );
+  return items.map((item) => resolveCmsImage<StoryPreview>(item));
 });
 
-export const getInsights = cache(() =>
-  collectionOrFallback<Insight>(
+export const getStory = cache(async (slug: string) => {
+  const item = await itemOrFallback<WithCmsImage<Story>>(
+    `*[_type == "story" && slug.current == $slug][0]{
+      "slug": slug.current, title, category, excerpt,
+      "cmsImage": image, "image": coalesce(fallbackImage, "/images/fieldwork.jpg"), imageAlt, featured,
+      "stack": coalesce(stack, []), intro, "sections": coalesce(sections, []), "updatedAt": _updatedAt
+    }`,
+    { slug },
+    fallbackStories.find((story) => story.slug === slug),
+  );
+  return item ? resolveCmsImage<Story>(item) : undefined;
+});
+
+export const getInsights = cache(async () => {
+  const items = await collectionOrFallback<WithCmsImage<InsightPreview>>(
     `*[_type == "insight"]|order(featured desc, publishedAt desc){
       "slug": slug.current, title, category,
       "date": coalesce(dateLabel, string::split(publishedAt, "T")[0]),
-      readingTime, excerpt,
-      "image": coalesce(image.asset->url, fallbackImage, "/images/data-systems.jpg"), imageAlt,
-      featured, "body": coalesce(body, [])
+      publishedAt, readingTime, excerpt,
+      "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
+      featured, "updatedAt": _updatedAt
     }`,
     fallbackInsights,
-  ));
+  );
+  return items.map((item) => resolveCmsImage<InsightPreview>(item));
+});
 
 export const getInsight = cache(async (slug: string) => {
-  const insights = await getInsights();
-  return insights.find((insight) => insight.slug === slug);
+  const item = await itemOrFallback<WithCmsImage<Insight>>(
+    `*[_type == "insight" && slug.current == $slug][0]{
+      "slug": slug.current, title, category,
+      "date": coalesce(dateLabel, string::split(publishedAt, "T")[0]), publishedAt,
+      readingTime, excerpt,
+      "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
+      featured, "body": coalesce(body, []), content, "updatedAt": _updatedAt
+    }`,
+    { slug },
+    fallbackInsights.find((insight) => insight.slug === slug),
+  );
+  return item ? resolveCmsImage<Insight>(item) : undefined;
 });
 
 export const getCredentials = cache(() =>

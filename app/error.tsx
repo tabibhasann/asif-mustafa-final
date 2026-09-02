@@ -8,10 +8,10 @@ export default function ErrorPage({ reset }: { error: Error & { digest?: string 
       <div>
         <p className="eyebrow">Unable to load this page</p>
         <h1>Something interrupted the request.</h1>
-        <p>The content is still available to retry, or you can return to the homepage.</p>
+        <p>Please try again or return to the homepage.</p>
         <div className="button-row error-actions">
           <button className="button button-navy" type="button" onClick={reset}>Try again</button>
-          <Link className="button button-ghost" href="/">Return home</Link>
+          <Link className="button button-ghost" href="/" prefetch={false}>Return home</Link>
         </div>
       </div>
     </section>

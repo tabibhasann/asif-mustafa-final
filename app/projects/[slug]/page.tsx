@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { StructuredData } from "@/components/StructuredData";
 import { getProject, getProjects } from "@/lib/cms";
+import { absoluteUrl, createPageMetadata, siteOrigin } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -16,31 +18,46 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProject(slug);
   if (!project) return { title: "Project not found" };
-  return {
+  return createPageMetadata({
     title: project.title,
     description: project.summary,
-    alternates: { canonical: `/projects/${project.slug}` },
-    openGraph: { title: project.title, description: project.summary, images: [project.image] },
-  };
+    path: `/projects/${project.slug}`,
+    image: project.image,
+    imageAlt: project.imageAlt || project.title,
+    updatedAt: project.updatedAt,
+  });
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params;
   const project = await getProject(slug);
   if (!project) notFound();
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${absoluteUrl(`/projects/${project.slug}`)}#project`,
+    url: absoluteUrl(`/projects/${project.slug}`),
+    name: project.title,
+    description: project.summary,
+    image: absoluteUrl(project.image),
+    creator: { "@id": `${siteOrigin}/#person` },
+    about: project.categories,
+    keywords: project.stack.join(", "),
+    dateModified: project.updatedAt,
+  };
   return (
     <>
       <section className="detail-hero">
         <div className="shell detail-hero-grid">
           <div className="detail-hero-copy">
-            <Link className="text-link" href="/projects">← All projects</Link>
+            <Link className="text-link" href="/projects" prefetch={false}>← All projects</Link>
             <p className="eyebrow light">Selected project · {project.category}</p>
             <h1>{project.title}</h1>
             <p>{project.summary}</p>
             <ul className="tag-list dark-tags">{project.stack.map((item) => <li key={item}>{item}</li>)}</ul>
           </div>
           <div className="detail-hero-media">
-            <Image src={project.image} alt={project.imageAlt ?? project.title} fill priority sizes="(max-width: 800px) 100vw, 46vw" />
+            <Image src={project.image} alt={project.imageAlt ?? project.title} fill loading="eager" fetchPriority="high" sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 800px) 100vw, 46vw" />
           </div>
         </div>
       </section>
@@ -65,6 +82,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           </article>
         </div>
       </section>
+      <StructuredData id="project-structured-data" data={structuredData} />
     </>
   );
 }

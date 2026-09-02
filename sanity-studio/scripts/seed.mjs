@@ -16,8 +16,16 @@ const client = getCliClient({ apiVersion: "2026-09-01" });
 const slug = (current) => ({ _type: "slug", current });
 const keyedObject = (value, key) => ({ ...value, _key: key, _type: "object" });
 const object = (value) => ({ ...value, _type: "object" });
+const textBlock = (text, style, key) => ({
+  _key: key,
+  _type: "block",
+  style,
+  markDefs: [],
+  children: [{ _key: `${key}-span`, _type: "span", marks: [], text }],
+});
 
 const { heroImage: _fallbackHeroImage, ...editableHome } = siteSettings.home;
+const { socialImage: _fallbackSocialImage, ...editableSeo } = siteSettings.seo;
 const editablePages = Object.fromEntries(
   Object.entries(siteSettings.pages).map(([key, value]) => [key, object(value)]),
 );
@@ -26,6 +34,7 @@ const documents = [
   {
     _id: "siteSettings",
     _type: "siteSettings",
+    seo: object(editableSeo),
     home: object(editableHome),
     pages: object(editablePages),
     about: object({
@@ -91,9 +100,12 @@ const documents = [
     dateLabel: date,
     fallbackImage: image,
     imageAlt: item.imageAlt ?? item.title,
-    body: body.map((section, sectionIndex) =>
-      keyedObject(section, `section-${sectionIndex + 1}`),
-    ),
+    content: body.flatMap((section, sectionIndex) => [
+      textBlock(section.title, "h2", `section-${sectionIndex + 1}-title`),
+      ...section.paragraphs.map((paragraph, paragraphIndex) =>
+        textBlock(paragraph, "normal", `section-${sectionIndex + 1}-paragraph-${paragraphIndex + 1}`),
+      ),
+    ]),
     publishedAt: new Date(Date.UTC(2026, 7, 31 - index)).toISOString(),
   })),
   ...credentials.map((item, index) => ({
