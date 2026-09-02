@@ -33,7 +33,7 @@ export default async function Home() {
     ...projects.filter((project) => project.featured),
     ...projects.filter((project) => !project.featured),
   ];
-  const featuredProjects = [...new Map(prioritisedProjects.map((project) => [project.slug, project])).values()].slice(0, 5);
+  const featuredProjects = [...new Map(prioritisedProjects.map((project) => [project.slug, project])).values()].slice(0, 4);
   const prioritisedStories = [
     ...stories.filter((story) => story.featured),
     ...stories.filter((story) => !story.featured),
@@ -103,8 +103,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.practiceEyebrow}
             title={settings.home.practiceTitle}
-            text={settings.home.practiceIntro}
-            action={{ href: "/practice", label: "View all capabilities" }}
+            action={{ href: "/practice", label: settings.home.practiceAction }}
           />
           <div className="practice-card-grid">
             {practiceAreas.map((area) => (
@@ -129,8 +128,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.projectsEyebrow}
             title={settings.home.projectsTitle}
-            text={settings.home.projectsIntro}
-            action={{ href: "/projects", label: "View all projects" }}
+            action={{ href: "/projects", label: settings.home.projectsAction }}
           />
           <div className="editorial-card-grid project-preview-grid">
             {featuredProjects.map((project) => (
@@ -153,8 +151,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.storiesEyebrow}
             title={settings.home.storiesTitle}
-            text={settings.home.storiesIntro}
-            action={{ href: "/stories", label: "View all field stories" }}
+            action={{ href: "/stories", label: settings.home.storiesAction }}
           />
           <div className="editorial-card-grid story-preview-grid">
             {featuredStories.map((story) => (
@@ -177,8 +174,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.publicationsEyebrow}
             title={settings.home.publicationsTitle}
-            text={settings.home.publicationsIntro}
-            action={{ href: "/publications", label: "Browse all publications" }}
+            action={{ href: "/publications", label: settings.home.publicationsAction }}
           />
           <div className="publication-preview">
             {publications.slice(0, 4).map((publication) => (
@@ -207,8 +203,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.insightsEyebrow}
             title={settings.home.insightsTitle}
-            text={settings.home.insightsIntro}
-            action={{ href: "/insights", label: "View all insights" }}
+            action={{ href: "/insights", label: settings.home.insightsAction }}
           />
           <div className="editorial-card-grid insight-preview-grid">
             {insights.slice(0, 3).map((insight) => (

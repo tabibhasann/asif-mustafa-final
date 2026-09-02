@@ -52,18 +52,23 @@ export type SiteSettings = {
     practiceEyebrow: string;
     practiceTitle: string;
     practiceIntro: string;
+    practiceAction: string;
     projectsEyebrow: string;
     projectsTitle: string;
     projectsIntro: string;
+    projectsAction: string;
     storiesEyebrow: string;
     storiesTitle: string;
     storiesIntro: string;
+    storiesAction: string;
     publicationsEyebrow: string;
     publicationsTitle: string;
     publicationsIntro: string;
+    publicationsAction: string;
     insightsEyebrow: string;
     insightsTitle: string;
     insightsIntro: string;
+    insightsAction: string;
     contextEyebrow: string;
     contextTitle: string;
     contexts: string[];
@@ -249,18 +254,23 @@ export const siteSettings: SiteSettings = {
     practiceEyebrow: "Research & professional practice",
     practiceTitle: "Five areas of research and technical practice.",
     practiceIntro: "Research, analysis and engineering across five connected areas.",
+    practiceAction: "Explore practice",
     projectsEyebrow: "Selected projects",
     projectsTitle: "Selected data and engineering projects.",
     projectsIntro: "Five examples of work in data engineering, search, machine learning, analytics and supply chains.",
+    projectsAction: "View all projects",
     storiesEyebrow: "Field stories",
     storiesTitle: "Lessons from fieldwork and implementation.",
     storiesIntro: "Four short cases from industrial research, digital operations, energy audits and environmental studies.",
+    storiesAction: "View all field stories",
     publicationsEyebrow: "Publications",
     publicationsTitle: "Selected publications and datasets.",
     publicationsIntro: "Research on workplace safety, sustainable manufacturing, machine learning, energy and environmental decisions.",
+    publicationsAction: "View all publications",
     insightsEyebrow: "Insights",
     insightsTitle: "Notes on research and practice.",
     insightsIntro: "Short articles on research methods, data systems and industrial decision-making.",
+    insightsAction: "View all insights",
     contextEyebrow: "Context of work",
     contextTitle: "Work across manufacturing, public institutions and research.",
     contexts: [

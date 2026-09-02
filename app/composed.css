@@ -9,149 +9,186 @@
   --muted: #61717c;
 }
 
-/* Homepage composition: keep complete information within a denser editorial rhythm. */
+/* Homepage composition: concise, readable and deliberately paced. */
 .home-page .composed-section {
-  padding-block: 1rem;
+  padding-block: clamp(3.5rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--border);
 }
 
 .home-page .home-profile {
-  padding-block: 1rem;
+  padding-block: clamp(3rem, 4.5vw, 4rem);
 }
 
 .home-page .home-profile-grid,
 .home-page .home-profile-portrait {
-  min-height: 270px;
+  min-height: 300px;
 }
 
 .home-page .section-heading {
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  margin-bottom: 0.85rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: clamp(1.6rem, 2.5vw, 2rem);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .home-page .section-heading h2 {
-  font-size: clamp(1.7rem, 2.55vw, 2.15rem);
-  line-height: 1;
+  max-width: 760px;
+  font-size: clamp(2.15rem, 3.1vw, 2.8rem);
+  line-height: 1.04;
 }
 
 .home-page .section-heading-aside {
-  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--navy);
+  font-size: 0.8rem;
   line-height: 1.4;
+  white-space: nowrap;
 }
 
 .home-page .section-heading-aside p {
-  margin-bottom: 0.25rem;
+  margin: 0;
 }
 
 .home-page .editorial-card-grid {
-  gap: 0.65rem;
+  gap: 1rem;
+}
+
+.home-page .project-preview-grid,
+.home-page .story-preview-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.home-page .insight-preview-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .home-page .editorial-card-media {
-  aspect-ratio: 16 / 5.5;
+  aspect-ratio: 16 / 8.5;
+}
+
+.home-page .story-preview-grid .editorial-card-media {
+  aspect-ratio: 16 / 9.5;
 }
 
 .home-page .editorial-card-copy {
-  padding: 0.7rem;
+  padding: 1rem;
 }
 
 .home-page .editorial-card-copy h3 {
   display: -webkit-box;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
   overflow: hidden;
-  font-size: 0.98rem;
-  line-height: 1.1;
+  font-size: clamp(1.05rem, 1.3vw, 1.18rem);
+  line-height: 1.16;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
 
 .home-page .editorial-card-copy > p:not(.card-kicker) {
   display: -webkit-box;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.7rem;
   overflow: hidden;
-  font-size: 0.7rem;
-  line-height: 1.35;
+  font-size: 0.8rem;
+  line-height: 1.48;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
 }
 
 .home-page .editorial-card-tail {
-  min-height: 1.1rem;
-  font-size: 0.7rem;
+  min-height: 1.3rem;
+  font-size: 0.75rem;
+}
+
+.home-page .practice-card-grid {
+  gap: 0.875rem;
+  padding: 0;
+  background: transparent;
+}
+
+.home-page .practice-card {
+  border: 1px solid var(--border);
 }
 
 .home-page .practice-card > a {
-  min-height: 168px;
-  padding: 0.75rem;
+  min-height: 210px;
+  padding: 1rem;
 }
 
 .home-page .practice-card .practice-number {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.75rem;
 }
 
 .home-page .practice-card h3 {
-  margin-bottom: 0.35rem;
-  font-size: 0.98rem;
-  line-height: 1.1;
+  margin-bottom: 0.45rem;
+  font-size: 1.05rem;
+  line-height: 1.16;
 }
 
 .home-page .practice-card p {
   display: -webkit-box;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.7rem;
   overflow: hidden;
-  font-size: 0.7rem;
-  line-height: 1.35;
+  font-size: 0.78rem;
+  line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
 
 .home-page .practice-card-tail {
-  padding-top: 0.4rem;
-  font-size: 0.7rem;
+  padding-top: 0.65rem;
+  font-size: 0.73rem;
 }
 
 .home-page .publication-preview article {
-  grid-template-columns: 52px minmax(0, 1fr) 36px;
-  gap: 0.75rem;
-  min-height: 58px;
-  padding: 0.5rem 0;
+  grid-template-columns: 56px minmax(0, 1fr) 40px;
+  gap: 1rem;
+  min-height: 70px;
+  padding: 0.7rem 0;
 }
 
 .home-page .publication-preview h3 {
   display: -webkit-box;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.15rem;
   overflow: hidden;
-  font-size: 0.93rem;
-  line-height: 1.16;
+  font-size: 1rem;
+  line-height: 1.2;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
 .home-page .publication-preview article p:last-child {
   overflow: hidden;
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .home-page .publication-preview article > a {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
 }
 
 .home-page .venue-inline {
-  gap: 0.35rem 0.8rem;
-  margin-top: 0.65rem;
-  padding-top: 0.55rem;
+  gap: 0.4rem 0.9rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .home-page .composed-section {
-    padding-block: 1.35rem;
+    padding-block: 3rem;
+  }
+
+  .home-page .home-profile {
+    padding-block: 2.75rem;
   }
 
   .home-page .section-heading {
-    gap: 0.35rem;
-    margin-bottom: 0.85rem;
+    margin-bottom: 1.5rem;
   }
 
   .home-page .practice-card-grid,
@@ -160,12 +197,21 @@
   .home-page .insight-preview-grid {
     grid-template-columns: none;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(270px, 72vw);
     align-items: stretch;
     overflow-x: auto;
     overscroll-behavior-inline: contain;
-    padding-bottom: 0.65rem;
+    padding-bottom: 0.75rem;
     scroll-snap-type: inline proximity;
+  }
+
+  .home-page .practice-card-grid {
+    grid-auto-columns: min(360px, 72vw);
+  }
+
+  .home-page .project-preview-grid,
+  .home-page .story-preview-grid,
+  .home-page .insight-preview-grid {
+    grid-auto-columns: min(390px, 75vw);
   }
 
   .home-page .practice-card-grid > *,
@@ -174,79 +220,85 @@
   .home-page .insight-preview-grid > * {
     scroll-snap-align: start;
   }
-
-  .home-page .editorial-card-link {
-    display: grid;
-    grid-template-columns: minmax(110px, 32%) minmax(0, 1fr);
-  }
-
-  .home-page .editorial-card-media {
-    height: 100%;
-    min-height: 155px;
-    aspect-ratio: auto;
-    border-right: 1px solid var(--border);
-    border-bottom: 0;
-  }
 }
 
 @media (max-width: 640px) {
-  .home-page .home-profile {
-    padding-block: 1.25rem;
+  .home-page .composed-section {
+    padding-block: 2.5rem;
   }
 
+  .home-page .home-profile {
+    padding-block: 2.5rem;
+  }
+
+  .home-page .home-profile-grid,
   .home-page .home-profile-portrait {
-    min-height: 190px;
+    min-height: 230px;
   }
 
   .home-page .home-profile-copy {
-    padding: 1.1rem;
+    padding: 1.3rem;
   }
 
   .home-page .home-profile-copy h2 {
-    font-size: 1.7rem;
-  }
-
-  .home-page .home-profile-copy > p:not(.eyebrow) {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    font-size: 1.85rem;
   }
 
   .home-page .profile-fact {
-    min-height: 78px;
-    padding: 0.75rem;
+    min-height: 86px;
+    padding: 0.8rem;
   }
 
   .home-page .profile-fact strong {
-    font-size: 1.35rem;
+    font-size: 1.45rem;
+  }
+
+  .home-page .section-heading {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1.35rem;
+    padding-bottom: 0.9rem;
   }
 
   .home-page .section-heading h2 {
-    font-size: 1.7rem;
+    font-size: clamp(1.85rem, 9vw, 2.15rem);
   }
 
-  .home-page .section-heading-aside p {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+  .home-page .section-heading-aside {
+    justify-content: flex-start;
   }
 
-  .home-page .practice-card-grid,
+  .home-page .practice-card-grid {
+    grid-auto-columns: min(330px, 87vw);
+  }
+
   .home-page .project-preview-grid,
   .home-page .story-preview-grid,
   .home-page .insight-preview-grid {
-    grid-auto-columns: minmax(270px, 82vw);
+    grid-auto-columns: min(340px, 88vw);
   }
 
   .home-page .practice-card > a {
-    min-height: 168px;
+    min-height: 200px;
+  }
+
+  .home-page .editorial-card-link {
+    display: flex;
+  }
+
+  .home-page .editorial-card-media,
+  .home-page .story-preview-grid .editorial-card-media {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 8.5;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
   }
 
   .home-page .publication-preview article {
-    grid-template-columns: 38px minmax(0, 1fr) 36px;
-    gap: 0.45rem;
+    grid-template-columns: 40px minmax(0, 1fr) 38px;
+    gap: 0.55rem;
+    padding-block: 0.75rem;
   }
 
   .home-page .publication-preview .card-kicker {
@@ -679,7 +731,7 @@ body {
 }
 
 .compact-context {
-  padding-block: 2.35rem;
+  padding-block: clamp(3.25rem, 4.5vw, 4rem);
 }
 
 .compact-context .sector-grid {
@@ -1212,11 +1264,11 @@ body {
 /* Footer: one continuous, compact contact and navigation surface. */
 .site-footer {
   background: #041421;
-  border-top: 3px solid var(--gold);
+  border-top: 1px solid var(--gold);
 }
 
 .contact-band {
-  padding-block: 0.65rem;
+  padding-block: 1.35rem;
   background: var(--navy-2);
   color: var(--white);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
@@ -1227,7 +1279,7 @@ body {
 }
 
 .contact-band h2 {
-  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-size: clamp(1.5rem, 2.25vw, 1.9rem);
 }
 
 .contact-band .button-gold {
@@ -1242,8 +1294,8 @@ body {
 
 .footer-grid {
   grid-template-columns: 1.1fr 1.5fr 0.9fr;
-  gap: 1.25rem;
-  padding-block: 0.75rem;
+  gap: 1.5rem;
+  padding-block: 1.5rem 1.35rem;
 }
 
 .footer-brand .brand-mark {
@@ -1252,24 +1304,24 @@ body {
 }
 
 .footer-intro p {
-  margin-top: 0.25rem;
-  font-size: 0.7rem;
-  line-height: 1.35;
+  margin-top: 0.45rem;
+  font-size: 0.74rem;
+  line-height: 1.45;
 }
 
 .footer-grid h3 {
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.35rem;
 }
 
 .footer-grid ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.05rem 0.65rem;
+  gap: 0.15rem 0.75rem;
 }
 
 .footer-grid li {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.74rem;
 }
 
 .footer-grid li a {
@@ -1280,11 +1332,11 @@ body {
 
 .footer-connect ul {
   display: flex;
-  gap: 0.05rem 0.65rem;
+  gap: 0.15rem 0.75rem;
 }
 
 .footer-bottom {
-  min-height: 32px;
+  min-height: 40px;
   color: rgba(255, 255, 255, 0.68);
   font-size: 0.75rem;
 }
@@ -1646,7 +1698,7 @@ body {
   }
 
   .compact-context {
-    padding-block: 1.75rem;
+    padding-block: 2.75rem;
   }
 
   .compact-context .sector-grid ul {
@@ -1810,8 +1862,8 @@ body {
 
   .footer-grid {
     grid-template-columns: 0.85fr 1.15fr;
-    gap: 0.75rem;
-    padding-block: 0.9rem;
+    gap: 1rem;
+    padding-block: 1.4rem;
   }
 
   .footer-intro {

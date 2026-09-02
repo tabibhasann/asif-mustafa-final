@@ -34,7 +34,14 @@ if (profile) {
 
 await client
   .patch("siteSettings")
-  .setIfMissing({ "home.venuesLabel": fallbackSiteSettings.home.venuesLabel })
+  .setIfMissing({
+    "home.venuesLabel": fallbackSiteSettings.home.venuesLabel,
+    "home.practiceAction": fallbackSiteSettings.home.practiceAction,
+    "home.projectsAction": fallbackSiteSettings.home.projectsAction,
+    "home.storiesAction": fallbackSiteSettings.home.storiesAction,
+    "home.publicationsAction": fallbackSiteSettings.home.publicationsAction,
+    "home.insightsAction": fallbackSiteSettings.home.insightsAction,
+  })
   .commit();
 
 const mediaDocuments = await client.fetch(
