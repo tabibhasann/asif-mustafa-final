@@ -125,25 +125,6 @@ h3 {
   border: 0;
 }
 
-.utility-bar {
-  background: var(--navy-2);
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 12px;
-  letter-spacing: 0.035em;
-}
-
-.utility-inner {
-  min-height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.utility-inner a:hover {
-  color: var(--white);
-}
-
 .site-header {
   position: relative;
   z-index: 50;
@@ -212,8 +193,7 @@ h3 {
   font-weight: 500;
 }
 
-.primary-nav > a:not(.nav-contact),
-.more-menu > button {
+.primary-nav > a:not(.nav-contact) {
   position: relative;
   padding-block: 30px 27px;
   background: transparent;
@@ -223,8 +203,7 @@ h3 {
   font: inherit;
 }
 
-.primary-nav > a:not(.nav-contact)::after,
-.more-menu > button::after {
+.primary-nav > a:not(.nav-contact)::after {
   content: "";
   position: absolute;
   left: 0;
@@ -236,9 +215,7 @@ h3 {
 }
 
 .primary-nav > a:hover::after,
-.primary-nav > a.active::after,
-.more-menu:hover > button::after,
-.more-menu > button.active::after {
+.primary-nav > a.active::after {
   right: 0;
 }
 
@@ -255,44 +232,6 @@ h3 {
 
 .nav-contact:hover {
   background: #e6aa2d;
-}
-
-.more-menu {
-  position: relative;
-}
-
-.more-panel {
-  position: absolute;
-  top: calc(100% - 8px);
-  right: 0;
-  min-width: 190px;
-  padding: 10px;
-  background: var(--white);
-  color: var(--ink);
-  border-top: 3px solid var(--gold);
-  box-shadow: var(--shadow);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(8px);
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.more-panel a {
-  display: block;
-  padding: 10px 12px;
-}
-
-.more-panel a:hover {
-  background: var(--ash);
-  color: var(--navy);
-}
-
-.more-menu:hover .more-panel,
-.more-menu:focus-within .more-panel,
-.more-menu.is-open .more-panel {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
 }
 
 .menu-toggle {
@@ -1524,37 +1463,13 @@ h3 {
     display: grid;
   }
 
-  .primary-nav > a:not(.nav-contact),
-  .more-menu > button {
+  .primary-nav > a:not(.nav-contact) {
     display: block;
     padding: 11px 0;
   }
 
-  .primary-nav > a:not(.nav-contact)::after,
-  .more-menu > button::after {
+  .primary-nav > a:not(.nav-contact)::after {
     display: none;
-  }
-
-  .more-panel {
-    position: static;
-    display: none;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 5px 0 10px;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.72);
-    border: 0;
-    box-shadow: none;
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
-  }
-
-  .more-menu.is-open .more-panel {
-    display: grid;
-  }
-
-  .more-panel a {
-    padding: 8px 0;
   }
 
   .nav-contact {
@@ -1579,10 +1494,6 @@ h3 {
 @media (max-width: 900px) {
   .shell {
     width: min(calc(100% - 48px), var(--shell));
-  }
-
-  .utility-inner span:last-child {
-    display: none;
   }
 
   .home-hero-grid,
@@ -1654,14 +1565,6 @@ h3 {
 
   .primary-nav {
     padding-inline: 16px;
-  }
-
-  .utility-inner {
-    justify-content: flex-start;
-  }
-
-  .utility-inner span {
-    display: none;
   }
 
   .brand strong {

@@ -4,11 +4,11 @@ export const headerLinks = [
   { href: "/experience", label: "Experience" },
   { href: "/projects", label: "Projects" },
   { href: "/publications", label: "Publications" },
+  { href: "/insights", label: "Insights" },
 ];
 
 export const knowledgeLinks = [
   { href: "/stories", label: "Stories" },
-  { href: "/insights", label: "Insights" },
   { href: "/credentials", label: "Credentials" },
 ];
 

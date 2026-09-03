@@ -12,6 +12,8 @@ export function EditorialCard({
   priority = false,
   headingLevel = 3,
   className = "",
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
+  reveal = false,
 }: {
   href: string;
   image: string;
@@ -23,11 +25,13 @@ export function EditorialCard({
   priority?: boolean;
   headingLevel?: 2 | 3;
   className?: string;
+  sizes?: string;
+  reveal?: boolean;
 }) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
 
   return (
-    <article className={`editorial-card ${className}`.trim()}>
+    <article className={`editorial-card ${className}`.trim()} data-reveal={reveal ? "item" : undefined}>
       <Link className="editorial-card-link" href={href} prefetch={false}>
         <div className="editorial-card-media">
           <Image
@@ -37,7 +41,7 @@ export function EditorialCard({
             loading={priority ? "eager" : "lazy"}
             fetchPriority={priority ? "high" : undefined}
             quality={60}
-            sizes="(max-width: 640px) 34vw, (max-width: 1024px) 50vw, 25vw"
+            sizes={sizes}
           />
         </div>
         <div className="editorial-card-copy">

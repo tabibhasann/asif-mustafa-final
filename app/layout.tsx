@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { MotionObserver } from "@/components/MotionObserver";
 import { StructuredData } from "@/components/StructuredData";
 import { getPracticeAreas, getProfile, getSiteSettings } from "@/lib/cms";
 import { absoluteUrl, metadataBase, siteOrigin } from "@/lib/seo";
@@ -85,9 +86,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="en">
       <body>
-        <SiteHeader profile={{ name: profile.name, role: profile.role, email: profile.email, location: profile.location }} />
-        <main id="main-content">{children}</main>
+        <SiteHeader profile={{ name: profile.name, role: profile.role, email: profile.email }} />
+        <main id="main-content" tabIndex={-1}>{children}</main>
         <SiteFooter profile={profile} settings={settings.footer} />
+        <MotionObserver />
         <StructuredData id="site-structured-data" data={structuredData} />
       </body>
     </html>

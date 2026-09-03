@@ -43,6 +43,17 @@ export default async function Home() {
   return (
     <div className="home-page">
       <section className="home-hero">
+        <div className="hero-media" aria-hidden="true">
+          <Image
+            src={settings.home.heroImage}
+            alt=""
+            fill
+            loading="eager"
+            fetchPriority="high"
+            quality={70}
+            sizes="100vw"
+          />
+        </div>
         <div className="shell home-hero-grid">
           <div className="hero-copy">
             <p className="eyebrow light">{profile.name} · {settings.home.heroEyebrow}</p>
@@ -57,26 +68,19 @@ export default async function Home() {
               </Link>
             </div>
           </div>
-          <div className="hero-media">
-            <Image
-              src={settings.home.heroImage}
-              alt={settings.home.heroImageAlt}
-              fill
-              loading="eager"
-              fetchPriority="high"
-              quality={70}
-              sizes="(max-width: 900px) 100vw, 55vw"
-            />
-            <div className="hero-media-label">
-              <span>Professional practice</span>
-              <strong>{settings.home.heroImageLabel}</strong>
-            </div>
+          <div className="hero-media-label">
+            <span>Professional practice</span>
+            <strong>{settings.home.heroImageLabel}</strong>
           </div>
         </div>
+        <a className="hero-scroll-cue" href="#professional-profile">
+          <span>Explore the practice</span>
+          <i aria-hidden="true" />
+        </a>
       </section>
 
-      <section className="section section-white home-profile">
-        <div className="shell home-profile-grid">
+      <section className="section home-profile" id="professional-profile">
+        <div className="shell home-profile-grid" data-reveal="section">
           <MonogramPortrait src={profile.portrait} name={profile.name} alt={profile.portraitAlt} className="home-profile-portrait" />
           <div className="home-profile-copy">
             <p className="eyebrow">{settings.home.profileEyebrow}</p>
@@ -98,7 +102,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section section-white composed-section">
+      <section className="section composed-section practice-section">
         <div className="shell">
           <SectionHeading
             eyebrow={settings.home.practiceEyebrow}
@@ -107,7 +111,7 @@ export default async function Home() {
           />
           <div className="practice-card-grid">
             {practiceAreas.map((area) => (
-              <article className="practice-card" key={area.slug}>
+              <article className="practice-card" key={area.slug} data-reveal="item">
                 <Link href={`/practice#${area.slug}`} prefetch={false}>
                   <span className="practice-number">{area.number}</span>
                   <h3>{area.title}</h3>
@@ -123,7 +127,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section section-ash composed-section">
+      <section className="section composed-section projects-section">
         <div className="shell">
           <SectionHeading
             eyebrow={settings.home.projectsEyebrow}
@@ -140,13 +144,16 @@ export default async function Home() {
                 title={project.title}
                 summary={project.summary}
                 tags={project.stack}
+                className="project-card"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 42vw"
+                reveal
               />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section section-white composed-section">
+      <section className="section composed-section stories-section">
         <div className="shell">
           <SectionHeading
             eyebrow={settings.home.storiesEyebrow}
@@ -163,13 +170,43 @@ export default async function Home() {
                 title={story.title}
                 summary={story.excerpt}
                 tags={story.stack}
+                className="story-card"
+                sizes="(max-width: 640px) 100vw, (max-width: 900px) 38vw, 20vw"
+                reveal
               />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section section-ash composed-section">
+      <section className="section composed-section insights-section">
+        <div className="shell home-insights-surface">
+          <SectionHeading
+            eyebrow={settings.home.insightsEyebrow}
+            title={settings.home.insightsTitle}
+            action={{ href: "/insights", label: settings.home.insightsAction }}
+            light
+          />
+          <div className="editorial-card-grid insight-preview-grid">
+            {insights.slice(0, 3).map((insight) => (
+              <EditorialCard
+                key={insight.slug}
+                href={`/insights/${insight.slug}`}
+                image={insight.image}
+                eyebrow={insight.category}
+                title={insight.title}
+                summary={insight.excerpt}
+                meta={`${insight.date} · ${insight.readingTime}`}
+                className="insight-card"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
+                reveal
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section composed-section publications-section">
         <div className="shell">
           <SectionHeading
             eyebrow={settings.home.publicationsEyebrow}
@@ -178,7 +215,7 @@ export default async function Home() {
           />
           <div className="publication-preview">
             {publications.slice(0, 4).map((publication) => (
-              <article key={publication.title}>
+              <article key={publication.title} data-reveal="item">
                 <span>{publication.year}</span>
                 <div>
                   <p className="card-kicker">{publication.type} · {publication.status}</p>
@@ -198,31 +235,8 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section section-white composed-section">
-        <div className="shell">
-          <SectionHeading
-            eyebrow={settings.home.insightsEyebrow}
-            title={settings.home.insightsTitle}
-            action={{ href: "/insights", label: settings.home.insightsAction }}
-          />
-          <div className="editorial-card-grid insight-preview-grid">
-            {insights.slice(0, 3).map((insight) => (
-              <EditorialCard
-                key={insight.slug}
-                href={`/insights/${insight.slug}`}
-                image={insight.image}
-                eyebrow={insight.category}
-                title={insight.title}
-                summary={insight.excerpt}
-                meta={`${insight.date} · ${insight.readingTime}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="sector-band compact-context">
-        <div className="shell sector-grid">
+        <div className="shell sector-grid" data-reveal="section">
           <div>
             <p className="eyebrow light">{settings.home.contextEyebrow}</p>
             <h2>{settings.home.contextTitle}</h2>

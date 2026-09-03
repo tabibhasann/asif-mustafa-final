@@ -16,7 +16,7 @@ export function SectionHeading({
   light?: boolean;
 }) {
   return (
-    <div className={`section-heading ${light ? "light" : ""}`}>
+    <div className={`section-heading ${light ? "light" : ""}`} data-reveal="heading">
       <div>
         <p className={`eyebrow ${light ? "light" : ""}`}>{eyebrow}</p>
         <h2>{title}</h2>
