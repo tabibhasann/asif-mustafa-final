@@ -822,6 +822,8 @@ body {
 .brand-mark {
   width: 38px;
   height: 38px;
+  color: #f7cf71;
+  border-color: #f7cf71;
   font-size: 17px;
 }
 
