@@ -21,6 +21,21 @@
 .home-page .insights-section { background: #f8fafb; }
 .home-page .publications-section { background: #fff; }
 
+/* Keep the hero cue clear of the overlapping profile at every breakpoint. */
+body[data-design="main"] .hero-scroll-cue { bottom: 4.75rem; }
+body[data-design="main"] .home-page .hero-media-label { bottom: 6rem; }
+@media (min-width: 1121px) {
+  .home-page .home-profile-grid { width: min(calc(100% - 80px), 1280px); }
+  body[data-design="main"] .home-page .home-profile { margin-top: -3.75rem; }
+  body[data-design="main"] .home-page .home-profile-grid {
+    grid-template-columns: minmax(240px, .7fr) minmax(0, 1.4fr) minmax(280px, .85fr);
+  }
+  body[data-design="main"] .home-profile-copy > p:not(.eyebrow) { font-size: .95rem; line-height: 1.65; }
+}
+@media (max-width: 700px) {
+  body[data-design="main"] .hero-scroll-cue { bottom: 2.5rem; }
+}
+
 .home-page .composed-section {
   padding-block: clamp(3.25rem, 5vw, 4.75rem);
 }

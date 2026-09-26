@@ -50,7 +50,7 @@ body[data-design="alternative"] .hero-scroll-cue { color: #fff; letter-spacing: 
 body[data-design="alternative"] .hero-scroll-cue i { border-radius: 0; box-shadow: none; height: 20px; width: 2px; }
 
 /* Profile reads as a continuous editorial spread, not an overlapping card. */
-body[data-design="alternative"] .home-page .home-profile { margin-top: 0; padding-block: 3.5rem; background: #f2f4f3; border-bottom: 1px solid var(--border); }
+body[data-design="alternative"] .home-page .home-profile { margin-top: 0; padding-block: 2.25rem 3.5rem; background: #f2f4f3; border-bottom: 1px solid var(--border); }
 body[data-design="alternative"] .home-page .home-profile-grid { grid-template-columns: minmax(220px, .7fr) minmax(0, 1.35fr) minmax(230px, .7fr); border: 0; border-radius: 0; box-shadow: none; background: #fff; min-height: 360px; }
 body[data-design="alternative"] .home-page .home-profile-portrait { min-height: 360px; }
 body[data-design="alternative"] .home-profile-copy { padding: clamp(1.5rem, 3vw, 2.5rem); }

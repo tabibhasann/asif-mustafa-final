@@ -6,6 +6,7 @@ Reviewed against the complete Bengali meeting transcript supplied in attachment 
 | --- | --- |
 | Keep the existing color family; distinguish sections and individual items with subtle shades | Main edition retains navy, white and gold; cool gray, pale blue and warm white distinguish sections and practice/profile cards. |
 | Smaller, more professional, aligned footer | Compact enquiry strip, aligned navigation/contact columns, responsive stacking. |
+| Make the indicated area wider and move it upward | Tabib identified Professional Profile as the probable target. Both editions now use a wider desktop profile; the main card moves slightly higher, while the editorial edition reduces the gap above it. Portrait, text and highlights remain grouped, with responsive stacking. This is an informed interpretation, not confirmation of the cursor target. |
 | Editable CGPA and TGPA | Optional fields in Profile > Education, with an optional grading scale; no invented grades. |
 | Make the principles area subtler | Quieter Professional approach copy and restrained styling. |
 | Six practice areas | Six total. The former combined sustainability/environment/energy area was split into Environmental & Sustainability Systems and Energy Systems. This does not invent six additional specialties. |
@@ -21,7 +22,7 @@ Reviewed against the complete Bengali meeting transcript supplied in attachment 
 
 ## Items requiring visual context or client material
 
-- The initial requests to make “this” wider/longer and move “this portion” upward reference a cursor in a screen share. The text does not identify those elements. A screenshot or recording is needed to match them exactly; these are not marked complete.
+- The cursor-dependent requests have been applied to Professional Profile based on Tabib's clarification. A screenshot or recording would still be needed to confirm that this is exactly what the client pointed at.
 - The mentioned sample screenshots, story examples and documentary files have not been supplied with this transcript. The editing capabilities are ready, but the actual material must be uploaded by the client.
 - The real professional portrait and any grades must come from the client.
 - Eco-tourism, solar installation, GIS collaboration and the tannery sales presentation were separate future-work discussions. They were not published as portfolio facts or treated as website feature requests.
