@@ -1,4 +1,19 @@
 /* Client review: clearer sections, quieter details and readable professional records. */
+.nav-insights { position: relative; display: flex; align-items: center; color: inherit; }
+.nav-insights > a { display: inline-flex; align-items: center; min-height: 44px; position: relative; }
+.nav-insights.active > a::after { content: ""; position: absolute; bottom: 5px; left: 0; right: 0; height: 2px; background: var(--gold); }
+.nav-insights-toggle { width: 32px; min-height: 44px; display: grid; place-items: center; border: 0; background: transparent; color: inherit; cursor: pointer; }
+.nav-insights-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.nav-insights-menu { position: absolute; right: 0; top: 100%; z-index: 70; min-width: 180px; padding: .45rem; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--navy); box-shadow: 0 12px 30px #061a2e20; }
+.nav-insights-menu[hidden] { display: none; }
+.nav-insights-menu a { display: flex; align-items: center; min-height: 44px; padding: .55rem .85rem; border-radius: 4px; }
+.nav-insights-menu a:hover, .nav-insights-menu a:focus-visible { background: #eef3f6; color: var(--navy); }
+@media (max-width: 1120px) {
+  .nav-insights { display: grid; grid-template-columns: 1fr 44px; }
+  .nav-insights-toggle { width: 44px; }
+  .nav-insights-menu { position: static; grid-column: 1 / -1; box-shadow: none; margin-block: .25rem .5rem; }
+}
+
 .home-page { background: #fff; }
 .home-page .practice-section { background: #f4f7f8; }
 .home-page .projects-section { background: #fff; }

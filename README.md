@@ -76,6 +76,7 @@ Copy `.env.example` to `.env.local` if the public deployment needs different San
 
 ```bash
 npm run typecheck
+npm test
 npm run build
 npm audit --omit=dev
 
@@ -85,3 +86,5 @@ npm audit --omit=dev
 ```
 
 The final project includes route-specific metadata, social previews, JSON-LD, a sitemap, robots rules, `llms.txt`, responsive layouts and reduced-motion support.
+
+See [the meeting audit](docs/meeting-audit.md) for the request-by-request implementation checklist and the cursor-specific adjustments that still need a screenshot or recording.

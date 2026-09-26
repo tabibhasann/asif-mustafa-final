@@ -4,7 +4,7 @@ import { useDeferredValue, useMemo, useState } from "react";
 import type { Publication } from "@/lib/content";
 import "@/app/collections.css";
 
-const statuses = ["Published", "In press", "Under review", "Submitted", "Ongoing"] as const;
+const preferredStatuses = ["Published", "In press", "Under review", "Under submission", "Submitted", "Ongoing"] as const;
 const preferredTypes = ["Journal article", "Conference paper", "Dataset", "Book chapter", "Working paper"] as const;
 
 function displayStatus(status: string): string {
@@ -17,6 +17,11 @@ export function PublicationArchive({ publications }: { publications: Publication
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
   const availableTypes = new Set(publications.map((publication) => publication.type));
+  const availableStatuses = new Set(publications.map((publication) => displayStatus(publication.status)));
+  const statuses = [
+    ...preferredStatuses,
+    ...[...availableStatuses].filter((status) => !preferredStatuses.includes(status as typeof preferredStatuses[number])).sort(),
+  ];
   const statusCounts = new Map<string, number>(statuses.map((status): [string, number] => [
     status,
     publications.filter((publication) => displayStatus(publication.status) === status).length,
@@ -88,13 +93,13 @@ export function PublicationArchive({ publications }: { publications: Publication
                 <span>{displayStatus(publication.status)}</span>
               </div>
               <h2>{publication.title}</h2>
-              <p>{publication.venue}</p>
+              {publication.venue && <p>{publication.venue}</p>}
               <ul className="tag-list">
                 {publication.keywords.map((keyword) => <li key={keyword}>{keyword}</li>)}
               </ul>
             </div>
             <div className="publication-year">
-              <strong>{publication.year}</strong>
+              {publication.year && <strong>{publication.year}</strong>}
               {publication.href
                 ? <a href={publication.href} target="_blank" rel="noreferrer" aria-label={`Open publication: ${publication.title} in a new tab`}>↗</a>
                 : null}

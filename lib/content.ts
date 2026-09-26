@@ -126,12 +126,14 @@ export type Project = {
   imageAlt?: string;
   stack: string[];
   featured?: boolean;
+  status?: string;
   context: string;
   challenge: string;
   approach: string[];
   outcome: string;
   detailLabels?: Partial<Record<"context" | "challenge" | "approach" | "outcome", string>>;
   detailHeadings?: Partial<Record<"context" | "challenge" | "approach" | "outcome", string>>;
+  recordLabels?: Partial<Record<"heading" | "primaryField" | "connectedFields" | "status", string>>;
   updatedAt?: string;
 };
 
@@ -145,7 +147,7 @@ export type Publication = {
   venue: string;
   year: string;
   type: "Journal article" | "Conference paper" | "Dataset" | "Book chapter" | "Working paper";
-  status: "Published" | "In press" | "Under review" | "Submitted" | "Ongoing" | (string & {});
+  status: "Published" | "In press" | "Under review" | "Under submission" | "Submitted" | "Ongoing" | (string & {});
   keywords: string[];
   href?: string;
 };

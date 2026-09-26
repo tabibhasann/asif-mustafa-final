@@ -64,11 +64,11 @@ export default async function ProjectDetailPage({ params }: Props) {
       <section className="article-section section-white">
         <div className="shell article-layout">
           <aside className="article-aside">
-            <p className="eyebrow">Project record</p>
+            <p className="eyebrow">{project.recordLabels?.heading || "Project record"}</p>
             <div className="fact-list">
-              <div className="fact-row"><span>Primary field</span><strong>{project.category}</strong></div>
-              <div className="fact-row"><span>Connected fields</span><strong>{project.categories.join(" · ")}</strong></div>
-              <div className="fact-row"><span>Status</span><strong>Selected portfolio work</strong></div>
+              <div className="fact-row"><span>{project.recordLabels?.primaryField || "Primary field"}</span><strong>{project.category}</strong></div>
+              <div className="fact-row"><span>{project.recordLabels?.connectedFields || "Connected fields"}</span><strong>{project.categories.join(" · ")}</strong></div>
+              <div className="fact-row"><span>{project.recordLabels?.status || "Status"}</span><strong>{project.status || "Selected portfolio work"}</strong></div>
             </div>
           </aside>
           <article className="article-body">

@@ -15,6 +15,7 @@ export const project = defineType({
     defineField({ name: "fallbackImage", title: "Fallback image path", type: "string", hidden: true, readOnly: true }),
     defineField({ name: "stack", title: "Methods and technology", type: "array", of: [{ type: "string" }], validation: (rule) => rule.required().min(1).max(8) }),
     defineField({ name: "featured", type: "boolean", initialValue: false }),
+    defineField({ name: "status", title: "Project status", type: "string", description: "Optional. Defaults to ‘Selected portfolio work’ on the website." }),
     defineField({ name: "context", type: "text", rows: 4, validation: (rule) => rule.required() }),
     defineField({ name: "challenge", type: "text", rows: 4, validation: (rule) => rule.required() }),
     defineField({ name: "approach", type: "array", of: [{ type: "text", rows: 2 }], validation: (rule) => rule.required().min(1) }),
@@ -26,6 +27,12 @@ export const project = defineType({
     defineField({ name: "detailHeadings", title: "Detail section headings", type: "object", description: "Optional large headings. Leave blank for website defaults.", fields: [
       defineField({ name: "context", type: "string" }), defineField({ name: "challenge", type: "string" }),
       defineField({ name: "approach", type: "string" }), defineField({ name: "outcome", type: "string" }),
+    ] }),
+    defineField({ name: "recordLabels", title: "Project record labels", type: "object", description: "Optional heading and field labels in the project sidebar. Leave blank for website defaults.", fields: [
+      defineField({ name: "heading", title: "Record heading", type: "string" }),
+      defineField({ name: "primaryField", title: "Primary field label", type: "string" }),
+      defineField({ name: "connectedFields", title: "Connected fields label", type: "string" }),
+      defineField({ name: "status", title: "Status label", type: "string" }),
     ] }),
     defineField({ name: "order", title: "Display order", type: "number", initialValue: 10, validation: (rule) => rule.required() }),
   ],

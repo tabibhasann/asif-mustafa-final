@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { Profile } from "@/lib/content";
 import { headerLinks } from "@/lib/site";
+import { InsightsNavigation } from "@/components/InsightsNavigation";
 
 export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role" | "email"> }) {
   const pathname = usePathname();
@@ -95,7 +96,9 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
             className={`primary-nav ${open ? "is-open" : ""}`}
             aria-label="Primary navigation"
           >
-            {headerLinks.map((item) => (
+            {headerLinks.map((item) => item.href === "/insights" ? (
+              <InsightsNavigation key={item.href} active={pathname.startsWith("/insights") || pathname.startsWith("/stories")} onNavigate={() => setOpen(false)} />
+            ) : (
               <Link
                 className={pathname.startsWith(item.href) ? "active" : ""}
                 href={item.href}

@@ -208,8 +208,8 @@ export const getProject = cache(async (slug: string) => {
       "slug": slug.current, title, category,
       "categories": select(count(coalesce(categories, [])) > 0 => categories, defined(category) => [category], []),
       summary, "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
-      "stack": coalesce(stack, []), featured, context, challenge,
-      "approach": coalesce(approach, []), outcome, detailLabels, detailHeadings, "updatedAt": _updatedAt
+      "stack": coalesce(stack, []), featured, "status": coalesce(status, ""), context, challenge,
+      "approach": coalesce(approach, []), outcome, detailLabels, detailHeadings, recordLabels, "updatedAt": _updatedAt
     }`,
     { slug },
     fallbackProjects.find((project) => project.slug === slug),
@@ -220,7 +220,7 @@ export const getProject = cache(async (slug: string) => {
 export const getPublications = cache(async () => {
   const items = await collectionOrFallback<Omit<Publication, "status"> & { status: string }>(
     `*[_type == "publication"]|order(year desc, title asc){
-      title, venue, year, type, status, "keywords": coalesce(keywords, []), href
+      title, "venue": coalesce(venue, ""), "year": coalesce(year, ""), type, status, "keywords": coalesce(keywords, []), href
     }`,
     fallbackPublications,
   );
