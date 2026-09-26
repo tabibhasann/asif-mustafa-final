@@ -3,6 +3,7 @@
 An institutional, research-led professional website built with Next.js and prepared for Sanity content management.
 
 - Public website: [asif-mustafa-final.vercel.app](https://asif-mustafa-final.vercel.app)
+- Editorial comparison: [asif-mustafa-editorial.vercel.app](https://asif-mustafa-editorial.vercel.app)
 - Content editor: [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio)
 - Source repository: [github.com/tabibhasann/asif-mustafa-final](https://github.com/tabibhasann/asif-mustafa-final)
 
