@@ -24,7 +24,7 @@ export type Profile = {
   cvUrl?: string;
   biography: string[];
   metrics: { value: string; label: string }[];
-  education: { degree: string; institution: string; note: string }[];
+  education: { degree: string; institution: string; note: string; cgpa?: string; tgpa?: string; gradeScale?: string }[];
 };
 
 type IntroCopy = {
@@ -130,6 +130,8 @@ export type Project = {
   challenge: string;
   approach: string[];
   outcome: string;
+  detailLabels?: Partial<Record<"context" | "challenge" | "approach" | "outcome", string>>;
+  detailHeadings?: Partial<Record<"context" | "challenge" | "approach" | "outcome", string>>;
   updatedAt?: string;
 };
 
@@ -143,7 +145,7 @@ export type Publication = {
   venue: string;
   year: string;
   type: "Journal article" | "Conference paper" | "Dataset" | "Book chapter" | "Working paper";
-  status: "Published" | "In press" | "Under review" | "Conference" | "Dataset";
+  status: "Published" | "In press" | "Under review" | "Submitted" | "Ongoing" | (string & {});
   keywords: string[];
   href?: string;
 };
@@ -159,6 +161,7 @@ export type Story = {
   stack: string[];
   intro: string;
   sections: { title: string; body: string }[];
+  content?: import("@portabletext/types").PortableTextBlock[];
   updatedAt?: string;
 };
 
@@ -252,25 +255,25 @@ export const siteSettings: SiteSettings = {
     profileEyebrow: "Professional profile",
     profileTitle: "Engineering insight, strengthened by data.",
     practiceEyebrow: "Research & professional practice",
-    practiceTitle: "Five areas of research and technical practice.",
-    practiceIntro: "Research, analysis and engineering across five connected areas.",
+    practiceTitle: "Research and technical practice.",
+    practiceIntro: "Research, analysis and engineering across connected areas.",
     practiceAction: "Explore practice",
     projectsEyebrow: "Selected projects",
     projectsTitle: "Selected data and engineering projects.",
     projectsIntro: "Five examples of work in data engineering, search, machine learning, analytics and supply chains.",
     projectsAction: "View all projects",
-    storiesEyebrow: "Field stories",
+    storiesEyebrow: "My Stories",
     storiesTitle: "Lessons from fieldwork and implementation.",
     storiesIntro: "Four short cases from industrial research, digital operations, energy audits and environmental studies.",
-    storiesAction: "View all field stories",
+    storiesAction: "View all stories",
     publicationsEyebrow: "Publications",
     publicationsTitle: "Selected publications and datasets.",
     publicationsIntro: "Research on workplace safety, sustainable manufacturing, machine learning, energy and environmental decisions.",
     publicationsAction: "View all publications",
-    insightsEyebrow: "Insights",
+    insightsEyebrow: "Blogs",
     insightsTitle: "Notes on research and practice.",
     insightsIntro: "Short articles on research methods, data systems and industrial decision-making.",
-    insightsAction: "View all insights",
+    insightsAction: "Read all blogs",
     contextEyebrow: "Context of work",
     contextTitle: "Work across manufacturing, public institutions and research.",
     contexts: [
@@ -299,7 +302,7 @@ export const siteSettings: SiteSettings = {
     },
     practice: {
       eyebrow: "Research & professional practice",
-      title: "Five connected areas of practice.",
+      title: "Connected areas of practice.",
       intro: "Research, analytics and engineering applied to practical industrial questions.",
     },
     experience: {
@@ -318,14 +321,14 @@ export const siteSettings: SiteSettings = {
       intro: "Journal articles, conference papers and datasets across industry, sustainability and intelligent systems.",
     },
     stories: {
-      eyebrow: "Field stories",
+      eyebrow: "My Stories",
       title: "Cases from research and practice.",
       intro: "Concise accounts of the setting, decisions and lessons behind selected technical work.",
     },
     insights: {
       eyebrow: "Insights",
-      title: "Ideas, methods and field perspectives.",
-      intro: "Editorial notes on evidence, intelligent systems and responsible industrial decisions.",
+      title: "Ideas, experiences and the work behind them.",
+      intro: "Blogs and stories on research methods, technical work and decisions shaped by field experience.",
     },
     credentials: {
       eyebrow: "Credentials",
@@ -339,9 +342,9 @@ export const siteSettings: SiteSettings = {
     educationEyebrow: "Education",
     educationTitle: "Engineering foundations, advanced through data science.",
     educationIntro: "Formal study provides the technical grounding; applied work connects it to people, organisations and operating systems.",
-    principlesEyebrow: "Working principles",
-    principlesTitle: "Principles that guide the work.",
-    principlesIntro: "Four principles guide how I frame questions, analyse evidence and develop practical recommendations.",
+    principlesEyebrow: "Professional approach",
+    principlesTitle: "How I approach the work.",
+    principlesIntro: "Engineering context, statistical analysis and practical use shape my research and technical work.",
     principles: [
       { title: "Start with the decision", text: "Define the question, constraints and evidence needed before selecting a technical method." },
       { title: "Keep evidence traceable", text: "Connect recommendations to source records, assumptions and analytical choices." },
@@ -414,15 +417,22 @@ export const practiceAreas: PracticeArea[] = [
   {
     number: "05",
     slug: "sustainability-energy",
-    title: "Sustainability, Environmental & Energy Systems",
+    title: "Environmental & Sustainability Systems",
     summary:
-      "Practical research for resource efficiency, environmental responsibility and energy decisions.",
+      "Practical research for resource efficiency and environmental responsibility.",
     capabilities: [
       "GIS, EIA and life-cycle assessment",
-      "Environmental and energy modelling",
+      "Environmental modelling",
       "Resource-efficiency analysis",
       "SEM, FTIR, UV-Vis and analytical testing",
     ],
+  },
+  {
+    number: "06",
+    slug: "energy-systems",
+    title: "Energy Systems",
+    summary: "Analysis and modelling to inform practical energy decisions.",
+    capabilities: ["Energy modelling", "Resource-efficiency analysis"],
   },
 ];
 
@@ -720,7 +730,7 @@ export const publications: Publication[] = [
     venue: "51st International Conference on Computers & Industrial Engineering",
     year: "2024",
     type: "Conference paper",
-    status: "Conference",
+    status: "Published",
     keywords: ["Machine learning", "Product development", "Manufacturing"],
   },
   {
@@ -736,7 +746,7 @@ export const publications: Publication[] = [
     venue: "IEOM Society International",
     year: "2024",
     type: "Conference paper",
-    status: "Conference",
+    status: "Published",
     keywords: ["Forecasting", "Energy systems", "Machine learning"],
     href: "https://ieomsociety.org/proceedings/bangladesh2024/220.pdf",
   },
@@ -745,7 +755,7 @@ export const publications: Publication[] = [
     venue: "IEOM Society International",
     year: "2024",
     type: "Conference paper",
-    status: "Conference",
+    status: "Published",
     keywords: ["MCDA", "Environmental management", "Decision analysis"],
   },
   {
@@ -753,7 +763,7 @@ export const publications: Publication[] = [
     venue: "IEOM Society International",
     year: "2024",
     type: "Conference paper",
-    status: "Conference",
+    status: "Published",
     keywords: ["Certification", "Sustainable tanning", "Barrier analysis"],
   },
   {
@@ -761,7 +771,7 @@ export const publications: Publication[] = [
     venue: "Mendeley Data",
     year: "2024",
     type: "Dataset",
-    status: "Dataset",
+    status: "Published",
     keywords: ["Leather processing", "Product development", "Experimental data"],
     href: "https://data.mendeley.com/datasets/gwj6y2zt9d/1",
   },

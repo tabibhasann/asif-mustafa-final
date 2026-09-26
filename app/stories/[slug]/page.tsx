@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StructuredData } from "@/components/StructuredData";
+import { PortableArticle } from "@/components/PortableArticle";
 import { getStories, getStory } from "@/lib/cms";
 import { absoluteUrl, createPageMetadata, siteOrigin } from "@/lib/seo";
 
@@ -52,8 +53,8 @@ export default async function StoryDetailPage({ params }: Props) {
       <section className="detail-hero">
         <div className="shell detail-hero-grid">
           <div className="detail-hero-copy">
-            <Link className="text-link" href="/stories" prefetch={false}>← All stories</Link>
-            <p className="eyebrow light">Field story · {story.category}</p>
+            <Link className="text-link" href="/stories" prefetch={false}>← My Stories</Link>
+            <p className="eyebrow light">My Stories · {story.category}</p>
             <h1>{story.title}</h1>
             <p>{story.excerpt}</p>
           </div>
@@ -69,6 +70,7 @@ export default async function StoryDetailPage({ params }: Props) {
             <ul className="article-stack">{story.stack.map((item) => <li key={item}>{item}</li>)}</ul>
           </aside>
           <article className="article-body">
+            {story.content?.length ? <PortableArticle value={story.content} /> : <>
             <p className="article-lead">{story.intro}</p>
             {story.sections.map((section) => (
               <section key={section.title}>
@@ -76,6 +78,7 @@ export default async function StoryDetailPage({ params }: Props) {
                 <p>{section.body}</p>
               </section>
             ))}
+            </>}
           </article>
         </div>
       </section>

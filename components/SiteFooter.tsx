@@ -40,7 +40,6 @@ export function SiteFooter({
             <span className="brand-mark" aria-hidden="true">AM</span>
             <span>
               <strong>{profile.name}</strong>
-              <small>{profile.role}</small>
             </span>
           </Link>
           <p>{settings.summary}</p>
@@ -55,9 +54,11 @@ export function SiteFooter({
         </div>
         <div className="footer-connect">
           <h3>Connect</h3>
-          <ul>
+          <ul className="footer-contact-list">
             <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
             <li><a href={`tel:${profile.phone.replace(/\s/g, "")}`}>{profile.phone}</a></li>
+          </ul>
+          <ul className="footer-social-list" aria-label="Professional profiles">
             <li><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a></li>
             <li><a href={profile.scholar} target="_blank" rel="noreferrer">Google Scholar ↗</a></li>
             <li><a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a></li>

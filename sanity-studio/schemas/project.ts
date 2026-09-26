@@ -19,6 +19,14 @@ export const project = defineType({
     defineField({ name: "challenge", type: "text", rows: 4, validation: (rule) => rule.required() }),
     defineField({ name: "approach", type: "array", of: [{ type: "text", rows: 2 }], validation: (rule) => rule.required().min(1) }),
     defineField({ name: "outcome", type: "text", rows: 4, validation: (rule) => rule.required() }),
+    defineField({ name: "detailLabels", title: "Detail section labels", type: "object", description: "Optional small labels above each section. Leave blank for website defaults.", fields: [
+      defineField({ name: "context", type: "string" }), defineField({ name: "challenge", type: "string" }),
+      defineField({ name: "approach", type: "string" }), defineField({ name: "outcome", type: "string" }),
+    ] }),
+    defineField({ name: "detailHeadings", title: "Detail section headings", type: "object", description: "Optional large headings. Leave blank for website defaults.", fields: [
+      defineField({ name: "context", type: "string" }), defineField({ name: "challenge", type: "string" }),
+      defineField({ name: "approach", type: "string" }), defineField({ name: "outcome", type: "string" }),
+    ] }),
     defineField({ name: "order", title: "Display order", type: "number", initialValue: 10, validation: (rule) => rule.required() }),
   ],
   orderings: [{ title: "Display order", name: "orderAsc", by: [{ field: "order", direction: "asc" }] }],

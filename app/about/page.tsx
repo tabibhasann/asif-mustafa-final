@@ -6,7 +6,7 @@ import { absoluteUrl, createPageMetadata, siteOrigin } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
   title: "About",
-  description: "Professional profile, education and working principles of Md Asif Mustafa.",
+  description: "Professional profile, education and approach of Md Asif Mustafa.",
   path: "/about",
 });
 
@@ -78,6 +78,10 @@ export default async function AboutPage() {
                 <h3>{item.degree}</h3>
                 <strong>{item.institution}</strong>
                 <p>{item.note}</p>
+                {(item.cgpa || item.tgpa) && <dl className="education-grades">
+                  {item.cgpa && <div><dt>CGPA</dt><dd>{item.cgpa}{item.gradeScale && ` / ${item.gradeScale}`}</dd></div>}
+                  {item.tgpa && <div><dt>TGPA</dt><dd>{item.tgpa}{item.gradeScale && ` / ${item.gradeScale}`}</dd></div>}
+                </dl>}
               </article>
             ))}
           </div>

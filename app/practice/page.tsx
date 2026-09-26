@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
   title: "Research & Professional Practice",
-  description: "Five connected areas of research, analytics and technical advisory practice.",
+  description: "Research, analytics, engineering, sustainability and energy expertise for practical industrial decisions.",
   path: "/practice",
 });
 

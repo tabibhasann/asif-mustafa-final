@@ -8,7 +8,7 @@ export const headerLinks = [
 ];
 
 export const knowledgeLinks = [
-  { href: "/stories", label: "Stories" },
+  { href: "/stories", label: "My Stories" },
   { href: "/credentials", label: "Credentials" },
 ];
 

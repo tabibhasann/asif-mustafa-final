@@ -72,13 +72,13 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
           </aside>
           <article className="article-body">
-            <section><p className="eyebrow">Context</p><h2>Why the work was needed</h2><p>{project.context}</p></section>
-            <section><p className="eyebrow">Challenge</p><h2>The question to resolve</h2><p>{project.challenge}</p></section>
+            <section><p className="eyebrow">{project.detailLabels?.context || "Context"}</p><h2>{project.detailHeadings?.context || "Why the work was needed"}</h2><p>{project.context}</p></section>
+            <section><p className="eyebrow">{project.detailLabels?.challenge || "Challenge"}</p><h2>{project.detailHeadings?.challenge || "The question to resolve"}</h2><p>{project.challenge}</p></section>
             <section>
-              <p className="eyebrow">Approach</p><h2>How the system was developed</h2>
+              <p className="eyebrow">{project.detailLabels?.approach || "Approach"}</p><h2>{project.detailHeadings?.approach || "How the system was developed"}</h2>
               <ol>{project.approach.map((item) => <li key={item}>{item}</li>)}</ol>
             </section>
-            <section><p className="eyebrow">Outcome</p><h2>What the work established</h2><p>{project.outcome}</p></section>
+            <section><p className="eyebrow">{project.detailLabels?.outcome || "Outcome"}</p><h2>{project.detailHeadings?.outcome || "What the work established"}</h2><p>{project.outcome}</p></section>
           </article>
         </div>
       </section>

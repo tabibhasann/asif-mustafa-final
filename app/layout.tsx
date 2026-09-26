@@ -7,6 +7,8 @@ import { getPracticeAreas, getProfile, getSiteSettings } from "@/lib/cms";
 import { absoluteUrl, metadataBase, siteOrigin } from "@/lib/seo";
 import "./globals.css";
 import "./composed.css";
+import "./refinements.css";
+import "./alternative.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -24,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: "Md Asif Mustafa",
     publisher: "Md Asif Mustafa",
     category: "Research and professional services",
-    robots: { index: true, follow: true },
+    robots: { index: process.env.DESIGN_VARIANT !== "alternative", follow: true },
     openGraph: {
       title: settings.seo.title,
       description: settings.seo.description,
@@ -85,7 +87,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
     <html lang="en">
-      <body>
+      <body data-design={process.env.DESIGN_VARIANT === "alternative" ? "alternative" : "main"}>
         <SiteHeader profile={{ name: profile.name, role: profile.role, email: profile.email }} />
         <main id="main-content" tabIndex={-1}>{children}</main>
         <SiteFooter profile={profile} settings={settings.footer} />

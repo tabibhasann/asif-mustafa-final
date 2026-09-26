@@ -1,0 +1,168 @@
+/* Client review: clearer sections, quieter details and readable professional records. */
+.home-page { background: #fff; }
+.home-page .practice-section { background: #f4f7f8; }
+.home-page .projects-section { background: #fff; }
+.home-page .stories-section { background: #edf2f5; }
+.home-page .insights-section { background: #f8fafb; }
+.home-page .publications-section { background: #fff; }
+
+.home-page .composed-section {
+  padding-block: clamp(3.25rem, 5vw, 4.75rem);
+}
+
+.home-page .section-heading h2 {
+  font-size: clamp(2rem, 3.1vw, 2.85rem);
+  line-height: 1.12;
+}
+
+.home-page .practice-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+.home-page .practice-card-grid > :nth-child(n) { grid-column: auto; }
+.home-page .practice-card { box-shadow: 0 5px 20px rgba(6, 26, 46, .035); }
+.home-page .practice-card > a {
+  min-height: 228px;
+  padding: 1.5rem;
+  background: #fff;
+}
+
+.home-page .practice-card:nth-child(3n + 2) > a { background: #f0f5f8; }
+.home-page .practice-card:nth-child(3n) > a { background: #f8f6ef; }
+.home-page .practice-card h3 { font-size: 1.28rem; line-height: 1.2; }
+.home-page .practice-card p { font-size: .9rem; }
+.home-page .practice-card .practice-number { margin-bottom: .8rem; }
+.home-page .practice-card-tail { margin-top: auto; font-size: .8rem; }
+.home-page .profile-fact:nth-child(1) { background: #f2f6f8; }
+.home-page .profile-fact:nth-child(2) { background: #f8f6ef; }
+.home-page .profile-fact:nth-child(3) { background: #edf3f5; }
+.home-page .profile-fact:nth-child(4) { background: #fff; }
+
+.home-page .editorial-card-copy > p:not(.card-kicker) { font-size: .9rem; }
+.home-page .editorial-card-copy h3 { line-height: 1.22; }
+.home-page .insight-card:nth-child(2) { margin: 0; }
+.home-page .publication-preview article > a { width: 44px; height: 44px; }
+.home-page .publication-preview article { grid-template-columns: 56px minmax(0, 1fr) 44px; }
+.home-page .publication-preview h3 { line-height: 1.35; }
+
+.practice-chapter {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f8fafb;
+}
+.practice-chapter:nth-child(3n + 2) { background: #f0f5f8; }
+.practice-chapter:nth-child(3n) { background: #f8f6ef; }
+.practice-chapter-inner { padding: 1.65rem; }
+.practice-chapter p, .practice-chapter li { font-size: .9rem; line-height: 1.6; }
+.practice-chapter .capability-list {
+  position: relative;
+  padding-top: 1rem;
+}
+.practice-chapter .capability-list::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: rgba(6, 26, 46, .16);
+}
+.practice-chapter .capability-list li { border: 0; }
+
+.experience-system { border-radius: 14px; overflow: hidden; }
+.experience-entry:nth-child(even) { background: #f5f8fa; }
+.experience-role {
+  color: #855900;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.experience-copy h2 { font-size: clamp(1.4rem, 2.1vw, 1.8rem); line-height: 1.25; }
+.experience-description, .impact-list li { font-size: .9rem; line-height: 1.6; }
+.impact-list { background: transparent; gap: 1.25rem; }
+.impact-list li { background: transparent; padding: .75rem 1rem .5rem 0; }
+
+.principles-section { background: #f6f8fa; border-top: 0; }
+.principles-section .section-heading { margin-bottom: 1.4rem; }
+.principles-section .section-heading h2 { font-size: clamp(1.7rem, 2.5vw, 2.15rem); }
+.principles-grid { gap: 1.5rem; padding: 0; background: none; }
+.principle-card { min-height: 0; padding: .75rem 0; background: none; }
+.principle-card > span { display: none; }
+.principle-card h3 { font-size: 1.1rem; line-height: 1.35; }
+.principle-card p { font-size: .9rem; line-height: 1.6; }
+.education-card { border-radius: 12px; }
+.education-grades { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; margin-top: 1rem; }
+.education-grades > div { display: flex; align-items: baseline; gap: .5rem; }
+.education-grades dt { font-size: .75rem; font-weight: 700; color: var(--muted); }
+.education-grades dd { margin: 0; color: var(--navy); font-weight: 600; }
+
+.article-video { margin-block: 2rem; }
+.article-video iframe, .article-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 12px;
+  background: #061a2e;
+}
+.article-video figcaption { margin-top: .65rem; color: var(--muted); font-size: .875rem; }
+.article-figure figcaption { font-size: .875rem; line-height: 1.5; }
+
+.site-footer { background: #061a2e; }
+.contact-band { padding-block: 1rem; background: transparent; }
+.contact-band .eyebrow { margin-bottom: .4rem; font-size: .65rem; }
+.contact-band h2 { font-size: clamp(1.4rem, 2.2vw, 1.75rem); line-height: 1.2; }
+.contact-band .button { min-height: 44px; padding: .6rem 1rem; }
+.footer-grid {
+  grid-template-columns: 1.05fr 1.3fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  padding-block: 1.1rem;
+}
+.footer-intro { min-width: 0; }
+.footer-brand { gap: .7rem; }
+.footer-brand strong { font-size: 1.25rem; }
+.footer-intro p { max-width: 30ch; margin-top: .55rem; font-size: .8rem; line-height: 1.5; }
+.footer-grid h3 { margin-bottom: .6rem; font-size: .7rem; color: #c9d4dd; }
+.footer-grid li { min-width: 0; font-size: .8rem; }
+.footer-grid li a { min-height: 30px; color: #c9d4dd; line-height: 1.45; }
+.footer-grid li a:hover, .footer-grid li a:focus-visible { color: #fff; }
+.footer-nav ul { display: grid; grid-template-columns: repeat(4, auto); gap: .15rem .75rem; }
+.footer-connect .footer-contact-list { display: grid; gap: 0; }
+.footer-connect .footer-contact-list a { overflow-wrap: anywhere; }
+.footer-connect .footer-social-list { display: flex; flex-wrap: wrap; gap: .1rem .8rem; margin-top: .15rem; }
+.footer-bottom { min-height: 38px; font-size: .72rem; }
+
+@media (max-width: 1100px) {
+  .home-page .practice-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer-grid { grid-template-columns: 1fr 1.35fr; gap: 1.2rem 2rem; }
+  .footer-connect { grid-column: 1 / -1; display: flex; align-items: baseline; flex-wrap: wrap; gap: .25rem 1.25rem; }
+  .footer-connect .footer-contact-list { display: flex; flex-wrap: wrap; gap: .25rem 1rem; }
+  .footer-connect .footer-social-list { margin: 0; }
+}
+
+@media (max-width: 700px) {
+  .home-page .practice-card-grid { grid-template-columns: 1fr; }
+  .home-page .practice-card > a { min-height: 0; padding: 1.35rem; }
+  .home-page .composed-section { padding-block: 3rem; }
+  .home-page .section-heading h2 { font-size: clamp(1.85rem, 7.5vw, 2.4rem); }
+  .home-page .publication-preview article { grid-template-columns: 40px minmax(0, 1fr) 44px; }
+  .practice-chapter-inner { padding: 1.3rem; }
+  .principles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1.25rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.25rem; padding-block: 1.25rem; }
+  .footer-intro p { max-width: 45ch; }
+  .footer-nav ul { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .25rem .5rem; }
+  .footer-grid li a { min-height: 44px; font-size: .78rem; }
+  .footer-connect { display: block; grid-column: auto; }
+  .footer-connect .footer-contact-list { gap: 0 1rem; }
+  .footer-connect .footer-social-list { gap: 0 1rem; }
+  .footer-bottom { gap: .5rem; padding-block: .9rem; line-height: 1.5; }
+}
+
+@media (max-width: 400px) {
+  .footer-nav ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .principles-grid { grid-template-columns: 1fr; }
+}

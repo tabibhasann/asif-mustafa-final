@@ -39,7 +39,17 @@ cd sanity-studio
 npm run deploy
 ```
 
-The editor has dedicated content types for Profile, Practice Areas, Experience, Projects, Publications, Stories, Insights and Credentials. Images, links, copy, order and featured states can all be changed without editing the website code.
+The editor has dedicated content types for Profile, Practice Areas, Experience, Projects, Publications, My Stories, Blogs and Credentials. Images, links, copy, order and featured states can all be changed without editing the website code.
+
+Blogs and My Stories support rich text, inline images, graphs/charts uploaded as images, YouTube/Vimeo embeds and uploaded MP4 videos. Add image descriptions and video captions/transcripts for accessibility. Project detail headings are editable. Education records have optional CGPA, TGPA and grading-scale fields. Publications have separate type and status fields, including Ongoing, Submitted and Under review.
+
+## Design editions
+
+The main edition preserves the approved visual direction with the latest meeting revisions. A separate editorial edition uses the same routes, content and CMS with a different visual system. Set `DESIGN_VARIANT=alternative` for both build and runtime in its separate Vercel project. Leave it unset for the main project. Local preview: `DESIGN_VARIANT=alternative npm run dev`.
+
+Both editions intentionally share one Sanity dataset, so publishing content updates both. The comparison edition sends `noindex, follow` in metadata and HTTP headers to avoid creating a competing search result. `SITE_URL` controls each deployment's canonical origin. Keep the main project's existing Vercel link; use a separate checkout/export when linking and deploying the alternative.
+
+The one-time editorial migration is dry-run by default: `npm run migrate:editorial` inside `sanity-studio`. After backing up the dataset, `npm run migrate:editorial -- --apply` applies an atomic, revision-guarded transaction. It only replaces recognized starter values and preserves customized copy.
 
 ### Give the owner editing access
 

@@ -2,50 +2,69 @@
 
 import { useDeferredValue, useMemo, useState } from "react";
 import type { Publication } from "@/lib/content";
+import "@/app/collections.css";
 
-const preferredFilters = ["Published", "In press", "Under review", "Conference", "Dataset"];
+const statuses = ["Published", "In press", "Under review", "Submitted", "Ongoing"] as const;
+const preferredTypes = ["Journal article", "Conference paper", "Dataset", "Book chapter", "Working paper"] as const;
+
+function displayStatus(status: string): string {
+  return status === "Conference" || status === "Dataset" ? "Published" : status;
+}
 
 export function PublicationArchive({ publications }: { publications: Publication[] }) {
-  const [filter, setFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All statuses");
+  const [typeFilter, setTypeFilter] = useState("All types");
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
-  const availableStatuses = new Set(publications.map((publication) => publication.status));
-  const filters = [
-    "All",
-    ...preferredFilters.filter((item) => availableStatuses.has(item as Publication["status"])),
-    ...[...availableStatuses].filter((item) => !preferredFilters.includes(item)),
+  const availableTypes = new Set(publications.map((publication) => publication.type));
+  const statusCounts = new Map<string, number>(statuses.map((status): [string, number] => [
+    status,
+    publications.filter((publication) => displayStatus(publication.status) === status).length,
+  ]));
+  const types = [
+    ...preferredTypes.filter((item) => availableTypes.has(item)),
+    ...[...availableTypes].filter((item) => !preferredTypes.includes(item as typeof preferredTypes[number])),
   ];
   const visible = useMemo(() => {
     const needle = deferredQuery.toLowerCase().trim();
     return publications.filter((publication) => {
-      const matchesFilter = filter === "All" || publication.status === filter;
+      const matchesStatus = statusFilter === "All statuses" || displayStatus(publication.status) === statusFilter;
+      const matchesType = typeFilter === "All types" || publication.type === typeFilter;
       const matchesQuery = !needle || [publication.title, publication.venue, ...publication.keywords]
         .join(" ")
         .toLowerCase()
         .includes(needle);
-      return matchesFilter && matchesQuery;
+      return matchesStatus && matchesType && matchesQuery;
     });
-  }, [deferredQuery, filter, publications]);
+  }, [deferredQuery, statusFilter, typeFilter, publications]);
   const isUpdating = query !== deferredQuery;
+  const hasFilters = statusFilter !== "All statuses" || typeFilter !== "All types" || query.trim() !== "";
+
+  function clearFilters() {
+    setStatusFilter("All statuses");
+    setTypeFilter("All types");
+    setQuery("");
+  }
 
   return (
-    <>
-      <div className="publication-tools">
-        <div className="filter-bar compact" role="group" aria-label="Filter publications">
-          {filters.map((item) => (
-            <button
-              type="button"
-              key={item}
-              className={filter === item ? "active" : ""}
-              aria-pressed={filter === item}
-              onClick={() => setFilter(item)}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-        <label className="search-field">
-          <span className="sr-only">Search publications</span>
+    <div className="publication-archive">
+      <div className="publication-filters" role="group" aria-label="Filter publications">
+        <label>
+          <span>Status</span>
+          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+            <option>All statuses</option>
+            {statuses.map((status) => <option key={status} value={status}>{status} ({statusCounts.get(status)})</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Type</span>
+          <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)}>
+            <option>All types</option>
+            {types.map((type) => <option key={type} value={type}>{type}</option>)}
+          </select>
+        </label>
+        <label className="publication-search">
+          <span>Search</span>
           <input
             type="search"
             placeholder="Search title, venue or keyword"
@@ -54,9 +73,10 @@ export function PublicationArchive({ publications }: { publications: Publication
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
+        <button className="publication-clear" type="button" onClick={clearFilters} disabled={!hasFilters}>Clear filters</button>
       </div>
       <p className="filter-summary" id="publication-results-summary" aria-live="polite">
-        Showing {visible.length} of {publications.length} records
+        Showing {visible.length} of {publications.length} {publications.length === 1 ? "record" : "records"}
       </p>
       <div className={`publication-list ${isUpdating ? "is-updating" : ""}`} aria-busy={isUpdating}>
         {visible.map((publication) => (
@@ -65,7 +85,7 @@ export function PublicationArchive({ publications }: { publications: Publication
             <div>
               <div className="publication-meta">
                 <span>{publication.type}</span>
-                <span>{publication.status}</span>
+                <span>{displayStatus(publication.status)}</span>
               </div>
               <h2>{publication.title}</h2>
               <p>{publication.venue}</p>
@@ -81,8 +101,13 @@ export function PublicationArchive({ publications }: { publications: Publication
             </div>
           </article>
         ))}
-        {!visible.length && <p className="empty-state">No publications match this filter.</p>}
+        {!visible.length && (
+          <div className="publication-empty">
+            <p>{publications.length ? "No publications match these filters." : "No publications are available yet."}</p>
+            {hasFilters && <button type="button" onClick={clearFilters}>Clear filters</button>}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: process.cwd(),
+  async headers() {
+    return process.env.DESIGN_VARIANT === "alternative"
+      ? [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }] }]
+      : [];
+  },
   images: {
     qualities: [60, 70, 75],
     remotePatterns: [

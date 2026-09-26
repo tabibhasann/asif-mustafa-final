@@ -2,9 +2,10 @@ import { EditorialCard } from "@/components/EditorialCard";
 import { PageHero } from "@/components/Primitives";
 import { getSiteSettings, getStories } from "@/lib/cms";
 import { createPageMetadata } from "@/lib/seo";
+import "../collections.css";
 
 export const metadata = createPageMetadata({
-  title: "Stories",
+  title: "My Stories",
   description: "Field stories connecting research, technical systems and industrial practice.",
   path: "/stories",
 });
@@ -17,12 +18,12 @@ export default async function StoriesPage() {
   return (
     <>
       <PageHero
-        eyebrow={copy.eyebrow}
-        title={copy.title}
+        eyebrow="My Stories"
+        title="My Stories"
         intro={copy.intro}
       />
       <section className="section section-white composed-section">
-        <div className="shell editorial-card-grid story-archive-grid">
+        <div className="shell editorial-card-grid collection-card-grid">
           {stories.map((story, index) => (
             <EditorialCard
               key={story.slug}
@@ -36,6 +37,7 @@ export default async function StoriesPage() {
               headingLevel={2}
             />
           ))}
+          {!stories.length && <p className="collection-empty">No stories are available yet.</p>}
         </div>
       </section>
     </>

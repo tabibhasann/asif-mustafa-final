@@ -209,7 +209,7 @@ export const getProject = cache(async (slug: string) => {
       "categories": select(count(coalesce(categories, [])) > 0 => categories, defined(category) => [category], []),
       summary, "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
       "stack": coalesce(stack, []), featured, context, challenge,
-      "approach": coalesce(approach, []), outcome, "updatedAt": _updatedAt
+      "approach": coalesce(approach, []), outcome, detailLabels, detailHeadings, "updatedAt": _updatedAt
     }`,
     { slug },
     fallbackProjects.find((project) => project.slug === slug),
@@ -217,13 +217,18 @@ export const getProject = cache(async (slug: string) => {
   return item ? resolveCmsImage<Project>(item) : undefined;
 });
 
-export const getPublications = cache(() =>
-  collectionOrFallback<Publication>(
+export const getPublications = cache(async () => {
+  const items = await collectionOrFallback<Omit<Publication, "status"> & { status: string }>(
     `*[_type == "publication"]|order(year desc, title asc){
       title, venue, year, type, status, "keywords": coalesce(keywords, []), href
     }`,
     fallbackPublications,
-  ));
+  );
+  return items.map((item): Publication => ({
+    ...item,
+    status: item.status === "Conference" || item.status === "Dataset" ? "Published" : item.status || "Status not specified",
+  }));
+});
 
 export const getStories = cache(async () => {
   const items = await collectionOrFallback<WithCmsImage<StoryPreview>>(
@@ -242,7 +247,8 @@ export const getStory = cache(async (slug: string) => {
     `*[_type == "story" && slug.current == $slug][0]{
       "slug": slug.current, title, category, excerpt,
       "cmsImage": image, "image": coalesce(fallbackImage, "/images/fieldwork.jpg"), imageAlt, featured,
-      "stack": coalesce(stack, []), intro, "sections": coalesce(sections, []), "updatedAt": _updatedAt
+      "stack": coalesce(stack, []), intro, "sections": coalesce(sections, []),
+      content[]{..., _type == "videoFile" => {"url": file.asset->url, "captionsUrl": captions.asset->url}}, "updatedAt": _updatedAt
     }`,
     { slug },
     fallbackStories.find((story) => story.slug === slug),
@@ -271,7 +277,8 @@ export const getInsight = cache(async (slug: string) => {
       "date": coalesce(dateLabel, string::split(publishedAt, "T")[0]), publishedAt,
       readingTime, excerpt,
       "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
-      featured, "body": coalesce(body, []), content, "updatedAt": _updatedAt
+      featured, "body": coalesce(body, []),
+      content[]{..., _type == "videoFile" => {"url": file.asset->url, "captionsUrl": captions.asset->url}}, "updatedAt": _updatedAt
     }`,
     { slug },
     fallbackInsights.find((insight) => insight.slug === slug),

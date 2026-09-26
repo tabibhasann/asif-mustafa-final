@@ -158,7 +158,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.storiesEyebrow}
             title={settings.home.storiesTitle}
-            action={{ href: "/stories", label: settings.home.storiesAction }}
+            action={{ href: "/insights#stories", label: settings.home.storiesAction }}
           />
           <div className="editorial-card-grid story-preview-grid">
             {featuredStories.map((story) => (
@@ -184,7 +184,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.insightsEyebrow}
             title={settings.home.insightsTitle}
-            action={{ href: "/insights", label: settings.home.insightsAction }}
+            action={{ href: "/insights#blogs", label: settings.home.insightsAction }}
             light
           />
           <div className="editorial-card-grid insight-preview-grid">

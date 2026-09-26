@@ -55,7 +55,7 @@ export function createPageMetadata({
     title,
     description,
     alternates: { canonical: path },
-    robots: { index: true, follow: true },
+    robots: { index: process.env.DESIGN_VARIANT !== "alternative", follow: true },
     openGraph:
       type === "article"
         ? {
