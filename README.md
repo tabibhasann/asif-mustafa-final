@@ -4,7 +4,7 @@ An institutional, research-led professional website built with Next.js and prepa
 
 - Public website: [asif-mustafa-final.vercel.app](https://asif-mustafa-final.vercel.app)
 - Editorial comparison: [asif-mustafa-editorial.vercel.app](https://asif-mustafa-editorial.vercel.app)
-- Website Correction revision: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app)
+- Website Correction revision: branch `codex/website-corrections-2026-10-01`; publishing is pending resolution of the Vercel team's fair-use block.
 - Content editor: [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio)
 - Source repository: [github.com/tabibhasann/asif-mustafa-final](https://github.com/tabibhasann/asif-mustafa-final)
 
@@ -57,7 +57,7 @@ Both editions intentionally share one Sanity dataset, so publishing content upda
 
 The source before the Website Correction document is tagged `archive/pre-correction-2026-10-01` at commit `bb2f3fa`. The correction branch is `codex/website-corrections-2026-10-01`. The existing main and editorial deployment aliases remain unchanged. Deploy this revision only to its separate `asif-mustafa-corrected` Vercel project, with `SITE_URL=https://asif-mustafa-corrected.vercel.app` and `REVIEW_MODE=true`. Review mode prevents search indexing while the client compares versions; unset it only when this revision becomes the approved canonical website.
 
-All 44 pre-correction CMS records were exported before these changes. The revision uses the same dataset without migrating or overwriting existing records. Consequently, later client content edits can appear in all editions, while each edition retains its own layout. See [the correction audit](docs/website-correction-audit.md) for implementation and backup details.
+All 44 pre-correction CMS records were exported before these changes. The revision uses the same dataset without migrating or overwriting existing records. Consequently, later client content edits can appear in all editions, while each edition retains its own layout. The proposed correction deployment URL is not live yet: Vercel rejected project creation because the team exceeded fair-use limits. No paid plan or quota workaround was applied. See [the correction audit](docs/website-correction-audit.md) for implementation and backup details.
 
 The one-time editorial migration is dry-run by default: `npm run migrate:editorial` inside `sanity-studio`. After backing up the dataset, `npm run migrate:editorial -- --apply` applies an atomic, revision-guarded transaction. It only replaces recognized starter values and preserves customized copy.
 

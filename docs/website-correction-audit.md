@@ -29,10 +29,20 @@ Reviewed against the client document `Website Correction.docx`, 1 October 2026. 
 - New source branch: `codex/website-corrections-2026-10-01`.
 - Previous main: https://asif-mustafa-final.vercel.app/
 - Previous editorial: https://asif-mustafa-editorial.vercel.app/
-- Separate correction project: https://asif-mustafa-corrected.vercel.app/
+- Proposed separate correction project: `asif-mustafa-corrected`. Not live yet; Vercel rejected creation because the team is blocked after exceeding fair-use limits.
 - CMS backup: `.codex-audit/website-correction-2026-10-01/pre-correction-asif.tar.gz` in the parent workspace, containing all 44 records and no uploaded assets.
 
-No CMS content migration was run for this revision. All editions use dataset `asif`, so subsequent content publishing affects their content but not their preserved layout. The new review deployment has `REVIEW_MODE=true` and a noindex header/metadata to avoid competing with the current production website in search.
+No CMS content migration was run for this revision. All editions use dataset `asif`, so subsequent content publishing affects their content but not their preserved layout. The proposed review deployment uses `REVIEW_MODE=true` and a noindex header/metadata to avoid competing with the current production website in search. The Studio schema and app were successfully deployed; no existing records were mutated.
+
+## Verification
+
+- TypeScript check, eight date/rich-content tests, production website build and Studio build pass.
+- Compatible dependency updates applied, including Next.js 16.3.8 and Undici 7.30.0. Website and Studio production dependency audits report zero known vulnerabilities.
+- All 25 content routes return HTTP 200 in the production preview, with one main heading and the intended canonical URL. Legacy article URLs return HTTP 308 to Blogs.
+- Read-only independent review checked route preservation, CMS editability and source accuracy. Its findings were resolved.
+- Desktop, tablet and phone layouts were reviewed. The main routes and sample project/blog/story details have no horizontal overflow at 390px. Practice also passes at 320px; its navigation button remains 44px wide.
+- Public website deployment remains blocked by Vercel's account limit. The existing main and editorial addresses currently return HTTP 402 because of this block; their aliases were not modified. Resolve the block or select an authorised alternative host before publishing.
+- Local comparison previews: corrected at `http://localhost:3114`, previous main at `http://localhost:3115`, previous editorial at `http://localhost:3116`. The older source exports are snapshots of the archived tag. Their local runtime uses the shared patched dependencies without changing their application source.
 
 ## Editing guide
 

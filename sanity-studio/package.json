@@ -18,6 +18,9 @@
     "styled-components": "^6.1.15"
   },
   "overrides": {
+    "@module-federation/dts-plugin": {
+      "undici": "7.30.0"
+    },
     "js-yaml": "3.15.2",
     "adm-zip": "0.6.1",
     "@vercel/frameworks": {

@@ -6,6 +6,7 @@ import { StructuredData } from "@/components/StructuredData";
 import { PortableArticle } from "@/components/PortableArticle";
 import { getStories, getStory } from "@/lib/cms";
 import { absoluteUrl, createPageMetadata, siteOrigin } from "@/lib/seo";
+import { formatArticleDate } from "@/lib/article-date";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -35,9 +36,7 @@ export default async function StoryDetailPage({ params }: Props) {
   const { slug } = await params;
   const story = await getStory(slug);
   if (!story) notFound();
-  const date = story.dateLabel || (story.publishedAt && !Number.isNaN(Date.parse(story.publishedAt))
-    ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(story.publishedAt))
-    : "");
+  const date = formatArticleDate(story.publishedAt, story.dateLabel);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",

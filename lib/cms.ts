@@ -24,6 +24,7 @@ import {
   type StoryPreview,
 } from "./content";
 import { getSanityImageUrl, type SanityImageSource } from "./sanity-image";
+import { formatArticleDate } from "./article-date";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -35,14 +36,6 @@ const client =
     : null;
 
 type WithCmsImage<T extends { image: string }> = T & { cmsImage?: SanityImageSource };
-
-function articleDate(publishedAt: string | undefined, label: string | undefined): string {
-  if (label && label !== "Editorial note") return label;
-  if (publishedAt && !Number.isNaN(Date.parse(publishedAt))) {
-    return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(publishedAt));
-  }
-  return "";
-}
 
 function resolveCmsImage<T extends { image: string }>(
   item: WithCmsImage<T>,
@@ -270,21 +263,21 @@ export const getInsights = cache(async () => {
   const items = await collectionOrFallback<WithCmsImage<InsightPreview>>(
     `*[_type == "insight"]|order(featured desc, publishedAt desc){
       "slug": slug.current, title, category,
-      "date": coalesce(dateLabel, string::split(publishedAt, "T")[0]),
+      "date": dateLabel,
       publishedAt, readingTime, excerpt,
       "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
       featured, "updatedAt": _updatedAt
     }`,
     fallbackInsights,
   );
-  return items.map((item) => ({ ...resolveCmsImage<InsightPreview>(item), date: articleDate(item.publishedAt, item.date) }));
+  return items.map((item) => ({ ...resolveCmsImage<InsightPreview>(item), date: formatArticleDate(item.publishedAt, item.date) }));
 });
 
 export const getInsight = cache(async (slug: string) => {
   const item = await itemOrFallback<WithCmsImage<Insight>>(
     `*[_type == "insight" && slug.current == $slug][0]{
       "slug": slug.current, title, category,
-      "date": coalesce(dateLabel, string::split(publishedAt, "T")[0]), publishedAt,
+      "date": dateLabel, publishedAt,
       readingTime, excerpt,
       "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
       featured, "body": coalesce(body, []),
@@ -293,7 +286,7 @@ export const getInsight = cache(async (slug: string) => {
     { slug },
     fallbackInsights.find((insight) => insight.slug === slug),
   );
-  return item ? { ...resolveCmsImage<Insight>(item), date: articleDate(item.publishedAt, item.date) } : undefined;
+  return item ? { ...resolveCmsImage<Insight>(item), date: formatArticleDate(item.publishedAt, item.date) } : undefined;
 });
 
 export const getCredentials = cache(() =>
