@@ -231,7 +231,8 @@ body[data-design="main"] .home-page .hero-media-label { bottom: 6rem; }
 .story-detail-layout:not(:has(.story-detail-sidebar)) { display: block; max-width: 780px; }
 .story-detail-layout .article-body { font-size: 1.08rem; line-height: 1.8; }
 .story-detail-sidebar { align-self: start; }
-.story-detail-sidebar .article-stack { font-size: .9rem; line-height: 1.6; }
+.story-detail-sidebar .article-stack { list-style: none; padding: 1rem 0 0; margin: .8rem 0 0; font-size: .9rem; line-height: 1.6; }
+.story-detail-sidebar .article-stack li { padding-block: .3rem; }
 
 @media (max-width: 1000px) {
   .blog-archive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -246,6 +247,11 @@ body[data-design="main"] .home-page .hero-media-label { bottom: 6rem; }
   .story-detail-sidebar .article-stack { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
 }
 @media (max-width: 700px) {
+  .site-header .nav-inner { gap: 12px; padding-inline: 12px; }
+  .site-header .brand { gap: 10px; }
+  .site-header .brand strong { font-size: 16px; }
+  .site-header .brand-mark { width: 34px; height: 34px; }
+  .menu-toggle { flex: 0 0 44px; }
   .blog-archive-grid, .insights-destinations { grid-template-columns: 1fr; }
   .blog-article-cover, .story-detail-cover { aspect-ratio: 16 / 10; }
   .blog-card-copy, .story-journal-copy, .insights-destination-copy { padding: 1.35rem; }
