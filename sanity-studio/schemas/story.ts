@@ -13,8 +13,11 @@ export const story = defineType({
     defineField({ name: "image", type: "image", options: { hotspot: true } }),
     defineField({ name: "imageAlt", title: "Image description", type: "string", description: "Describe the image for visitors using screen readers." }),
     defineField({ name: "fallbackImage", title: "Fallback image path", type: "string", hidden: true, readOnly: true }),
-    defineField({ name: "stack", title: "Methods and context", type: "array", of: [{ type: "string" }], validation: (rule) => rule.required().min(1) }),
+    defineField({ name: "stack", title: "Methods and context", type: "array", of: [{ type: "string" }], description: "Optional tags for professional stories. Personal journals do not need technical tags." }),
     defineField({ name: "featured", title: "Feature on homepage", type: "boolean", initialValue: false }),
+    defineField({ name: "publishedAt", title: "Publication date", type: "datetime" }),
+    defineField({ name: "dateLabel", title: "Display date", type: "string", description: "Optional custom date label. Leave empty to use the publication date." }),
+    defineField({ name: "readingTime", title: "Reading time", type: "string", description: "Optional, for example ‘5 min read’." }),
     defineField({ name: "intro", title: "Legacy opening paragraph", type: "text", rows: 4, description: "Used when rich story content is empty." }),
     defineField({
       name: "content", title: "Story content", type: "array", of: richContentOf,

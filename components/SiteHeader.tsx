@@ -97,7 +97,7 @@ export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role"
             aria-label="Primary navigation"
           >
             {headerLinks.map((item) => item.href === "/insights" ? (
-              <InsightsNavigation key={item.href} active={pathname.startsWith("/insights") || pathname.startsWith("/stories")} onNavigate={() => setOpen(false)} />
+              <InsightsNavigation key={item.href} active={pathname.startsWith("/insights") || pathname.startsWith("/blogs") || pathname.startsWith("/stories")} onNavigate={() => setOpen(false)} />
             ) : (
               <Link
                 className={pathname.startsWith(item.href) ? "active" : ""}

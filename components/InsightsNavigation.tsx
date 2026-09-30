@@ -53,8 +53,8 @@ export function InsightsNavigation({ active, onNavigate }: { active: boolean; on
         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="m1 1 5 5 5-5" stroke="currentColor" strokeWidth="1.5" /></svg>
       </button>
       <div className="nav-insights-menu" id="insights-navigation" hidden={!expanded}>
-        <Link href="/insights#blogs" prefetch={false} onClick={navigate}>Blogs</Link>
-        <Link href="/insights#stories" prefetch={false} onClick={navigate}>My Stories</Link>
+        <Link href="/blogs" prefetch={false} onClick={navigate}>Blogs</Link>
+        <Link href="/stories" prefetch={false} onClick={navigate}>My Stories</Link>
       </div>
     </div>
   );

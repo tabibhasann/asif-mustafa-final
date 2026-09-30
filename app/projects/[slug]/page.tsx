@@ -32,6 +32,7 @@ export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params;
   const project = await getProject(slug);
   if (!project) notFound();
+  const connectedFields = project.categories.filter((category) => category !== project.category);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -54,7 +55,6 @@ export default async function ProjectDetailPage({ params }: Props) {
             <p className="eyebrow light">Selected project · {project.category}</p>
             <h1>{project.title}</h1>
             <p>{project.summary}</p>
-            <ul className="tag-list dark-tags">{project.stack.map((item) => <li key={item}>{item}</li>)}</ul>
           </div>
           <div className="detail-hero-media">
             <Image src={project.image} alt={project.imageAlt ?? project.title} fill loading="eager" fetchPriority="high" sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 800px) 100vw, 46vw" />
@@ -62,18 +62,39 @@ export default async function ProjectDetailPage({ params }: Props) {
         </div>
       </section>
       <section className="article-section section-white">
-        <div className="shell article-layout">
-          <aside className="article-aside">
-            <p className="eyebrow">{project.recordLabels?.heading || "Project record"}</p>
-            <div className="fact-list">
-              <div className="fact-row"><span>{project.recordLabels?.primaryField || "Primary field"}</span><strong>{project.category}</strong></div>
-              <div className="fact-row"><span>{project.recordLabels?.connectedFields || "Connected fields"}</span><strong>{project.categories.join(" · ")}</strong></div>
-              <div className="fact-row"><span>{project.recordLabels?.status || "Status"}</span><strong>{project.status || "Selected portfolio work"}</strong></div>
+        <div className="shell project-record">
+          <p className="eyebrow">{project.recordLabels?.heading || "Project record"}</p>
+          <dl className="project-record-grid">
+            <div>
+              <dt>{project.recordLabels?.primaryField || "Area of interest"}</dt>
+              <dd>{project.category}</dd>
+              {connectedFields.length > 0 && <>
+                <dt className="project-record-related-label">{project.recordLabels?.connectedFields || "Connected fields"}</dt>
+                <dd className="project-record-secondary">{connectedFields.join(" · ")}</dd>
+              </>}
             </div>
-          </aside>
+            <div className="project-record-problem">
+              <dt>{project.recordLabels?.problem || project.detailHeadings?.challenge || project.detailLabels?.challenge || "Problem intended to solve"}</dt>
+              <dd>{project.challenge}</dd>
+            </div>
+            {project.stack.length > 0 && <div>
+              <dt>{project.recordLabels?.technologies || "Technologies and methods"}</dt>
+              <dd><ul className="project-record-tags">{project.stack.map((item) => <li key={item}>{item}</li>)}</ul></dd>
+            </div>}
+            {!!project.stakeholders?.length && <div>
+              <dt>{project.recordLabels?.stakeholders || "Stakeholders"}</dt>
+              <dd>{project.stakeholders.join(" · ")}</dd>
+            </div>}
+            {project.relevance && <div>
+              <dt>{project.recordLabels?.relevance || "Relevant setting"}</dt>
+              <dd>{project.relevance}</dd>
+            </div>}
+            {project.status && <div><dt>{project.recordLabels?.status || "Status"}</dt><dd>{project.status}</dd></div>}
+          </dl>
+        </div>
+        <div className="shell project-detail-body">
           <article className="article-body">
             <section><p className="eyebrow">{project.detailLabels?.context || "Context"}</p><h2>{project.detailHeadings?.context || "Why the work was needed"}</h2><p>{project.context}</p></section>
-            <section><p className="eyebrow">{project.detailLabels?.challenge || "Challenge"}</p><h2>{project.detailHeadings?.challenge || "The question to resolve"}</h2><p>{project.challenge}</p></section>
             <section>
               <p className="eyebrow">{project.detailLabels?.approach || "Approach"}</p><h2>{project.detailHeadings?.approach || "How the system was developed"}</h2>
               <ol>{project.approach.map((item) => <li key={item}>{item}</li>)}</ol>

@@ -24,7 +24,7 @@ export type Profile = {
   cvUrl?: string;
   biography: string[];
   metrics: { value: string; label: string }[];
-  education: { degree: string; institution: string; note: string; cgpa?: string; tgpa?: string; gradeScale?: string }[];
+  education: { degree: string; institution: string; note: string; cgpa?: string; tgpa?: string; gradeScale?: string; relevantCourses?: string[] }[];
 };
 
 type IntroCopy = {
@@ -83,6 +83,7 @@ export type SiteSettings = {
     publications: IntroCopy;
     stories: IntroCopy;
     insights: IntroCopy;
+    blogs: IntroCopy;
     credentials: IntroCopy;
   };
   about: {
@@ -91,6 +92,10 @@ export type SiteSettings = {
     educationEyebrow: string;
     educationTitle: string;
     educationIntro: string;
+    relevantCoursesLabel: string;
+    certificationsEyebrow: string;
+    certificationsTitle: string;
+    certificationsIntro: string;
     principlesEyebrow: string;
     principlesTitle: string;
     principlesIntro: string;
@@ -114,6 +119,8 @@ export type Experience = {
   projectValue?: string;
   description: string;
   impacts: string[];
+  contribution?: string;
+  result?: string;
 };
 
 export type Project = {
@@ -131,9 +138,11 @@ export type Project = {
   challenge: string;
   approach: string[];
   outcome: string;
+  stakeholders?: string[];
+  relevance?: string;
   detailLabels?: Partial<Record<"context" | "challenge" | "approach" | "outcome", string>>;
   detailHeadings?: Partial<Record<"context" | "challenge" | "approach" | "outcome", string>>;
-  recordLabels?: Partial<Record<"heading" | "primaryField" | "connectedFields" | "status", string>>;
+  recordLabels?: Partial<Record<"heading" | "primaryField" | "connectedFields" | "status" | "problem" | "technologies" | "stakeholders" | "relevance", string>>;
   updatedAt?: string;
 };
 
@@ -164,12 +173,15 @@ export type Story = {
   intro: string;
   sections: { title: string; body: string }[];
   content?: import("@portabletext/types").PortableTextBlock[];
+  publishedAt?: string;
+  dateLabel?: string;
+  readingTime?: string;
   updatedAt?: string;
 };
 
 export type StoryPreview = Pick<
   Story,
-  "slug" | "title" | "category" | "excerpt" | "image" | "featured" | "stack" | "updatedAt"
+  "slug" | "title" | "category" | "excerpt" | "image" | "featured" | "stack" | "publishedAt" | "dateLabel" | "readingTime" | "updatedAt"
 >;
 
 export type Insight = {
@@ -200,6 +212,8 @@ export type Credential = {
   year?: string;
   credentialId?: string;
   href?: string;
+  stack?: string[];
+  courseInfo?: string;
 };
 
 export const profile: Profile = {
@@ -332,6 +346,11 @@ export const siteSettings: SiteSettings = {
       title: "Ideas, experiences and the work behind them.",
       intro: "Blogs and stories on research methods, technical work and decisions shaped by field experience.",
     },
+    blogs: {
+      eyebrow: "Blogs",
+      title: "Articles on research and practice.",
+      intro: "Writing on engineering, data science and the questions that connect them.",
+    },
     credentials: {
       eyebrow: "Credentials",
       title: "Professional learning and certification.",
@@ -344,6 +363,10 @@ export const siteSettings: SiteSettings = {
     educationEyebrow: "Education",
     educationTitle: "Engineering foundations, advanced through data science.",
     educationIntro: "Formal study provides the technical grounding; applied work connects it to people, organisations and operating systems.",
+    relevantCoursesLabel: "Relevant courses",
+    certificationsEyebrow: "Professional certifications",
+    certificationsTitle: "Continuing study and technical development.",
+    certificationsIntro: "Selected certifications across data science, artificial intelligence and industrial systems.",
     principlesEyebrow: "Professional approach",
     principlesTitle: "How I approach the work.",
     principlesIntro: "Engineering context, statistical analysis and practical use shape my research and technical work.",

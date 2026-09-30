@@ -35,9 +35,13 @@ export default async function ExperiencePage() {
                 <p className="experience-role">{experience.role}</p>
                 <h2>{experience.organization}</h2>
                 <p className="experience-description">{experience.description}</p>
-                <ul className="impact-list">
-                  {experience.impacts.map((impact) => <li key={impact}>{impact}</li>)}
-                </ul>
+                <div className="experience-contributions" role="group" aria-label="Selected contributions">
+                  {experience.contribution && <p className="experience-contribution-lead">{experience.contribution}</p>}
+                  {experience.impacts.map((impact, impactIndex) => (
+                    <p className={!experience.contribution && impactIndex === 0 ? "experience-contribution-lead" : ""} key={impact}>{impact}</p>
+                  ))}
+                </div>
+                {experience.result && <dl className="experience-result"><dt>Impact and results</dt><dd>{experience.result}</dd></dl>}
               </div>
             </article>
           ))}

@@ -10,5 +10,5 @@ export const structure: StructureResolver = (S) =>
       ...["practiceArea", "experience", "project", "publication"].map((type) => S.documentTypeListItem(type)),
       S.documentTypeListItem("story").title("My Stories"),
       S.documentTypeListItem("insight").title("Blogs"),
-      S.documentTypeListItem("credential"),
+      S.documentTypeListItem("credential").title("Professional Certifications"),
     ]);

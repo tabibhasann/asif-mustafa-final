@@ -2,7 +2,7 @@
 const nextConfig = {
   outputFileTracingRoot: process.cwd(),
   async headers() {
-    return process.env.DESIGN_VARIANT === "alternative"
+    return process.env.DESIGN_VARIANT === "alternative" || process.env.REVIEW_MODE === "true"
       ? [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }] }]
       : [];
   },

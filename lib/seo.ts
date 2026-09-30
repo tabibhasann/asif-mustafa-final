@@ -14,6 +14,7 @@ const withProtocol = /^https?:\/\//i.test(configuredOrigin)
 
 export const siteOrigin = withProtocol.replace(/\/$/, "");
 export const metadataBase = new URL(siteOrigin);
+export const indexSite = process.env.DESIGN_VARIANT !== "alternative" && process.env.REVIEW_MODE !== "true";
 
 export function absoluteUrl(path: string) {
   if (/^https?:\/\//i.test(path)) return path;
@@ -55,7 +56,7 @@ export function createPageMetadata({
     title,
     description,
     alternates: { canonical: path },
-    robots: { index: process.env.DESIGN_VARIANT !== "alternative", follow: true },
+    robots: { index: indexSite, follow: true },
     openGraph:
       type === "article"
         ? {

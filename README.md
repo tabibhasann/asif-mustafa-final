@@ -4,6 +4,7 @@ An institutional, research-led professional website built with Next.js and prepa
 
 - Public website: [asif-mustafa-final.vercel.app](https://asif-mustafa-final.vercel.app)
 - Editorial comparison: [asif-mustafa-editorial.vercel.app](https://asif-mustafa-editorial.vercel.app)
+- Website Correction revision: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app)
 - Content editor: [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio)
 - Source repository: [github.com/tabibhasann/asif-mustafa-final](https://github.com/tabibhasann/asif-mustafa-final)
 
@@ -44,11 +45,19 @@ The editor has dedicated content types for Profile, Practice Areas, Experience, 
 
 Blogs and My Stories support rich text, inline images, graphs/charts uploaded as images, YouTube/Vimeo embeds and uploaded MP4 videos. Add image descriptions and video captions/transcripts for accessibility. Project detail headings are editable. Education records have optional CGPA, TGPA and grading-scale fields. Publications have separate type and status fields, including Ongoing, Submitted and Under review.
 
+The October correction adds an About-page certification record, optional relevant courses for each degree, optional certification technologies and course details, optional experience contribution/results fields, and project stakeholder/relevance fields. Blogs live at `/blogs`, My Stories at `/stories`, and `/insights` links to both. Existing `/insights/[slug]` article URLs redirect to their matching blog. Optional details are not fabricated when source information is unavailable.
+
 ## Design editions
 
 The main edition preserves the approved visual direction with the latest meeting revisions. A separate editorial edition uses the same routes, content and CMS with a different visual system. Set `DESIGN_VARIANT=alternative` for both build and runtime in its separate Vercel project. Leave it unset for the main project. Local preview: `DESIGN_VARIANT=alternative npm run dev`.
 
 Both editions intentionally share one Sanity dataset, so publishing content updates both. The comparison edition sends `noindex, follow` in metadata and HTTP headers to avoid creating a competing search result. `SITE_URL` controls each deployment's canonical origin. Keep the main project's existing Vercel link; use a separate checkout/export when linking and deploying the alternative.
+
+### Preserved pre-correction versions
+
+The source before the Website Correction document is tagged `archive/pre-correction-2026-10-01` at commit `bb2f3fa`. The correction branch is `codex/website-corrections-2026-10-01`. The existing main and editorial deployment aliases remain unchanged. Deploy this revision only to its separate `asif-mustafa-corrected` Vercel project, with `SITE_URL=https://asif-mustafa-corrected.vercel.app` and `REVIEW_MODE=true`. Review mode prevents search indexing while the client compares versions; unset it only when this revision becomes the approved canonical website.
+
+All 44 pre-correction CMS records were exported before these changes. The revision uses the same dataset without migrating or overwriting existing records. Consequently, later client content edits can appear in all editions, while each edition retains its own layout. See [the correction audit](docs/website-correction-audit.md) for implementation and backup details.
 
 The one-time editorial migration is dry-run by default: `npm run migrate:editorial` inside `sanity-studio`. After backing up the dataset, `npm run migrate:editorial -- --apply` applies an atomic, revision-guarded transaction. It only replaces recognized starter values and preserves customized copy.
 

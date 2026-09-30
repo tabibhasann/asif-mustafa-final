@@ -11,7 +11,7 @@ export const insight = defineType({
     defineField({ name: "category", type: "string", validation: (rule) => rule.required() }),
     defineField({ name: "publishedAt", type: "datetime", validation: (rule) => rule.required() }),
     defineField({ name: "dateLabel", title: "Optional display date", type: "string" }),
-    defineField({ name: "readingTime", title: "Reading time", type: "string", validation: (rule) => rule.required() }),
+    defineField({ name: "readingTime", title: "Reading time", type: "string", description: "Optional, for example 4 min read." }),
     defineField({ name: "excerpt", type: "text", rows: 3, validation: (rule) => rule.required().max(280) }),
     defineField({ name: "image", type: "image", options: { hotspot: true } }),
     defineField({ name: "imageAlt", title: "Image description", type: "string", description: "Describe the image for visitors using screen readers." }),

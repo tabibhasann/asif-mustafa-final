@@ -39,6 +39,7 @@ export const profile = defineType({
         defineField({ name: "cgpa", title: "CGPA (optional)", type: "string", description: "Only enter a verified result. Leave blank to omit it from the website." }),
         defineField({ name: "tgpa", title: "TGPA (optional)", type: "string", description: "Only enter a verified result. Leave blank to omit it from the website." }),
         defineField({ name: "gradeScale", title: "Grade scale (optional)", type: "string", description: "For example, 4.00. Shown only when CGPA or TGPA is entered." }),
+        defineField({ name: "relevantCourses", title: "Relevant courses", type: "array", of: [{ type: "string" }], options: { layout: "tags" }, description: "Optional. Add actual courses from this degree; leave empty until confirmed." }),
       ] }],
       validation: (rule) => rule.required().min(1),
     }),

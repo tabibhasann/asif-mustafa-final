@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { MotionObserver } from "@/components/MotionObserver";
 import { StructuredData } from "@/components/StructuredData";
 import { getPracticeAreas, getProfile, getSiteSettings } from "@/lib/cms";
-import { absoluteUrl, metadataBase, siteOrigin } from "@/lib/seo";
+import { absoluteUrl, indexSite, metadataBase, siteOrigin } from "@/lib/seo";
 import "./globals.css";
 import "./composed.css";
 import "./refinements.css";
@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: "Md Asif Mustafa",
     publisher: "Md Asif Mustafa",
     category: "Research and professional services",
-    robots: { index: process.env.DESIGN_VARIANT !== "alternative", follow: true },
+    robots: { index: indexSite, follow: true },
     openGraph: {
       title: settings.seo.title,
       description: settings.seo.description,

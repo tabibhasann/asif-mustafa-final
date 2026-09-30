@@ -158,7 +158,7 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.storiesEyebrow}
             title={settings.home.storiesTitle}
-            action={{ href: "/insights#stories", label: settings.home.storiesAction }}
+            action={{ href: "/stories", label: settings.home.storiesAction }}
           />
           <div className="editorial-card-grid story-preview-grid">
             {featuredStories.map((story) => (
@@ -184,19 +184,19 @@ export default async function Home() {
           <SectionHeading
             eyebrow={settings.home.insightsEyebrow}
             title={settings.home.insightsTitle}
-            action={{ href: "/insights#blogs", label: settings.home.insightsAction }}
+            action={{ href: "/blogs", label: settings.home.insightsAction }}
             light
           />
           <div className="editorial-card-grid insight-preview-grid">
             {insights.slice(0, 3).map((insight) => (
               <EditorialCard
                 key={insight.slug}
-                href={`/insights/${insight.slug}`}
+                href={`/blogs/${insight.slug}`}
                 image={insight.image}
                 eyebrow={insight.category}
                 title={insight.title}
                 summary={insight.excerpt}
-                meta={`${insight.date} · ${insight.readingTime}`}
+                meta={[insight.date, insight.readingTime].filter(Boolean).join(" · ")}
                 className="insight-card"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
                 reveal

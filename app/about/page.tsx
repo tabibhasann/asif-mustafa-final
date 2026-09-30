@@ -1,19 +1,20 @@
 import Link from "next/link";
+import { CertificationList } from "@/components/CertificationList";
 import { MonogramPortrait, PageHero, SectionHeading } from "@/components/Primitives";
 import { StructuredData } from "@/components/StructuredData";
-import { getProfile, getSiteSettings } from "@/lib/cms";
+import { getCredentials, getProfile, getSiteSettings } from "@/lib/cms";
 import { absoluteUrl, createPageMetadata, siteOrigin } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
   title: "About",
-  description: "Professional profile, education and approach of Md Asif Mustafa.",
+  description: "Professional profile, education and certifications of Md Asif Mustafa.",
   path: "/about",
 });
 
 export const revalidate = 60;
 
 export default async function AboutPage() {
-  const [profile, settings] = await Promise.all([getProfile(), getSiteSettings()]);
+  const [profile, settings, credentials] = await Promise.all([getProfile(), getSiteSettings(), getCredentials()]);
   const copy = settings.pages.about;
   const structuredData = {
     "@context": "https://schema.org",
@@ -82,28 +83,26 @@ export default async function AboutPage() {
                   {item.cgpa && <div><dt>CGPA</dt><dd>{item.cgpa}{item.gradeScale && ` / ${item.gradeScale}`}</dd></div>}
                   {item.tgpa && <div><dt>TGPA</dt><dd>{item.tgpa}{item.gradeScale && ` / ${item.gradeScale}`}</dd></div>}
                 </dl>}
+                {!!item.relevantCourses?.length && (
+                  <div className="education-courses">
+                    <h4>{settings.about.relevantCoursesLabel}</h4>
+                    <ul>{item.relevantCourses.map((course) => <li key={course}>{course}</li>)}</ul>
+                  </div>
+                )}
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section section-white composed-section principles-section">
+      <section className="section section-white composed-section certifications-section" id="certifications">
         <div className="shell">
           <SectionHeading
-            eyebrow={settings.about.principlesEyebrow}
-            title={settings.about.principlesTitle}
-            text={settings.about.principlesIntro}
+            eyebrow={settings.about.certificationsEyebrow}
+            title={settings.about.certificationsTitle}
+            text={settings.about.certificationsIntro}
           />
-          <div className="principles-grid">
-            {settings.about.principles.map((principle, index) => (
-              <article className="principle-card" key={principle.title}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <h3>{principle.title}</h3>
-                <p>{principle.text}</p>
-              </article>
-            ))}
-          </div>
+          <CertificationList credentials={credentials} />
         </div>
       </section>
       <StructuredData id="profile-page-structured-data" data={structuredData} />

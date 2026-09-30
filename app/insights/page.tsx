@@ -17,7 +17,7 @@ export default async function InsightsPage() {
   return (
     <>
       <PageHero eyebrow={copy.eyebrow} title={copy.title} intro={copy.intro} />
-      <InsightsCollection insights={insights} stories={stories} />
+      <InsightsCollection insights={insights} stories={stories} pages={settings.pages} />
     </>
   );
 }
