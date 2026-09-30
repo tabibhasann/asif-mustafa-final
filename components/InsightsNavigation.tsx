@@ -26,9 +26,11 @@ export function InsightsNavigation({ active, onNavigate }: { active: boolean; on
     <div
       ref={groupRef}
       className={`nav-insights${active ? " active" : ""}`}
-      onPointerEnter={(event) => { if (event.pointerType === "mouse") setExpanded(true); }}
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse" && window.matchMedia("(min-width: 1121px) and (hover: hover)").matches) setExpanded(true);
+      }}
       onPointerLeave={(event) => {
-        if (event.pointerType === "mouse" && !groupRef.current?.contains(document.activeElement)) setExpanded(false);
+        if (event.pointerType === "mouse" && window.matchMedia("(min-width: 1121px) and (hover: hover)").matches && !groupRef.current?.contains(document.activeElement)) setExpanded(false);
       }}
       onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setExpanded(false); }}
       onKeyDown={(event) => {
