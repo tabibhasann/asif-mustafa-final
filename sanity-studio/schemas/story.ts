@@ -17,7 +17,7 @@ export const story = defineType({
     defineField({ name: "featured", title: "Feature on homepage", type: "boolean", initialValue: false }),
     defineField({ name: "publishedAt", title: "Publication date", type: "datetime" }),
     defineField({ name: "dateLabel", title: "Display date", type: "string", description: "Optional custom date label. Leave empty to use the publication date." }),
-    defineField({ name: "readingTime", title: "Reading time", type: "string", description: "Optional, for example ‘5 min read’." }),
+    defineField({ name: "readingTime", title: "Reading time for media-only stories", type: "string", description: "Text stories calculate reading time automatically. This optional value is used only when the story has no readable text." }),
     defineField({ name: "intro", title: "Legacy opening paragraph", type: "text", rows: 4, description: "Used when rich story content is empty." }),
     defineField({
       name: "content", title: "Story content", type: "array", of: richContentOf,

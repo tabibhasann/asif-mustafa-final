@@ -5,6 +5,8 @@ An institutional, research-led professional website built with Next.js and prepa
 - Public website: [asif-mustafa-final.vercel.app](https://asif-mustafa-final.vercel.app)
 - Editorial comparison: [asif-mustafa-editorial.vercel.app](https://asif-mustafa-editorial.vercel.app)
 - Website Correction revision: branch `codex/website-corrections-2026-10-01`; publishing is pending resolution of the Vercel team's fair-use block.
+- Completed client refinement: branch `codex/client-completion-2026-10-02`, local comparison at `http://localhost:3114`.
+- Separate premium project: `../asif-mustafa-premium`, local comparison at `http://localhost:3117`. This is an independent source project, not a replacement for this edition.
 - Content editor: [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio)
 - Source repository: [github.com/tabibhasann/asif-mustafa-final](https://github.com/tabibhasann/asif-mustafa-final)
 
@@ -45,7 +47,7 @@ The editor has dedicated content types for Profile, Practice Areas, Experience, 
 
 Blogs and My Stories support rich text, inline images, graphs/charts uploaded as images, YouTube/Vimeo embeds and uploaded MP4 videos. Add image descriptions and video captions/transcripts for accessibility. Project detail headings are editable. Education records have optional CGPA, TGPA and grading-scale fields. Publications have separate type and status fields, including Ongoing, Submitted and Under review.
 
-The October correction adds an About-page certification record, optional relevant courses for each degree, optional certification technologies and course details, optional experience contribution/results fields, and project stakeholder/relevance fields. Blogs live at `/blogs`, My Stories at `/stories`, and `/insights` links to both. Existing `/insights/[slug]` article URLs redirect to their matching blog. Optional details are not fabricated when source information is unavailable.
+The October correction adds an About-page certification record, optional relevant courses for each degree, optional certification technologies and course details, optional experience contribution/results fields, and project stakeholder/relevance fields. Blogs live at `/blogs`, My Stories at `/stories`, and `/insights` links to both. Existing `/insights/[slug]` article URLs redirect to their matching blog. Optional details are not fabricated when source information is unavailable. Reading times now reflect the text actually shown. Blog archives are newest first, with featured entries clearly labelled.
 
 ## Design editions
 
@@ -56,6 +58,8 @@ Both editions intentionally share one Sanity dataset, so publishing content upda
 ### Preserved pre-correction versions
 
 The source before the Website Correction document is tagged `archive/pre-correction-2026-10-01` at commit `bb2f3fa`. The correction branch is `codex/website-corrections-2026-10-01`. The existing main and editorial deployment aliases remain unchanged. Deploy this revision only to its separate `asif-mustafa-corrected` Vercel project, with `SITE_URL=https://asif-mustafa-corrected.vercel.app` and `REVIEW_MODE=true`. Review mode prevents search indexing while the client compares versions; unset it only when this revision becomes the approved canonical website.
+
+The corrected source before the final readability refinements is preserved at `archive/pre-polish-2026-10-02` (`3d378fb`). The new premium project's styling is self-contained and does not alter any archived or approved edition. Both current comparison projects read the same Sanity dataset; layout changes are independent, but publishing content changes their shared content.
 
 All 44 pre-correction CMS records were exported before these changes. The revision uses the same dataset without migrating or overwriting existing records. Consequently, later client content edits can appear in all editions, while each edition retains its own layout. The proposed correction deployment URL is not live yet: Vercel rejected project creation because the team exceeded fair-use limits. No paid plan or quota workaround was applied. See [the correction audit](docs/website-correction-audit.md) for implementation and backup details.
 

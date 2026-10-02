@@ -3,6 +3,8 @@ import type { Profile, SiteSettings } from "@/lib/content";
 import { headerLinks, knowledgeLinks } from "@/lib/site";
 
 const footerLinks = [...headerLinks, ...knowledgeLinks];
+const profileLinks = footerLinks.filter((item) => ["/about", "/practice", "/experience", "/credentials"].includes(item.href));
+const workLinks = footerLinks.filter((item) => !profileLinks.includes(item));
 
 export function SiteFooter({
   profile,
@@ -24,7 +26,7 @@ export function SiteFooter({
               {settings.primaryCta} <span aria-hidden="true">→</span>
             </a>
             <a
-              className="button button-ghost-light"
+              className="footer-cv-link"
               href={profile.cvUrl || `mailto:${profile.email}?subject=Request for CV`}
               target={profile.cvUrl ? "_blank" : undefined}
               rel={profile.cvUrl ? "noreferrer" : undefined}
@@ -44,14 +46,14 @@ export function SiteFooter({
           </Link>
           <p>{settings.summary}</p>
         </div>
-        <div className="footer-nav">
-          <h3>Explore</h3>
-          <ul>
-            {footerLinks.map((item) => (
+        {[{ title: "Profile", links: profileLinks }, { title: "Work & writing", links: workLinks }].map((group) => (
+          <nav className="footer-nav" aria-label={group.title} key={group.title}>
+            <h3>{group.title}</h3>
+            <ul>{group.links.map((item) => (
               <li key={item.href}><Link href={item.href} prefetch={false}>{item.label}</Link></li>
-            ))}
-          </ul>
-        </div>
+            ))}</ul>
+          </nav>
+        ))}
         <div className="footer-connect">
           <h3>Connect</h3>
           <ul className="footer-contact-list">
@@ -68,7 +70,7 @@ export function SiteFooter({
       </div>
       <div className="shell footer-bottom">
         <span>© {new Date().getFullYear()} {profile.name}</span>
-        <span>{profile.location} · Independent professional portfolio</span>
+        <span>{profile.location}</span>
       </div>
     </footer>
   );

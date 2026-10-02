@@ -15,6 +15,7 @@ export function BlogArchive({ insights }: { insights: InsightPreview[] }) {
                 <h2>{insight.title}</h2>
                 <p>{insight.excerpt}</p>
                 <div className="blog-card-meta">
+                  {insight.featured && <span className="blog-featured-label">Featured</span>}
                   {insight.date && <time dateTime={insight.publishedAt}>{insight.date}</time>}
                   {insight.readingTime && <span>{insight.readingTime}</span>}
                 </div>

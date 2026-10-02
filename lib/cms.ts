@@ -25,6 +25,7 @@ import {
 } from "./content";
 import { getSanityImageUrl, type SanityImageSource } from "./sanity-image";
 import { formatArticleDate } from "./article-date";
+import { estimateReadingTime, type ReadingSource } from "./reading-time";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -234,15 +235,19 @@ export const getPublications = cache(async () => {
 });
 
 export const getStories = cache(async () => {
-  const items = await collectionOrFallback<WithCmsImage<StoryPreview>>(
+  const items = await collectionOrFallback<WithCmsImage<StoryPreview & ReadingSource>>(
     `*[_type == "story"]|order(order asc){
       "slug": slug.current, title, category, excerpt,
       "cmsImage": image, "image": coalesce(fallbackImage, "/images/fieldwork.jpg"), featured,
-      "stack": coalesce(stack, []), publishedAt, dateLabel, readingTime, "updatedAt": _updatedAt
+      "stack": coalesce(stack, []), publishedAt, dateLabel, readingTime,
+      intro, sections[]{title, body}, content[]{_type, children[]{text}}, "updatedAt": _updatedAt
     }`,
     fallbackStories,
   );
-  return items.map((item) => resolveCmsImage<StoryPreview>(item));
+  return items.map((item): StoryPreview => {
+    const { content, intro, sections, ...preview } = item;
+    return { ...resolveCmsImage(preview), readingTime: estimateReadingTime({ content, intro, sections }) || item.readingTime };
+  });
 });
 
 export const getStory = cache(async (slug: string) => {
@@ -256,21 +261,28 @@ export const getStory = cache(async (slug: string) => {
     { slug },
     fallbackStories.find((story) => story.slug === slug),
   );
-  return item ? resolveCmsImage<Story>(item) : undefined;
+  return item ? { ...resolveCmsImage<Story>(item), readingTime: estimateReadingTime(item) || item.readingTime } : undefined;
 });
 
 export const getInsights = cache(async () => {
-  const items = await collectionOrFallback<WithCmsImage<InsightPreview>>(
-    `*[_type == "insight"]|order(featured desc, publishedAt desc){
+  const items = await collectionOrFallback<WithCmsImage<InsightPreview & ReadingSource>>(
+    `*[_type == "insight"]|order(publishedAt desc){
       "slug": slug.current, title, category,
       "date": dateLabel,
       publishedAt, readingTime, excerpt,
       "cmsImage": image, "image": coalesce(fallbackImage, "/images/data-systems.jpg"), imageAlt,
-      featured, "updatedAt": _updatedAt
+      featured, body[]{title, paragraphs}, content[]{_type, children[]{text}}, "updatedAt": _updatedAt
     }`,
     fallbackInsights,
   );
-  return items.map((item) => ({ ...resolveCmsImage<InsightPreview>(item), date: formatArticleDate(item.publishedAt, item.date) }));
+  return items.map((item): InsightPreview => {
+    const { content, body, ...preview } = item;
+    return {
+      ...resolveCmsImage(preview),
+      date: formatArticleDate(item.publishedAt, item.date),
+      readingTime: estimateReadingTime({ content, body }) || item.readingTime,
+    };
+  }).sort((a, b) => (Date.parse(b.publishedAt ?? "") || 0) - (Date.parse(a.publishedAt ?? "") || 0));
 });
 
 export const getInsight = cache(async (slug: string) => {
@@ -286,7 +298,11 @@ export const getInsight = cache(async (slug: string) => {
     { slug },
     fallbackInsights.find((insight) => insight.slug === slug),
   );
-  return item ? { ...resolveCmsImage<Insight>(item), date: formatArticleDate(item.publishedAt, item.date) } : undefined;
+  return item ? {
+    ...resolveCmsImage<Insight>(item),
+    date: formatArticleDate(item.publishedAt, item.date),
+    readingTime: estimateReadingTime(item) || item.readingTime,
+  } : undefined;
 });
 
 export const getCredentials = cache(() =>
