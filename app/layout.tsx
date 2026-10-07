@@ -49,6 +49,7 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const isAlternative = process.env.DESIGN_VARIANT === "alternative";
   const [profile, practiceAreas, settings] = await Promise.all([getProfile(), getPracticeAreas(), getSiteSettings()]);
   const structuredData = {
     "@context": "https://schema.org",
@@ -87,11 +88,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
     <html lang="en">
-      <body data-design={process.env.DESIGN_VARIANT === "alternative" ? "alternative" : "main"}>
+      <body data-design={isAlternative ? "alternative" : "main"}>
         <SiteHeader profile={{ name: profile.name, role: profile.role, email: profile.email }} />
         <main id="main-content" tabIndex={-1}>{children}</main>
         <SiteFooter profile={profile} settings={settings.footer} />
-        <MotionObserver />
+        {isAlternative ? <MotionObserver /> : null}
         <StructuredData id="site-structured-data" data={structuredData} />
       </body>
     </html>

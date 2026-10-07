@@ -26,7 +26,9 @@ The website runs at `http://localhost:3004`.
 
 ## Content management
 
-The public site connects to Sanity project `gvgzuc20`, dataset `asif`. Until a matching Sanity record is published, the website uses the complete reviewed content in `lib/content.ts`. Sanity records are reconciled with those fallbacks, so the owner can update the site gradually without making unfinished sections disappear.
+The public site reads published content from Sanity project `gvgzuc20`, dataset `asif`. The owner uses [the hosted content editor](https://asif-mustafa-portfolio.sanity.studio), not the website source code. Opening that link does not grant editing access: an Administrator must invite the owner first, and the owner must sign in.
+
+Drafts are not shown on the public website. After editing, resolve any validation messages and select **Publish**. Built-in content in `lib/content.ts` is a fallback when the CMS is unavailable, unconfigured or a singleton profile/settings record is missing; it is not a backup of later client edits. Archives use the published CMS collection when available, so deleting a record can remove it from the website.
 
 Run the editor separately:
 
@@ -43,7 +45,19 @@ cd sanity-studio
 npm run deploy
 ```
 
-The editor has dedicated content types for Profile, Practice Areas, Experience, Projects, Publications, My Stories, Blogs and Credentials. Images, links, copy, order and featured states can all be changed without editing the website code.
+### What the owner can edit
+
+- **Profile:** name, role, homepage headline and introduction, portrait, biography, contact and social links, PDF CV, profile highlights and education. The first biography paragraph is also used in the homepage profile preview.
+- **Website Copy & Homepage:** the displayed section headings and labels, hero image/caption, archive-link labels, page introductions, search/social-sharing details and footer contact copy.
+- **Practice Areas and Experience:** professional areas and capabilities, roles, organisations, dates, descriptions, contributions and results.
+- **Projects:** images, summaries, categories, technologies, project details, optional stakeholders/relevance, ordering and featured selection. The homepage shows up to four selected projects, prioritising featured entries.
+- **Publications:** titles, venue, year, links, keywords, publication type and status.
+- **My Stories and Blogs:** titles, summaries, images, categories, dates and long-form content. The homepage shows up to four selected stories, prioritising featured entries.
+- **Professional Certifications:** certification records and optional technologies/course details. Optional relevant courses for a degree belong in Profile → Education.
+
+Use the descriptions beside each field and supply verified information. Some interface wording is intentionally fixed in code, including navigation labels, footer navigation-group titles and certain action/accessibility labels. CMS fields do not control colours, typography, section widths, spacing, card layout, section order or button destinations. Those require a code change and website deployment.
+
+Unused homepage section-introduction fields and the removed About-page professional-approach fields are hidden in the current Studio schema. Their existing values and field keys are retained for older editions; hiding them does not delete any content. The decorative hero's former image-description field is also retained but hidden. Continue to add meaningful descriptions for portraits and content images that communicate information.
 
 Blogs and My Stories support rich text, inline images, graphs/charts uploaded as images, YouTube/Vimeo embeds and uploaded MP4 videos. Add image descriptions and video captions/transcripts for accessibility. Project detail headings are editable. Education records have optional CGPA, TGPA and grading-scale fields. Publications have separate type and status fields, including Ongoing, Submitted and Under review.
 
@@ -69,10 +83,12 @@ The one-time editorial migration is dry-run by default: `npm run migrate:editori
 
 1. Open [Sanity project members](https://www.sanity.io/manage/project/gvgzuc20/members) while signed in as the project Administrator.
 2. Invite the owner's email address.
-3. On a Sanity Free plan, assign **Administrator** because Free provides only Administrator and Viewer roles. Viewer cannot edit. On Growth or Enterprise, assign **Editor** instead so the owner can edit and publish without infrastructure access.
+3. Prefer **Editor** when the plan offers it. On Free, **Administrator** is the available role that can edit and publish; it also grants full project/settings access, so only assign it to the trusted owner. **Viewer** cannot edit, and **Contributor** cannot publish. Check [Sanity's current role permissions](https://www.sanity.io/docs/user-guides/roles) before assigning access.
 4. Send the owner [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio). They must sign in using the same method used to accept the invitation.
 
-The owner can edit and publish text, profile details, social links, the optional YouTube link, metrics, education, experience, projects, publications, field stories, rich articles, credentials, all section labels, images with crop controls, the social preview and a PDF CV. Published changes appear on the public site after its cache refresh, normally within about 60 seconds. Never send the owner a Sanity API token.
+The website and CMS reads use a 60-second revalidation interval. This makes cached content eligible for refresh after a minute; it is not a guaranteed one-minute delivery deadline because page and Sanity CDN caches may refresh on subsequent requests. Publish, wait a minute, then reload the relevant website page and check it on mobile as well. If changes remain stale after a few minutes, ask the maintainer to check the deployment/cache rather than deleting records. Never send the owner a Sanity API token.
+
+The client-required, premium and preserved editions currently share this dataset. Publishing content can update all connected editions even though their code and layouts remain separate. A second person's website needs a separate profile/content setup, normally its own dataset or project, before editing that person's details.
 
 For a new dataset, populate the editor once with the reviewed starter content while signed in as a Sanity Administrator:
 

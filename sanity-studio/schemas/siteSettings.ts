@@ -1,7 +1,18 @@
 import { defineField, defineType } from "sanity";
 
-const textField = (name: string, title: string, rows = 2) =>
-  defineField({ name, title, type: "text", rows });
+const textField = (
+  name: string,
+  title: string,
+  rows = 2,
+  options: { hidden?: boolean; readOnly?: boolean; description?: string } = {},
+) => defineField({ name, title, type: "text", rows, ...options });
+
+// Keep legacy keys so earlier editions and stored documents remain compatible.
+const archivedCopy = {
+  hidden: true,
+  readOnly: true,
+  description: "Retained for earlier editions; not displayed in the client-required website.",
+};
 
 const introFields = [
   defineField({ name: "eyebrow", title: "Small label", type: "string" }),
@@ -47,10 +58,11 @@ export const siteSettings = defineType({
       title: "Homepage sections",
       type: "object",
       group: "home",
+      description: "Edit the homepage labels, headings, images and link text here. The main headline, introduction, portrait, biography and profile highlights are in Profile. Layout, spacing and button destinations are managed in the website code.",
       fields: [
         defineField({ name: "heroEyebrow", title: "Hero role line", type: "string" }),
         defineField({ name: "heroImage", title: "Hero image", type: "image", options: { hotspot: true } }),
-        defineField({ name: "heroImageAlt", title: "Hero image description", type: "string", description: "Describe the image for visitors using screen readers." }),
+        defineField({ name: "heroImageAlt", title: "Hero image description", type: "string", ...archivedCopy }),
         defineField({ name: "heroImageLabel", title: "Hero image caption", type: "string" }),
         defineField({ name: "heroPrimaryCta", title: "Primary button label", type: "string" }),
         defineField({ name: "heroSecondaryCta", title: "Secondary link label", type: "string" }),
@@ -58,24 +70,24 @@ export const siteSettings = defineType({
         defineField({ name: "profileTitle", title: "Profile heading", type: "string" }),
         defineField({ name: "practiceEyebrow", title: "Practice label", type: "string" }),
         defineField({ name: "practiceTitle", title: "Practice heading", type: "string" }),
-        textField("practiceIntro", "Practice introduction"),
+        textField("practiceIntro", "Practice introduction", 2, archivedCopy),
         defineField({ name: "practiceAction", title: "Practice archive link", type: "string" }),
         defineField({ name: "projectsEyebrow", title: "Projects label", type: "string" }),
         defineField({ name: "projectsTitle", title: "Projects heading", type: "string" }),
-        textField("projectsIntro", "Projects introduction"),
+        textField("projectsIntro", "Projects introduction", 2, archivedCopy),
         defineField({ name: "projectsAction", title: "Projects archive link", type: "string" }),
-        defineField({ name: "storiesEyebrow", title: "Stories label", type: "string" }),
-        defineField({ name: "storiesTitle", title: "Stories heading", type: "string" }),
-        textField("storiesIntro", "Stories introduction"),
-        defineField({ name: "storiesAction", title: "Stories archive link", type: "string" }),
+        defineField({ name: "storiesEyebrow", title: "My Stories label", type: "string" }),
+        defineField({ name: "storiesTitle", title: "My Stories heading", type: "string" }),
+        textField("storiesIntro", "Stories introduction", 2, archivedCopy),
+        defineField({ name: "storiesAction", title: "My Stories archive link", type: "string" }),
         defineField({ name: "publicationsEyebrow", title: "Publications label", type: "string" }),
         defineField({ name: "publicationsTitle", title: "Publications heading", type: "string" }),
-        textField("publicationsIntro", "Publications introduction"),
+        textField("publicationsIntro", "Publications introduction", 2, archivedCopy),
         defineField({ name: "publicationsAction", title: "Publications archive link", type: "string" }),
-        defineField({ name: "insightsEyebrow", title: "Insights label", type: "string" }),
-        defineField({ name: "insightsTitle", title: "Insights heading", type: "string" }),
-        textField("insightsIntro", "Insights introduction"),
-        defineField({ name: "insightsAction", title: "Insights archive link", type: "string" }),
+        defineField({ name: "insightsEyebrow", title: "Homepage blog section label", type: "string" }),
+        defineField({ name: "insightsTitle", title: "Homepage blog section heading", type: "string" }),
+        textField("insightsIntro", "Insights introduction", 2, archivedCopy),
+        defineField({ name: "insightsAction", title: "Blogs archive link", type: "string", description: "Text of the homepage link to Blogs. The Insights hub has a separate page introduction below." }),
         defineField({ name: "contextEyebrow", title: "Context label", type: "string" }),
         defineField({ name: "contextTitle", title: "Context heading", type: "string" }),
         defineField({ name: "contexts", title: "Contexts of work", type: "array", of: [{ type: "string" }], validation: (rule) => rule.max(8) }),
@@ -105,6 +117,7 @@ export const siteSettings = defineType({
       title: "About page sections",
       type: "object",
       group: "about",
+      description: "Headings for the About-page profile, education and certifications. Biography, portrait and degrees are in Profile; certification records are in Professional Certifications.",
       fields: [
         defineField({ name: "profileEyebrow", title: "Profile label", type: "string" }),
         defineField({ name: "profileTitle", title: "Profile heading", type: "string" }),
@@ -115,13 +128,14 @@ export const siteSettings = defineType({
         defineField({ name: "certificationsEyebrow", title: "Certifications label", type: "string" }),
         defineField({ name: "certificationsTitle", title: "Certifications heading", type: "string" }),
         textField("certificationsIntro", "Certifications introduction"),
-        defineField({ name: "principlesEyebrow", title: "Professional approach label", type: "string" }),
-        defineField({ name: "principlesTitle", title: "Professional approach heading", type: "string" }),
-        textField("principlesIntro", "Professional approach introduction"),
+        defineField({ name: "principlesEyebrow", title: "Professional approach label", type: "string", ...archivedCopy }),
+        defineField({ name: "principlesTitle", title: "Professional approach heading", type: "string", ...archivedCopy }),
+        textField("principlesIntro", "Professional approach introduction", 2, archivedCopy),
         defineField({
           name: "principles",
           title: "Professional approach points",
           type: "array",
+          ...archivedCopy,
           validation: (rule) => rule.max(4),
           of: [{
             type: "object",

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { EditorialCard } from "@/components/EditorialCard";
+import { HomeStoryPreview } from "@/components/HomeStoryPreview";
 import { MonogramPortrait, SectionHeading } from "@/components/Primitives";
 import {
   getInsights,
@@ -160,22 +161,7 @@ export default async function Home() {
             title={settings.home.storiesTitle}
             action={{ href: "/stories", label: settings.home.storiesAction }}
           />
-          <div className="editorial-card-grid story-preview-grid">
-            {featuredStories.map((story) => (
-              <EditorialCard
-                key={story.slug}
-                href={`/stories/${story.slug}`}
-                image={story.image}
-                eyebrow={story.category}
-                title={story.title}
-                summary={story.excerpt}
-                tags={story.stack}
-                className="story-card"
-                sizes="(max-width: 640px) 100vw, (max-width: 900px) 38vw, 20vw"
-                reveal
-              />
-            ))}
-          </div>
+          <HomeStoryPreview stories={featuredStories} />
         </div>
       </section>
 
