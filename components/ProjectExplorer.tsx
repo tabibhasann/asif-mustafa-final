@@ -48,6 +48,7 @@ export function ProjectExplorer({ projects }: { projects: ProjectPreview[] }) {
             tags={project.stack}
             priority={index === 0}
             headingLevel={2}
+            sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 900px) calc(50vw - 40px), (max-width: 1284px) calc(25vw - 28px), 293px"
           />
         ))}
       </div>
