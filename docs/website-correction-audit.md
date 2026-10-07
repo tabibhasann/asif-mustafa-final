@@ -31,19 +31,21 @@ Reviewed against the client document `Website Correction.docx`, 1 October 2026, 
 - Separate premium source: adjacent project `asif-mustafa-premium`, branch `codex/premium-2026-10-02`.
 - Previous main: https://asif-mustafa-final.vercel.app/
 - Previous editorial: https://asif-mustafa-editorial.vercel.app/
-- Proposed separate correction project: `asif-mustafa-corrected`. Not live yet; Vercel rejected creation because the team is blocked after exceeding fair-use limits.
+- Live client-required correction project: https://asif-mustafa-corrected.vercel.app/. It remains in non-indexed review mode.
 - CMS backup: `.codex-audit/website-correction-2026-10-01/pre-correction-asif.tar.gz` in the parent workspace, containing all 44 records and no uploaded assets.
 
-No CMS content migration was run for this revision. All editions use dataset `asif`, so subsequent content publishing affects their content but not their preserved layout. The proposed review deployment uses `REVIEW_MODE=true` and a noindex header/metadata to avoid competing with the current production website in search. The Studio schema and app were successfully deployed; no existing records were mutated.
+No CMS content migration was run for this revision. All editions use dataset `asif`, so subsequent content publishing affects their content but not their preserved layout. The review deployment uses `REVIEW_MODE=true` and a noindex header/metadata to avoid competing with the canonical website in search. The Studio schema and app were successfully deployed; no existing records were mutated.
 
-## Verification
+## Historical verification, 1–3 October
+
+The following records describe the original correction pass. Hosting limitations noted then are no longer the current status. See [release readiness](release-readiness.md) for the latest checks.
 
 - TypeScript check, 12 date/rich-content/reading-time tests, production website builds for both editions and the client Studio build pass.
 - Compatible dependency updates applied, including Next.js 16.3.8 and Undici 7.30.0. Website and Studio production dependency audits report zero known vulnerabilities.
 - All 25 content routes return HTTP 200 in the production preview, with one main heading and the intended canonical URL. Legacy article URLs return HTTP 308 to Blogs.
 - Read-only independent review checked route preservation, CMS editability and source accuracy. Its findings were resolved.
 - Desktop, tablet and phone layouts were reviewed. The main routes and sample project/blog/story details have no horizontal overflow at 390px. Practice also passes at 320px; its navigation button remains 44px wide.
-- Public website deployment remains blocked by Vercel's account limit. The existing main and editorial addresses currently return HTTP 402 because of this block; their aliases were not modified. Resolve the block or select an authorised alternative host before publishing.
+- Publishing was initially blocked by Vercel's account limit. This was resolved before the current corrected edition was published; the earlier aliases were preserved.
 - Current local comparison previews: client-required edition at `http://localhost:3114`, premium edition at `http://localhost:3117`. Previous main and editorial source exports remain preserved; ports 3115 and 3116 are their earlier preview ports, not a claim that those servers are currently running.
 - Both editions were tested on all 25 content pages at desktop and phone width, plus all ten main pages at 320px and 768px. Each edition passed 70 route/viewport checks: one main heading, no horizontal overflow, no broken loaded images, no em dashes in the visible page copy, and no browser errors. The premium Practice list alignment and portrait-placeholder contrast were corrected during visual/accessibility review.
 - All 25 internal content paths return HTTP 200. Legacy Insights article paths return HTTP 308 to Blogs; missing paths return the custom HTTP 404 page. Mobile menu/disclosure navigation, keyboard Escape, project category filtering, publication search/status filtering and empty states were exercised in the browser.

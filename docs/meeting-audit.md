@@ -8,7 +8,7 @@ Reviewed against the complete Bengali meeting transcript supplied in attachment 
 | Smaller, more professional, aligned footer | Compact enquiry strip, aligned navigation/contact columns, responsive stacking. |
 | Make the indicated area wider and move it upward | Tabib identified Professional Profile as the probable target. Both editions now use a wider desktop profile; the main card moves slightly higher, while the editorial edition reduces the gap above it. Portrait, text and highlights remain grouped, with responsive stacking. This is an informed interpretation, not confirmation of the cursor target. |
 | Editable CGPA and TGPA | Optional fields in Profile > Education, with an optional grading scale; no invented grades. |
-| Make the principles area subtler | Quieter Professional approach copy and restrained styling. |
+| Make the principles area subtler | Initially made quieter; the later Website Correction document superseded this and requested removal of the complete section, which is now removed. |
 | Six practice areas | Six total. The former combined sustainability/environment/energy area was split into Environmental & Sustainability Systems and Energy Systems. This does not invent six additional specialties. |
 | Try centered, slightly transparent dividers | Centered low-contrast capability dividers on the Practice page. This was conditional on appearance, not a demand for every divider. |
 | Make professional roles more prominent relative to organization/project names | Larger role labels, reduced organization heading scale; role remains above the organization. |

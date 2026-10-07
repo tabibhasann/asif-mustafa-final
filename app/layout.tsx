@@ -61,12 +61,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         url: siteOrigin,
         email: `mailto:${profile.email}`,
         telephone: profile.phone,
-        jobTitle: "Researcher, Data Scientist and Technical Advisor",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Dhaka",
-          addressCountry: "BD",
-        },
+        jobTitle: profile.role,
+        address: profile.location,
         alumniOf: profile.education.map((item) => ({
           "@type": "CollegeOrUniversity",
           name: item.institution,

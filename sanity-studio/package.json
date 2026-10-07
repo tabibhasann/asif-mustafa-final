@@ -24,7 +24,7 @@
     "js-yaml": "3.15.2",
     "adm-zip": "0.6.1",
     "@vercel/frameworks": {
-      "smol-toml": "1.8.0"
+      "smol-toml": "1.9.0"
     },
     "typeid-js": {
       "uuid": "11.1.1"

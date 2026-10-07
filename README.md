@@ -2,11 +2,10 @@
 
 An institutional, research-led professional website built with Next.js and prepared for Sanity content management.
 
-- Public website: [asif-mustafa-final.vercel.app](https://asif-mustafa-final.vercel.app)
-- Editorial comparison: [asif-mustafa-editorial.vercel.app](https://asif-mustafa-editorial.vercel.app)
-- Website Correction revision: branch `codex/website-corrections-2026-10-01`; publishing is pending resolution of the Vercel team's fair-use block.
-- Completed client refinement: branch `codex/client-completion-2026-10-02`, local comparison at `http://localhost:3114`.
-- Separate premium project: `../asif-mustafa-premium`, local comparison at `http://localhost:3117`. This is an independent source project, not a replacement for this edition.
+- Client-required website: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app/), currently in non-indexed review mode.
+- Current refinement branch: `codex/final-qa-2026-10-08`.
+- Separate premium comparison: [asif-mustafa-premium.vercel.app](https://asif-mustafa-premium.vercel.app/), source project `../asif-mustafa-premium`. It is not a replacement for the client-required edition.
+- Earlier main and editorial editions remain at [asif-mustafa-final.vercel.app](https://asif-mustafa-final.vercel.app/) and [asif-mustafa-editorial.vercel.app](https://asif-mustafa-editorial.vercel.app/).
 - Content editor: [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio)
 - Source repository: [github.com/tabibhasann/asif-mustafa-final](https://github.com/tabibhasann/asif-mustafa-final)
 
@@ -75,7 +74,11 @@ The source before the Website Correction document is tagged `archive/pre-correct
 
 The corrected source before the final readability refinements is preserved at `archive/pre-polish-2026-10-02` (`3d378fb`). The new premium project's styling is self-contained and does not alter any archived or approved edition. Both current comparison projects read the same Sanity dataset; layout changes are independent, but publishing content changes their shared content.
 
-All 44 pre-correction CMS records were exported before these changes. The revision uses the same dataset without migrating or overwriting existing records. Consequently, later client content edits can appear in all editions, while each edition retains its own layout. The proposed correction deployment URL is not live yet: Vercel rejected project creation because the team exceeded fair-use limits. No paid plan or quota workaround was applied. See [the correction audit](docs/website-correction-audit.md) for implementation and backup details.
+All 44 pre-correction CMS records were exported before these changes. The revision uses the same dataset without migrating or overwriting existing records. Consequently, later client content edits can appear in all editions, while each edition retains its own layout. The correction deployment is now live. See [the correction audit](docs/website-correction-audit.md) for implementation and backup details.
+
+The version before this QA pass is preserved at `archive/pre-final-qa-2026-10-08` (`a488604`). The pre-meeting layout also has an archived deployment at [asif-mustafa-before-meeting-20261007.vercel.app](https://asif-mustafa-before-meeting-20261007.vercel.app/); it requires the deployment owner's Vercel login. Git tags preserve source, not a frozen copy of future CMS content.
+
+The source directory's `.vercel/project.json` still points to the earlier main project. Do not deploy this directory blindly. Use a clean source export linked explicitly to corrected project `prj_2WCXB3eXwB1goXWxcCIMNiLrmDiL`, team `tabibhasan`; verify the project before staging, test the staged production build, then promote it. Keep `SITE_URL=https://asif-mustafa-corrected.vercel.app` and `REVIEW_MODE=true` during review.
 
 The one-time editorial migration is dry-run by default: `npm run migrate:editorial` inside `sanity-studio`. After backing up the dataset, `npm run migrate:editorial -- --apply` applies an atomic, revision-guarded transaction. It only replaces recognized starter values and preserves customized copy.
 
@@ -117,3 +120,5 @@ npm audit --omit=dev
 The final project includes route-specific metadata, social previews, JSON-LD, a sitemap, robots rules, `llms.txt`, responsive layouts and reduced-motion support.
 
 See [the meeting audit](docs/meeting-audit.md) for the request-by-request implementation checklist and the cursor-specific adjustments that still need a screenshot or recording.
+
+See [release readiness](docs/release-readiness.md) for current verification, remaining owner inputs, security-tooling caveats and the final launch checklist. Existing local comparison ports are development conveniences, not permanent public links.
