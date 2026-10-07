@@ -1,3 +1,8 @@
+export function normalizeNavigationPathname(pathname: string): string {
+  // Vercel can prerender the homepage under /index while serving it at /.
+  return pathname === "/index" ? "/" : pathname;
+}
+
 export const headerLinks = [
   { href: "/about", label: "About" },
   { href: "/practice", label: "Practice" },

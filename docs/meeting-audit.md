@@ -58,10 +58,11 @@ Reviewed the complete Bengali transcript in attachment `2ee29c30-cafb-4a18-9db9-
 
 ### Verification of this update
 
-- Production build against Sanity project `gvgzuc20`, dataset `asif`; website typecheck; 15 unit tests, all passing.
+- Production build against Sanity project `gvgzuc20`, dataset `asif`; website typecheck; 17 unit tests, all passing.
 - Browser layout checks on all 25 content routes at 320, 390, 768, 1440 and 1920 pixels: 125 checks with no horizontal overflow, missing primary heading, empty main content or hidden reveal state.
 - Desktop dropdown and Blogs navigation; mobile menu, nested links and Escape; project filter/reset; publication type filter, unmatched search and clear/reset verified.
 - All content routes return 200; unknown detail routes return 404; legacy Insights article URLs redirect to Blogs with 308.
 - No em dashes or another person's name found in the shipped application copy. No CMS content or permissions changed.
 - Recoverable pre-change code snapshot: tag `archive/pre-meeting-polish-2026-10-07`, commit `f97f701`.
 - Review editions intentionally remain `noindex`. These checks are not a claim of a new Lighthouse score or guaranteed search ranking.
+- The hosted first-load check exposed Vercel's internal `/index` homepage pathname. Exact normalization to `/` keeps the server and browser header markup consistent and removes the unintended gap above the hero. Two regression tests cover this normalization and preserve other page/detail paths.

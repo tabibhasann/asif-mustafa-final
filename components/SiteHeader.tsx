@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { Profile } from "@/lib/content";
-import { headerLinks } from "@/lib/site";
+import { headerLinks, normalizeNavigationPathname } from "@/lib/site";
 import { InsightsNavigation } from "@/components/InsightsNavigation";
 
 export function SiteHeader({ profile }: { profile: Pick<Profile, "name" | "role" | "email"> }) {
-  const pathname = usePathname();
+  const pathname = normalizeNavigationPathname(usePathname());
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
