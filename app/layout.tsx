@@ -83,7 +83,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   };
 
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body data-design={isAlternative ? "alternative" : "main"}>
         <SiteHeader profile={{ name: profile.name, role: profile.role, email: profile.email }} />
         <main id="main-content" tabIndex={-1}>{children}</main>

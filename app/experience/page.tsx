@@ -26,21 +26,21 @@ export default async function ExperiencePage() {
           {experiences.map((experience, index) => (
             <article className="experience-entry" key={experience.slug}>
               <div className="experience-meta">
-                <span>{String(index + 1).padStart(2, "0")}</span>
+                <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <strong>{experience.period}</strong>
                 <small>{experience.engagement}</small>
                 {experience.projectValue && <em>{experience.projectValue}</em>}
               </div>
               <div className="experience-copy">
-                <p className="experience-role">{experience.role}</p>
-                <h2>{experience.organization}</h2>
+                <h2 className="experience-role">{experience.role}</h2>
+                <p className="experience-organization">{experience.organization}</p>
                 <p className="experience-description">{experience.description}</p>
-                <div className="experience-contributions" role="group" aria-label="Selected contributions">
+                {(experience.contribution || experience.impacts.length > 0) && <div className="experience-contributions" role="group" aria-label="Selected contributions">
                   {experience.contribution && <p className="experience-contribution-lead">{experience.contribution}</p>}
-                  {experience.impacts.map((impact, impactIndex) => (
-                    <p className={!experience.contribution && impactIndex === 0 ? "experience-contribution-lead" : ""} key={impact}>{impact}</p>
+                  {experience.impacts.map((impact) => (
+                    <p key={impact}>{impact}</p>
                   ))}
-                </div>
+                </div>}
                 {experience.result && <dl className="experience-result"><dt>Impact and results</dt><dd>{experience.result}</dd></dl>}
               </div>
             </article>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StructuredData } from "@/components/StructuredData";
+import { ProjectNarrative } from "@/components/ProjectNarrative";
 import { getProject, getProjects } from "@/lib/cms";
 import { absoluteUrl, createPageMetadata, siteOrigin } from "@/lib/seo";
 
@@ -48,7 +49,7 @@ export default async function ProjectDetailPage({ params }: Props) {
   };
   return (
     <>
-      <section className="detail-hero">
+      <section className="detail-hero project-detail-hero">
         <div className="shell detail-hero-grid">
           <div className="detail-hero-copy">
             <Link className="text-link" href="/projects" prefetch={false}>← All projects</Link>
@@ -93,14 +94,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           </dl>
         </div>
         <div className="shell project-detail-body">
-          <article className="article-body">
-            <section><p className="eyebrow">{project.detailLabels?.context || "Context"}</p><h2>{project.detailHeadings?.context || "Why the work was needed"}</h2><p>{project.context}</p></section>
-            <section>
-              <p className="eyebrow">{project.detailLabels?.approach || "Approach"}</p><h2>{project.detailHeadings?.approach || "How the system was developed"}</h2>
-              <ol>{project.approach.map((item) => <li key={item}>{item}</li>)}</ol>
-            </section>
-            <section><p className="eyebrow">{project.detailLabels?.outcome || "Outcome"}</p><h2>{project.detailHeadings?.outcome || "What the work established"}</h2><p>{project.outcome}</p></section>
-          </article>
+          <ProjectNarrative project={project} />
         </div>
       </section>
       <StructuredData id="project-structured-data" data={structuredData} />

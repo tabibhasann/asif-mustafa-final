@@ -28,17 +28,16 @@ export default async function PracticePage() {
           {practiceAreas.map((area) => (
             <article className="practice-chapter" id={area.slug} tabIndex={-1} key={area.slug}>
               <div className="practice-chapter-inner">
-                <span className="chapter-number">{area.number}</span>
-                <div>
-                  <p className="eyebrow">Practice area</p>
+                <div className="practice-chapter-header">
+                  <span className="chapter-number" aria-hidden="true">{area.number}</span>
                   <h2>{area.title}</h2>
                   <p>{area.summary}</p>
                 </div>
-                <ul className="capability-list">
+                {area.capabilities.length > 0 && <ul className="capability-list">
                   {area.capabilities.map((capability) => (
                     <li key={capability}>{capability}</li>
                   ))}
-                </ul>
+                </ul>}
               </div>
             </article>
           ))}

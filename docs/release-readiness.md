@@ -2,7 +2,18 @@
 
 Reviewed 8 October 2026. This is the client-required edition, not the separate premium redesign.
 
-Live review: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app/). Website source `ca6b918850964d976989864f8b3773f0f60d970c` was built successfully, tested as a staged production deployment and promoted. [Deployment and build details](https://vercel.com/tabibhasan/asif-mustafa-corrected/EWzbjxH2WWLBVZtXSD2sPBX4mZvp). Documentation-only commits may follow this source revision without changing the deployed application.
+Live review: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app/). The preceding final-QA website source `ca6b918850964d976989864f8b3773f0f60d970c` was built successfully, tested as a staged production deployment and promoted. [Prior deployment and build details](https://vercel.com/tabibhasan/asif-mustafa-corrected/EWzbjxH2WWLBVZtXSD2sPBX4mZvp). The subsequent composition refinement release is recorded below.
+
+## Targeted composition refinements
+
+- Practice: retained all six areas and their capabilities, removed the repetitive decorative label, aligned adjacent capability dividers with CSS subgrid, and kept a flex fallback. Single-column mobile cards size to their actual content.
+- Experience: role titles are now semantic headings; organizations are secondary. Contributions share one readable column instead of an artificially emphasized first paragraph and two unrelated side-by-side blocks. Empty contribution groups are omitted.
+- Project details: editable Context, Approach and Outcome content now follows one shared editorial grid, with a clearer reading measure, ordered methods and restrained outcome accent. The summary is readable at normal body size. Empty narrative sections are omitted.
+- Footer: the contact strip and navigation share one navy surface with an inset divider, quieter group headings and an aligned two-column social-link group. Mobile navigation retains comfortable tap targets.
+- Navigation: declared the global smooth-scroll behavior to Next.js so route changes can reset scroll promptly without the development warning.
+- Typecheck, all 23 regression tests, the 35-route production build and production dependency audit pass. The audit reports zero known website production vulnerabilities.
+- Browser checks: 75 development and 75 local production route/viewport checks passed across all 25 content routes at actual 320px, 768px and 1440px widths. Local production checks include one primary heading, nonempty main content, no horizontal overflow, no broken completed images, no dead link destinations, no duplicate IDs and named buttons. No warnings or errors appeared in the production browser tab.
+- Public release verification will be recorded after staging and promotion. The earlier PageSpeed reports below predate this composition pass and are historical measurements, not new scores for this revision.
 
 ## Completed independently
 
@@ -38,7 +49,7 @@ Live review: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.
 
 ## Preservation and rollback
 
-The prior tested source is tagged `archive/pre-final-qa-2026-10-08` at `a488604`. The current work is on `codex/final-qa-2026-10-08`. Earlier source tags and separate editions remain available. All connected editions currently share one Sanity dataset, so source preservation does not freeze future CMS edits. The October CMS export is a backup of its recorded state, not an automatic ongoing backup.
+The source before final QA is tagged `archive/pre-final-qa-2026-10-08` at `a488604`; the source before the composition refinements is tagged `archive/pre-composition-polish-2026-10-08` at `39c3fa7`. The current work is on `codex/composition-polish-2026-10-08`. Earlier source tags and separate editions remain available. All connected editions currently share one Sanity dataset, so source preservation does not freeze future CMS edits. The October CMS export is a backup of its recorded state, not an automatic ongoing backup.
 
 The hosted [Sanity Studio](https://asif-mustafa-portfolio.sanity.studio/) was rebuilt and deployed with its updated schemas (1/1 schema deployment succeeded). It uses the normal authenticated Sanity sign-in flow. This does not grant a new editor access; the invitation and owner-authorized publication test remain outstanding.
 

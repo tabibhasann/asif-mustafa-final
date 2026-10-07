@@ -3,7 +3,7 @@
 An institutional, research-led professional website built with Next.js and prepared for Sanity content management.
 
 - Client-required website: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app/), currently in non-indexed review mode.
-- Current refinement branch: `codex/final-qa-2026-10-08`.
+- Current refinement branch: `codex/composition-polish-2026-10-08`.
 - Separate premium comparison: [asif-mustafa-premium.vercel.app](https://asif-mustafa-premium.vercel.app/), source project `../asif-mustafa-premium`. It is not a replacement for the client-required edition.
 - Earlier main and editorial editions remain at [asif-mustafa-final.vercel.app](https://asif-mustafa-final.vercel.app/) and [asif-mustafa-editorial.vercel.app](https://asif-mustafa-editorial.vercel.app/).
 - Content editor: [asif-mustafa-portfolio.sanity.studio](https://asif-mustafa-portfolio.sanity.studio)
@@ -79,6 +79,8 @@ All 44 pre-correction CMS records were exported before these changes. The revisi
 The version before this QA pass is preserved at `archive/pre-final-qa-2026-10-08` (`a488604`). The pre-meeting layout also has an archived deployment at [asif-mustafa-before-meeting-20261007.vercel.app](https://asif-mustafa-before-meeting-20261007.vercel.app/); it requires the deployment owner's Vercel login. Git tags preserve source, not a frozen copy of future CMS content.
 
 The source directory's `.vercel/project.json` still points to the earlier main project. Do not deploy this directory blindly. Use a clean source export linked explicitly to corrected project `prj_2WCXB3eXwB1goXWxcCIMNiLrmDiL`, team `tabibhasan`; verify the project before staging, test the staged production build, then promote it. Keep `SITE_URL=https://asif-mustafa-corrected.vercel.app` and `REVIEW_MODE=true` during review.
+
+The version before the targeted Practice, Experience, project-detail and footer composition refinements is preserved at `archive/pre-composition-polish-2026-10-08` (`39c3fa7`). This pass keeps the approved structure, fonts, palette and CMS data. Practice cards align their summary and capability rows; Experience records prioritize the role and use one readable contribution column; project detail narratives share an editorial grid; the footer uses restrained headings and an inset contact divider. No CMS migration or Studio redeployment is needed for these presentation-only changes.
 
 The one-time editorial migration is dry-run by default: `npm run migrate:editorial` inside `sanity-studio`. After backing up the dataset, `npm run migrate:editorial -- --apply` applies an atomic, revision-guarded transaction. It only replaces recognized starter values and preserves customized copy.
 
