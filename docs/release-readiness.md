@@ -2,7 +2,7 @@
 
 Reviewed 8 October 2026. This is the client-required edition, not the separate premium redesign.
 
-Live review: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app/). The preceding final-QA website source `ca6b918850964d976989864f8b3773f0f60d970c` was built successfully, tested as a staged production deployment and promoted. [Prior deployment and build details](https://vercel.com/tabibhasan/asif-mustafa-corrected/EWzbjxH2WWLBVZtXSD2sPBX4mZvp). The subsequent composition refinement release is recorded below.
+Live review: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.vercel.app/). The composition refinement source `594a44adb3c38aaf226c355c60cb9042081d99aa` was built successfully, tested as a staged production deployment and promoted. [Current deployment and build details](https://vercel.com/tabibhasan/asif-mustafa-corrected/8zdCeA3TYgfk8qVewRJehubobCwk). The preceding final-QA source was `ca6b918850964d976989864f8b3773f0f60d970c`; [prior deployment details](https://vercel.com/tabibhasan/asif-mustafa-corrected/EWzbjxH2WWLBVZtXSD2sPBX4mZvp) remain available.
 
 ## Targeted composition refinements
 
@@ -13,7 +13,9 @@ Live review: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.
 - Navigation: declared the global smooth-scroll behavior to Next.js so route changes can reset scroll promptly without the development warning.
 - Typecheck, all 23 regression tests, the 35-route production build and production dependency audit pass. The audit reports zero known website production vulnerabilities.
 - Browser checks: 75 development and 75 local production route/viewport checks passed across all 25 content routes at actual 320px, 768px and 1440px widths. Local production checks include one primary heading, nonempty main content, no horizontal overflow, no broken completed images, no dead link destinations, no duplicate IDs and named buttons. No warnings or errors appeared in the production browser tab.
-- Public release verification will be recorded after staging and promotion. The earlier PageSpeed reports below predate this composition pass and are historical measurements, not new scores for this revision.
+- Eight staged route checks passed through authenticated Vercel access without changing deployment protection. The promoted public build passed all 75 route/viewport checks across the same 25 content routes and three widths, with no browser warnings or errors. Public Practice card dividers were confirmed aligned, and the project narrative and footer were visually reviewed together.
+- Rechecked profile navigation, mobile menu opening and Escape dismissal, project filtering/reset, and the desktop writing disclosure locally in production. No CMS records or access permissions were changed to manufacture a test result.
+- The earlier PageSpeed reports below predate this composition pass and are historical measurements, not new scores for this revision.
 
 ## Completed independently
 
@@ -26,7 +28,7 @@ Live review: [asif-mustafa-corrected.vercel.app](https://asif-mustafa-corrected.
 - Removed unused principles styles and legacy combined-archive controls. Updated the publishing and preservation documentation.
 - Applied compatible security dependency patches. No CMS content, project members or permissions were changed.
 
-## Verification
+## Preceding final-QA verification
 
 - Website typecheck, 20 regression tests and production build pass. Studio build passes.
 - All 25 content routes checked locally and publicly at actual 320px, 768px and 1440px viewport widths. The final published build passed another 75 route/viewport checks: one primary heading, no horizontal overflow, no empty main content, no broken completed images, no duplicate element IDs and no empty or dead `#` link destinations. The preceding public pass also checked control names and absence of em dashes or the wrong-person name in main content.
